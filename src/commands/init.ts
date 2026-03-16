@@ -9,7 +9,8 @@ import { generateRepoContext } from '../generators/repoContextGenerator';
 
 export const initCommand = new Command('init')
   .description('Initialize AI workspace by creating the .ai directory and base structure')
-  .action(async () => {
+  .option('-u, --user', 'Force interactive user mode (bypass agent detection)')
+  .action(async (options) => {
     try {
       const cwd = process.cwd();
       const aiDir = path.join(cwd, '.ai');
@@ -17,8 +18,11 @@ export const initCommand = new Command('init')
 
       console.log('Initializing ai-workspace...');
 
+      const agentMode = !options.user && isAgentEnvironment();
+      console.log(`[Mode: ${agentMode ? 'AI Agent' : 'User'}]`);
+
       // First check for Agent
-      if (isAgentEnvironment()) {
+      if (agentMode) {
         console.log('\n[Agent Detected] Running automatic analysis and handoff...\n');
         
         await fs.ensureDir(aiDir);

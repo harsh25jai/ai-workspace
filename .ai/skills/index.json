@@ -1,0 +1,19 @@
+{
+  "skills": [
+    {
+      "name": "CLI Architecture & Extension",
+      "path": "cli-architecture.skill.md",
+      "importance": "high"
+    },
+    {
+      "name": "LLM Provider Integration",
+      "path": "llm-providers.skill.md",
+      "importance": "critical"
+    },
+    {
+      "name": "Repository Analysis & Sync",
+      "path": "repo-analysis.skill.md",
+      "importance": "high"
+    }
+  ]
+}
