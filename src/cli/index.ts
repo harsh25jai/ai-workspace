@@ -5,6 +5,7 @@ import { generateCommand } from '../commands/generate';
 import { skillsCommand } from '../commands/skills';
 import { regenerateCommand } from '../commands/regenerate';
 import { statusCommand } from '../commands/status';
+import { syncCommand } from '../commands/sync';
 
 const program = new Command();
 
@@ -19,5 +20,6 @@ program.addCommand(generateCommand);
 program.addCommand(skillsCommand);
 program.addCommand(regenerateCommand);
 program.addCommand(statusCommand);
+program.addCommand(syncCommand);
 
 program.parse();
