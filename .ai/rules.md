@@ -1,1 +1,3 @@
-# Rules\n\nDefine global rules here.\n
+# Rules
+
+[TO BE COMPLETED BY AGENT]
