@@ -23,7 +23,26 @@ export async function generateSkillsPipeline(rootDir: string): Promise<void> {
     const filename = `${skill.name}.skill.md`;
     const filepath = path.join(skillsDir, filename);
     
-    const simulatedContent = `Skill: ${skill.name.toUpperCase().replace(/-/g, ' ')}\n\nDescription:\nAuto-generated simulated instructions for configuring and modifying the ${skill.name}.\n\nRules:\n- Generated rule 1\n- Generated rule 2\n`;
+    const simulatedContent = `---
+name: ${skill.name}
+type: ${skill.type}
+importance: ${skill.importance}
+files:
+  - (auto-discovered file paths here)
+---
+
+# ${skill.name.toUpperCase().replace(/-/g, ' ')}
+
+## Description
+Auto-generated simulated instructions for configuring and modifying the ${skill.name}.
+
+## Rules
+* Controllers must not contain authentication logic (example rule)
+* Always use services for business logic (example rule)
+
+## AI Guidelines
+* Leverage these guidelines when writing code for this specific module.
+`;
     
     await fs.writeFile(filepath, simulatedContent);
     console.log(`- Generated ${filename}`);

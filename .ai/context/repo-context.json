@@ -11,8 +11,14 @@
     "commands",
     "context",
     "generators",
+    "plugins",
+    "providers",
     "skills",
-    "utils"
+    "utils",
+    "validators",
+    "workspace"
   ],
-  "patterns": []
+  "patterns": [
+    "node-backend"
+  ]
 }

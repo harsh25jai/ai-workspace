@@ -1,5 +1,9 @@
 import fs from 'fs-extra';
 import path from 'path';
+import { WorkspacePlugin } from '../plugins/plugin';
+import { expressPlugin } from '../plugins/expressPlugin';
+import { reactPlugin } from '../plugins/reactPlugin';
+import { nodePlugin } from '../plugins/nodePlugin';
 
 export interface ScannerResult {
   languages: string[];
@@ -22,6 +26,14 @@ export async function scanRepository(rootDir: string): Promise<ScannerResult> {
     modules: [],
     patterns: []
   };
+
+  // 0. Load .aiignore
+  const ignorePatterns = new Set(['node_modules', '.git', 'dist', 'build', 'coverage', '.ai']);
+  const aiIgnorePath = path.join(rootDir, '.aiignore');
+  if (fs.existsSync(aiIgnorePath)) {
+    const ignoreContent = await fs.readFile(aiIgnorePath, 'utf8');
+    ignoreContent.split('\n').map(line => line.trim()).filter(line => line && !line.startsWith('#')).forEach(line => ignorePatterns.add(line));
+  }
 
   // 1. Detect Frameworks via package.json
   const pkgPath = path.join(rootDir, 'package.json');
@@ -50,6 +62,8 @@ export async function scanRepository(rootDir: string): Promise<ScannerResult> {
     const entries = await fs.readdir(srcDir, { withFileTypes: true });
     
     for (const entry of entries) {
+      if (ignorePatterns.has(entry.name)) continue;
+
       if (entry.isDirectory()) {
         result.modules.push(entry.name);
       } else if (entry.isFile()) {
@@ -84,6 +98,17 @@ export async function scanRepository(rootDir: string): Promise<ScannerResult> {
   }
   if (hasComponents) {
     result.patterns.push('component-based-ui');
+  }
+
+  // 4. Run Plugins
+  const plugins: WorkspacePlugin[] = [expressPlugin, reactPlugin, nodePlugin];
+  
+  for (const plugin of plugins) {
+    const pResult = plugin.detect(result);
+    // Merge plugin results safely avoiding duplicates
+    pResult.skills.forEach(s => !result.patterns.includes(s) && result.patterns.push(s)); // mapping plugin skills largely as patterns in the context
+    pResult.frameworks.forEach(f => !result.frameworks.includes(f) && result.frameworks.push(f));
+    pResult.patterns.forEach(p => !result.patterns.includes(p) && result.patterns.push(p));
   }
 
   return result;
