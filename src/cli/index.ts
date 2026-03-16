@@ -1,4 +1,7 @@
 import { Command } from 'commander';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 import { initCommand } from '../commands/init';
 import { analyzeCommand } from '../commands/analyze';
 import { generateCommand } from '../commands/generate';

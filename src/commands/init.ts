@@ -26,7 +26,9 @@ export const initCommand = new Command('init')
       if (!fs.existsSync(configPath)) {
         await fs.writeJSON(configPath, {
           provider: "openai",
-          model: "gpt-4"
+          model: "gpt-4",
+          openaiKey: "PASTE_YOUR_OPENAI_KEY_HERE",
+          anthropicKey: "PASTE_YOUR_ANTHROPIC_KEY_HERE"
         }, { spaces: 2 });
       }
 

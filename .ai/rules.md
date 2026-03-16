@@ -1,3 +1,1 @@
-# Coding Rules
-
-Simulated generation.
+# Rules\n\nDefine global rules here.\n
