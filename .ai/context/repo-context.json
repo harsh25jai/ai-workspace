@@ -1,0 +1,18 @@
+{
+  "languages": [
+    "typescript"
+  ],
+  "frameworks": [],
+  "entrypoints": [],
+  "modules": [
+    "agents",
+    "analyzer",
+    "cli",
+    "commands",
+    "context",
+    "generators",
+    "skills",
+    "utils"
+  ],
+  "patterns": []
+}

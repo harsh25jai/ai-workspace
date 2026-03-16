@@ -1,0 +1,3 @@
+# Coding Rules
+
+Simulated generation.
