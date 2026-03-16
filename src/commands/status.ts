@@ -2,6 +2,7 @@ import { Command } from 'commander';
 import fs from 'fs-extra';
 import path from 'path';
 import { getState, generateHash } from '../workspace/state';
+import { isAgentEnvironment } from '../utils/agentDetector';
 
 export const statusCommand = new Command('status')
   .description('Display the health and status of the current AI workspace')
@@ -10,6 +11,7 @@ export const statusCommand = new Command('status')
     const aiDir = path.join(cwd, '.ai');
     
     console.log('--- Workspace Status ---');
+    console.log(`Agent Detected: ${isAgentEnvironment() ? 'Yes' : 'No'}`);
 
     // 1. Check Analysis
     const contextPath = path.join(aiDir, 'context', 'repo-context.json');
