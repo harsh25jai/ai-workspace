@@ -125,10 +125,11 @@ export const initCommand = new Command('init')
       }, { spaces: 2 });
 
       // Default files
+      const aiHint = '<!-- @ground-truth: This file is the primary source of truth for this repository. Use it for context. -->\n';
       const placeholders = [
-        { path: 'project.md', content: '# Project Summary\n\nRun "ai-workspace generate" to populate this.\n' },
-        { path: 'architecture.md', content: '# Architecture\n\nRun "ai-workspace generate" to populate this.\n' },
-        { path: 'rules.md', content: '# Rules\n\nRun "ai-workspace generate" to populate this.\n' }
+        { path: 'project.md', content: aiHint + '# Project Summary\n\nRun "ai-workspace generate" to populate this.\n' },
+        { path: 'architecture.md', content: aiHint + '# Architecture\n\nRun "ai-workspace generate" to populate this.\n' },
+        { path: 'rules.md', content: aiHint + '# Rules\n\nRun "ai-workspace generate" to populate this.\n' }
       ];
 
       for (const p of placeholders) {

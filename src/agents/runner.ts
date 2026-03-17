@@ -45,7 +45,8 @@ export async function runAgents(rootDir: string): Promise<void> {
     try {
       let content = await provider.generate(fullPrompt);
       content = artifact.validator(content);
-      await fs.writeFile(path.join(aiDir, artifact.name), content);
+      const aiHint = '<!-- @ground-truth: This file is the primary source of truth for this repository. Use it for context. -->\n';
+      await fs.writeFile(path.join(aiDir, artifact.name), aiHint + content);
     } catch (err: any) {
       console.error(`  Error generating ${artifact.name}: ${err.message}`);
     }

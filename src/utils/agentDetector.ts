@@ -2,6 +2,10 @@ export function isAgentEnvironment(): boolean {
   const agentEnvVars = [
     'ANTIGRAVITY_AGENT',
     'CURSOR',
+    'CLAUDE_CODE',
+    'WINDSURF',
+    'CASCADE',
+    'REPL_ID',
     'CLINE_AGENT',
     'AI_AGENT',
     'COPILOT',
@@ -9,7 +13,7 @@ export function isAgentEnvironment(): boolean {
   ];
 
   // Also check for Antigravity specific bundle identifier as a fallback
-  if (process.env.__CFBundleIdentifier === 'com.google.antigravity') {
+  if (process.env.__CFBundleIdentifier === 'com.google.antigravity' || process.env.TERM_PROGRAM === 'cursor') {
     return true;
   }
 

@@ -10,6 +10,7 @@ import { regenerateCommand } from '../commands/regenerate';
 import { statusCommand } from '../commands/status';
 import { syncCommand } from '../commands/sync';
 import { configCommand } from '../commands/config';
+import { exportCommand } from '../commands/export';
 
 const program = new Command();
 
@@ -26,5 +27,6 @@ program.addCommand(regenerateCommand);
 program.addCommand(statusCommand);
 program.addCommand(syncCommand);
 program.addCommand(configCommand);
+program.addCommand(exportCommand);
 
 program.parse();
