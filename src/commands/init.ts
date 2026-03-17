@@ -16,7 +16,40 @@ export const initCommand = new Command('init')
       const aiDir = path.join(cwd, '.ai');
       const rootDir = cwd;
 
-      console.log('Initializing ai-workspace...');
+      await fs.ensureDir(aiDir);
+      await fs.ensureDir(path.join(aiDir, 'context'));
+      await fs.ensureDir(path.join(aiDir, 'decisions'));
+      
+      const standardSkillsDir = path.join(rootDir, '.agents', 'skills');
+      const legacySkillsDir = path.join(aiDir, 'skills');
+      
+      await fs.ensureDir(standardSkillsDir);
+      
+      // Migration Logic
+      if (fs.existsSync(legacySkillsDir) && !fs.existsSync(path.join(standardSkillsDir, 'index.json'))) {
+        console.log('Migrating legacy skills from .ai/skills to .agents/skills...');
+        const legacyIndex = path.join(legacySkillsDir, 'index.json');
+        if (fs.existsSync(legacyIndex)) {
+            const indexData = await fs.readJSON(legacyIndex);
+            for (const skill of indexData.skills || []) {
+                const legacyFile = path.join(legacySkillsDir, skill.path);
+                if (fs.existsSync(legacyFile)) {
+                    const skillName = skill.name.toLowerCase().replace(/\s+/g, '-');
+                    const newFolder = path.join(standardSkillsDir, skillName);
+                    await fs.ensureDir(newFolder);
+                    await fs.copy(legacyFile, path.join(newFolder, 'SKILL.md'));
+                }
+            }
+            await fs.copy(legacyIndex, path.join(standardSkillsDir, 'index.json'));
+            console.log('Migration complete. You can now delete .ai/skills manually.');
+        }
+      }
+
+      // Ensure index.json exists in standard location
+      const skillsIndexPath = path.join(standardSkillsDir, 'index.json');
+      if (!fs.existsSync(skillsIndexPath)) {
+        await fs.writeJSON(skillsIndexPath, { skills: [] }, { spaces: 2 });
+      }
 
       const agentMode = !options.user && isAgentEnvironment();
       console.log(`[Mode: ${agentMode ? 'AI Agent' : 'User'}]`);
@@ -25,11 +58,6 @@ export const initCommand = new Command('init')
       if (agentMode) {
         console.log('\n[Agent Detected] Running automatic analysis and handoff...\n');
         
-        await fs.ensureDir(aiDir);
-        await fs.ensureDir(path.join(aiDir, 'context'));
-        await fs.ensureDir(path.join(aiDir, 'decisions'));
-        await fs.ensureDir(path.join(aiDir, 'skills'));
-
         const scannerResult = await scanRepository(rootDir);
         await generateRepoMap(rootDir, scannerResult);
         await generateRepoContext(rootDir, scannerResult);
@@ -60,7 +88,7 @@ export const initCommand = new Command('init')
         console.log('   - .ai/project.md (Summarize the business mission and tech stack)');
         console.log('   - .ai/architecture.md (Detail the data flow, layers, and service boundaries)');
         console.log('   - .ai/rules.md (List specific coding standards discovered in this repo)');
-        console.log('3. Generate relevant .skill.md files in .ai/skills/ if needed.');
+        console.log('3. Generate relevant SKILL.md folders in .agents/skills/ if needed.');
         console.log('-----------------------------');
         return;
       }
@@ -87,11 +115,6 @@ export const initCommand = new Command('init')
         }
       ]);
 
-      await fs.ensureDir(aiDir);
-      await fs.ensureDir(path.join(aiDir, 'context'));
-      await fs.ensureDir(path.join(aiDir, 'decisions'));
-      await fs.ensureDir(path.join(aiDir, 'skills'));
-
       // Config
       const configPath = path.join(aiDir, 'config.json');
       await fs.writeJSON(configPath, {
@@ -100,12 +123,6 @@ export const initCommand = new Command('init')
         openaiKey: answers.provider === 'openai' ? answers.apiKey : '',
         anthropicKey: answers.provider === 'anthropic' ? answers.apiKey : ''
       }, { spaces: 2 });
-
-      // Skills index
-      const skillsIndexPath = path.join(aiDir, 'skills', 'index.json');
-      if (!fs.existsSync(skillsIndexPath)) {
-        await fs.writeJSON(skillsIndexPath, { skills: [] }, { spaces: 2 });
-      }
 
       // Default files
       const placeholders = [

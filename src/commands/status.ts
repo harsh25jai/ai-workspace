@@ -36,9 +36,13 @@ export const statusCommand = new Command('status')
     }
 
     // 3. Check Skills
-    const skillsPath = path.join(aiDir, 'skills', 'index.json');
-    if (fs.existsSync(skillsPath)) {
-      console.log('Skills generated ✔');
+    const standardSkillsPath = path.join(cwd, '.agents', 'skills', 'index.json');
+    const legacySkillsPath = path.join(aiDir, 'skills', 'index.json');
+    
+    if (fs.existsSync(standardSkillsPath)) {
+      console.log('Skills generated ✔ (Standard: .agents/skills)');
+    } else if (fs.existsSync(legacySkillsPath)) {
+      console.log('Skills generated ⚠ (Legacy: .ai/skills - consider migrating to .agents/skills)');
     } else {
       console.log('Skills generated ✘');
     }
