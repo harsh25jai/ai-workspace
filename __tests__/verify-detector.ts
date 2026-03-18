@@ -65,6 +65,7 @@ describe('Agent Detector', () => {
     ['off'],
     [' FALSE '],
     ['0 '],
+    ['   '],
   ])('treats AI_AGENT="%s" as disabled', (val) => {
     process.env.AI_AGENT = val;
     const info = getDetectionInfo();

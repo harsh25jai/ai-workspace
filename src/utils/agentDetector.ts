@@ -29,6 +29,7 @@ export interface DetectionResult {
 function isEnvVarActive(value: string | undefined): boolean {
   if (!value) return false;
   const normalized = value.toLowerCase().trim();
+  if (normalized === '') return false;
   return !['false', '0', 'off'].includes(normalized);
 }
 
