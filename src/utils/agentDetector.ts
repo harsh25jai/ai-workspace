@@ -65,6 +65,11 @@ export function getDetectionInfo(): DetectionResult {
 
   // 3. Detect GitHub Copilot Status
   result.isCopilotActive = checkCopilotStatus();
+  
+  // result.isAgent should also be true if Copilot is active
+  if (result.isCopilotActive) {
+    result.isAgent = true;
+  }
 
   return result;
 }
@@ -116,7 +121,10 @@ function checkCopilotStatus(): boolean {
   }
 
   // Corroborate installation with either a running process OR being in an IDE terminal
-  const isIdeTerminal = ['vscode', 'cursor'].includes(process.env.TERM_PROGRAM || '');
+  const isIdeTerminal = 
+    ['vscode', 'cursor', 'antigravity'].includes(process.env.TERM_PROGRAM || '') ||
+    process.env.__CFBundleIdentifier === 'com.google.antigravity';
+  
   return copilotProcessActive || (copilotInstalled && isIdeTerminal);
 }
 

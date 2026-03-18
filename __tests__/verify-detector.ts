@@ -104,4 +104,22 @@ describe('Agent Detector', () => {
     expect(info.isAgent).toBe(false);
     expect(isAgentEnvironment()).toBe(false);
   });
+
+  test('isAgent is true when isCopilotActive is true (unified state)', () => {
+    (execSync as jest.Mock).mockReturnValue(Buffer.from('copilot-agent process running...'));
+    const info = getDetectionInfo();
+    expect(info.isCopilotActive).toBe(true);
+    expect(info.isAgent).toBe(true);
+  });
+
+  test('detects isCopilotActive when extension exists in Antigravity terminal', () => {
+    process.env.__CFBundleIdentifier = 'com.google.antigravity';
+    (fs.existsSync as jest.Mock).mockReturnValue(true);
+    (fs.readdirSync as jest.Mock).mockReturnValue(['github.copilot-1.2.3']);
+    
+    const info = getDetectionInfo();
+    expect(info.ide).toBe('antigravity');
+    expect(info.isCopilotActive).toBe(true);
+    expect(info.isAgent).toBe(true);
+  });
 });
