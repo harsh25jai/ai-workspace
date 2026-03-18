@@ -23,6 +23,22 @@ export interface DetectionResult {
   activeAgents: string[];
 }
 
+/**
+ * Helper to check if a specific environment variable is active (not "false", "0", "off")
+ */
+function isEnvVarActive(value: string | undefined): boolean {
+  if (!value) return false;
+  const normalized = value.toLowerCase().trim();
+  return !['false', '0', 'off'].includes(normalized);
+}
+
+/**
+ * Helper to scan AGENT_ENV_VARS and return active ones
+ */
+export function getActiveAgentEnvVars(env: NodeJS.ProcessEnv): string[] {
+  return AGENT_ENV_VARS.filter(v => isEnvVarActive(env[v]));
+}
+
 export function getDetectionInfo(): DetectionResult {
   const result: DetectionResult = {
     isAgent: false,
@@ -33,10 +49,10 @@ export function getDetectionInfo(): DetectionResult {
   const env = process.env;
 
   // 1. Detect IDE
-  if (env.ANTIGRAVITY_AGENT || env.__CFBundleIdentifier === 'com.google.antigravity') {
+  if (isEnvVarActive(env.ANTIGRAVITY_AGENT) || env.__CFBundleIdentifier === 'com.google.antigravity') {
     result.ide = 'antigravity';
     result.isAgent = true;
-  } else if (env.TERM_PROGRAM === 'cursor' || env.CURSOR === 'true') {
+  } else if (env.TERM_PROGRAM === 'cursor' || isEnvVarActive(env.CURSOR)) {
     result.ide = 'cursor';
     result.isAgent = true;
   } else if (env.TERM_PROGRAM === 'vscode') {
@@ -45,15 +61,10 @@ export function getDetectionInfo(): DetectionResult {
     result.ide = 'other';
   }
 
-  for (const envVar of AGENT_ENV_VARS) {
-    const value = env[envVar];
-    if (value) {
-      const normalized = value.toLowerCase().trim();
-      if (normalized !== 'false' && normalized !== '0' && normalized !== 'off') {
-        result.isAgent = true;
-        result.activeAgents.push(envVar);
-      }
-    }
+  // 2. Detect AI Agents via Env Vars using the helper
+  result.activeAgents = getActiveAgentEnvVars(env);
+  if (result.activeAgents.length > 0) {
+    result.isAgent = true;
   }
 
   // 3. Detect GitHub Copilot Status
@@ -65,13 +76,19 @@ export function getDetectionInfo(): DetectionResult {
 function checkCopilotStatus(): boolean {
   let copilotProcessActive = false;
   try {
-    // Check for running copilot-agent process (common for the extension)
-    const output = execSync('ps aux | grep -i "copilot-agent" | grep -v grep', { stdio: 'pipe' }).toString();
-    if (output.length > 0) {
+    const isWindows = process.platform === 'win32';
+    // Use tasklist on Windows, ps on others
+    const cmd = isWindows
+      ? 'tasklist /FI "IMAGENAME eq copilot-agent.exe" /NH'
+      : 'ps aux | grep -i "copilot-agent" | grep -v grep';
+
+    const output = execSync(cmd, { stdio: 'pipe' }).toString();
+    // Case-insensitive search for copilot-agent in output
+    if (output.toLowerCase().includes('copilot-agent')) {
       copilotProcessActive = true;
     }
   } catch (e) {
-    // If ps fails or no match, continue
+    // If command fails or no match, continue
   }
 
   // Fallback: Check for extension presence in common paths
@@ -81,6 +98,11 @@ function checkCopilotStatus(): boolean {
     path.join(homeDir, '.cursor', 'extensions'),
     path.join(homeDir, '.vscode-server', 'extensions'), // For remote dev
   ];
+
+  // Include Windows AppData location if available
+  if (process.env.APPDATA) {
+    extensionPaths.push(path.join(process.env.APPDATA, 'Code', 'extensions'));
+  }
 
   let copilotInstalled = false;
   for (const extPath of extensionPaths) {
@@ -97,8 +119,7 @@ function checkCopilotStatus(): boolean {
     }
   }
 
-  // Only return true if copilotInstalled plus a corroborating indicator
-  // (the existing process check OR being in a known VS Code/Cursor environment)
+  // Corroborate installation with either a running process OR being in an IDE terminal
   const isIdeTerminal = ['vscode', 'cursor'].includes(process.env.TERM_PROGRAM || '');
   return copilotProcessActive || (copilotInstalled && isIdeTerminal);
 }
@@ -108,15 +129,5 @@ export function isAgentEnvironment(): boolean {
     return true;
   }
 
-  for (const v of AGENT_ENV_VARS) {
-    const value = process.env[v];
-    if (value) {
-      const normalized = value.toLowerCase().trim();
-      if (normalized !== 'false' && normalized !== '0' && normalized !== 'off') {
-        return true;
-      }
-    }
-  }
-
-  return false;
+  return getActiveAgentEnvVars(process.env).length > 0;
 }
