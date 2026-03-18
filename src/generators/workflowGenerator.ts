@@ -27,9 +27,7 @@ description: Full workspace analysis and regeneration
 # Workflow: Regenerate Workspace
 Run this workflow after significant code changes to ensure all documentation and rules are up to date.
 
-// turbo
 1. Run "ai-workspace analyze" to refresh repository context.
-// turbo
 2. Run "ai-workspace generate" to rebuild documentation, rules, and workflows.
 3. Verify .ai/ and .agents/ contents.
 4. Call /update-readme to sync the main README.

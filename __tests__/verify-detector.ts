@@ -141,4 +141,22 @@ describe('Agent Detector', () => {
     const info = getDetectionInfo();
     expect(info.isCopilotActive).toBe(true);
   });
+
+  test('detects Cursor via TERM_PROGRAM (case-insensitive)', () => {
+    process.env.TERM_PROGRAM = 'Cursor';
+    const info = getDetectionInfo();
+    expect(info.ide).toBe('cursor');
+    expect(info.isAgent).toBe(true);
+  });
+
+  test('detects VS Code via TERM_PROGRAM (case-insensitive)', () => {
+    process.env.TERM_PROGRAM = 'VSCode';
+    const info = getDetectionInfo();
+    expect(info.ide).toBe('vscode');
+  });
+
+  test('isAgentEnvFromEnv handles case-insensitive TERM_PROGRAM', () => {
+    process.env.TERM_PROGRAM = 'CURSOR';
+    expect(isAgentEnvironment()).toBe(true);
+  });
 });

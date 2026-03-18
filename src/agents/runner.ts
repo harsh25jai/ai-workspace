@@ -40,6 +40,8 @@ export async function runAgents(rootDir: string): Promise<void> {
     { name: 'rules.md', prompt: 'Generate development rules and guidelines based on this context.', validator: (c: string) => validateRules(c, contextData) }
   ];
 
+  const failures: string[] = [];
+
   for (const artifact of artifacts) {
     console.log(`- Generating ${artifact.name}...`);
     const fullPrompt = `${artifact.prompt}\n\nREPOSITIORY CONTEXT:\n${promptContext}`;
@@ -51,13 +53,30 @@ export async function runAgents(rootDir: string): Promise<void> {
       await fs.writeFile(path.join(aiDir, artifact.name), aiHint + content);
     } catch (err: any) {
       console.error(`  Error generating ${artifact.name}: ${err.message}`);
+      failures.push(artifact.name);
     }
   }
 
   // 3. Generate Rules and Workflows
   console.log('Generating rules and workflows...');
-  await generateRules(rootDir, contextData);
-  await generateWorkflows(rootDir, contextData);
+  
+  try {
+    await generateRules(rootDir, contextData);
+  } catch (err: any) {
+    console.error(`  Error generating rules: ${err.message}`);
+    failures.push('rules');
+  }
 
-  console.log('Agents completed generating core markdown artifacts, rules, and workflows.');
+  try {
+    await generateWorkflows(rootDir, contextData);
+  } catch (err: any) {
+    console.error(`  Error generating workflows: ${err.message}`);
+    failures.push('workflows');
+  }
+
+  if (failures.length === 0) {
+    console.log('Agents completed generating core markdown artifacts, rules, and workflows.');
+  } else {
+    console.log(`Agents completed with partial success. Failed to generate: ${failures.join(', ')}.`);
+  }
 }

@@ -50,11 +50,12 @@ export function getDetectionInfo(): DetectionResult {
   const env = process.env;
 
   // 1. Detect IDE
+  const termProgram = (env.TERM_PROGRAM || '').toLowerCase();
   if (isEnvVarActive(env.ANTIGRAVITY_AGENT) || env.__CFBundleIdentifier === 'com.google.antigravity') {
     result.ide = 'antigravity';
-  } else if (env.TERM_PROGRAM === 'cursor' || isEnvVarActive(env.CURSOR)) {
+  } else if (termProgram === 'cursor' || isEnvVarActive(env.CURSOR)) {
     result.ide = 'cursor';
-  } else if (env.TERM_PROGRAM === 'vscode') {
+  } else if (termProgram === 'vscode') {
     result.ide = 'vscode';
   } else {
     result.ide = 'other';
@@ -134,8 +135,9 @@ function checkCopilotStatus(): boolean {
  * Logic to detect agent environment based ONLY on environment variables and IDE indicators
  */
 function isAgentEnvFromEnv(env: NodeJS.ProcessEnv): boolean {
+  const termProgram = (env.TERM_PROGRAM || '').toLowerCase();
   return (
-    env.TERM_PROGRAM === 'cursor' ||
+    termProgram === 'cursor' ||
     env.__CFBundleIdentifier === 'com.google.antigravity' ||
     getActiveAgentEnvVars(env).length > 0
   );
