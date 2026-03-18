@@ -3,6 +3,19 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as os from 'os';
 
+export const AGENT_ENV_VARS = [
+  'ANTIGRAVITY_AGENT',
+  'CURSOR',
+  'CLAUDE_CODE',
+  'WINDSURF',
+  'CASCADE',
+  'REPL_ID',
+  'CLINE_AGENT',
+  'AI_AGENT',
+  'COPILOT',
+  'GITHUB_COPILOT'
+];
+
 export interface DetectionResult {
   isAgent: boolean;
   ide?: 'antigravity' | 'cursor' | 'vscode' | 'other';
@@ -32,22 +45,14 @@ export function getDetectionInfo(): DetectionResult {
     result.ide = 'other';
   }
 
-  // 2. Detect AI Agents via Env Vars
-  const agentEnvVars = [
-    'CLAUDE_CODE',
-    'WINDSURF',
-    'CASCADE',
-    'REPL_ID',
-    'CLINE_AGENT',
-    'AI_AGENT',
-    'COPILOT',
-    'GITHUB_COPILOT'
-  ];
-
-  for (const envVar of agentEnvVars) {
-    if (env[envVar]) {
-      result.isAgent = true;
-      result.activeAgents.push(envVar);
+  for (const envVar of AGENT_ENV_VARS) {
+    const value = env[envVar];
+    if (value) {
+      const normalized = value.toLowerCase().trim();
+      if (normalized !== 'false' && normalized !== '0' && normalized !== 'off') {
+        result.isAgent = true;
+        result.activeAgents.push(envVar);
+      }
     }
   }
 
@@ -58,10 +63,13 @@ export function getDetectionInfo(): DetectionResult {
 }
 
 function checkCopilotStatus(): boolean {
+  let copilotProcessActive = false;
   try {
     // Check for running copilot-agent process (common for the extension)
     const output = execSync('ps aux | grep -i "copilot-agent" | grep -v grep', { stdio: 'pipe' }).toString();
-    if (output.length > 0) return true;
+    if (output.length > 0) {
+      copilotProcessActive = true;
+    }
   } catch (e) {
     // If ps fails or no match, continue
   }
@@ -74,14 +82,14 @@ function checkCopilotStatus(): boolean {
     path.join(homeDir, '.vscode-server', 'extensions'), // For remote dev
   ];
 
+  let copilotInstalled = false;
   for (const extPath of extensionPaths) {
     if (fs.existsSync(extPath)) {
       try {
         const files = fs.readdirSync(extPath);
         if (files.some(f => f.toLowerCase().includes('github.copilot'))) {
-          // This only detects installation, but combined with the process check, it's more robust
-          // If we are in an IDE terminal, and the extension is installed, it's likely active
-          return true;
+          copilotInstalled = true;
+          break;
         }
       } catch (e) {
         // Ignore read errors
@@ -89,28 +97,25 @@ function checkCopilotStatus(): boolean {
     }
   }
 
-  return false;
+  // Only return true if copilotInstalled plus a corroborating indicator
+  // (the existing process check OR being in a known VS Code/Cursor environment)
+  const isIdeTerminal = ['vscode', 'cursor'].includes(process.env.TERM_PROGRAM || '');
+  return copilotProcessActive || (copilotInstalled && isIdeTerminal);
 }
 
 export function isAgentEnvironment(): boolean {
-  // Fast path for common checks
-  const fastCheckVars = [
-    'ANTIGRAVITY_AGENT',
-    'CURSOR',
-    'CLAUDE_CODE',
-    'WINDSURF',
-    'CASCADE',
-    'REPL_ID',
-    'CLINE_AGENT',
-    'GITHUB_COPILOT'
-  ];
-
   if (process.env.TERM_PROGRAM === 'cursor' || process.env.__CFBundleIdentifier === 'com.google.antigravity') {
     return true;
   }
 
-  for (const v of fastCheckVars) {
-    if (process.env[v]) return true;
+  for (const v of AGENT_ENV_VARS) {
+    const value = process.env[v];
+    if (value) {
+      const normalized = value.toLowerCase().trim();
+      if (normalized !== 'false' && normalized !== '0' && normalized !== 'off') {
+        return true;
+      }
+    }
   }
 
   return false;
