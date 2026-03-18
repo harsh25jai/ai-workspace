@@ -51,10 +51,8 @@ export function getDetectionInfo(): DetectionResult {
   // 1. Detect IDE
   if (isEnvVarActive(env.ANTIGRAVITY_AGENT) || env.__CFBundleIdentifier === 'com.google.antigravity') {
     result.ide = 'antigravity';
-    result.isAgent = true;
   } else if (env.TERM_PROGRAM === 'cursor' || isEnvVarActive(env.CURSOR)) {
     result.ide = 'cursor';
-    result.isAgent = true;
   } else if (env.TERM_PROGRAM === 'vscode') {
     result.ide = 'vscode';
   } else {
@@ -63,9 +61,7 @@ export function getDetectionInfo(): DetectionResult {
 
   // 2. Detect AI Agents via Env Vars using the helper
   result.activeAgents = getActiveAgentEnvVars(env);
-  if (result.activeAgents.length > 0) {
-    result.isAgent = true;
-  }
+  result.isAgent = isAgentEnvFromEnv(env);
 
   // 3. Detect GitHub Copilot Status
   result.isCopilotActive = checkCopilotStatus();
@@ -82,13 +78,13 @@ function checkCopilotStatus(): boolean {
       ? 'tasklist /FI "IMAGENAME eq copilot-agent.exe" /NH'
       : 'ps aux | grep -i "copilot-agent" | grep -v grep';
 
-    const output = execSync(cmd, { stdio: 'pipe' }).toString();
+    const output = execSync(cmd, { stdio: 'pipe', timeout: 5000 }).toString();
     // Case-insensitive search for copilot-agent in output
     if (output.toLowerCase().includes('copilot-agent')) {
       copilotProcessActive = true;
     }
   } catch (e) {
-    // If command fails or no match, continue
+    // If command fails, timeouts, or no match, continue
   }
 
   // Fallback: Check for extension presence in common paths
@@ -124,10 +120,17 @@ function checkCopilotStatus(): boolean {
   return copilotProcessActive || (copilotInstalled && isIdeTerminal);
 }
 
-export function isAgentEnvironment(): boolean {
-  if (process.env.TERM_PROGRAM === 'cursor' || process.env.__CFBundleIdentifier === 'com.google.antigravity') {
-    return true;
-  }
+/**
+ * Logic to detect agent environment based ONLY on environment variables and IDE indicators
+ */
+function isAgentEnvFromEnv(env: NodeJS.ProcessEnv): boolean {
+  return (
+    env.TERM_PROGRAM === 'cursor' ||
+    env.__CFBundleIdentifier === 'com.google.antigravity' ||
+    getActiveAgentEnvVars(env).length > 0
+  );
+}
 
-  return getActiveAgentEnvVars(process.env).length > 0;
+export function isAgentEnvironment(): boolean {
+  return isAgentEnvFromEnv(process.env);
 }
