@@ -122,8 +122,9 @@ function checkCopilotStatus(): boolean {
   }
 
   // Corroborate installation with either a running process OR being in an IDE terminal
+  const termProgram = (process.env.TERM_PROGRAM || '').toLowerCase();
   const isIdeTerminal = 
-    ['vscode', 'cursor', 'antigravity'].includes(process.env.TERM_PROGRAM || '') ||
+    ['vscode', 'cursor', 'antigravity', 'code', 'jetbrains'].includes(termProgram) ||
     process.env.__CFBundleIdentifier === 'com.google.antigravity';
   
   return copilotProcessActive || (copilotInstalled && isIdeTerminal);
@@ -140,6 +141,17 @@ function isAgentEnvFromEnv(env: NodeJS.ProcessEnv): boolean {
   );
 }
 
+/**
+ * Detects if the current environment is an AI agent or a recognized AI IDE 
+ * based ONLY on environment variables and IDE indicators.
+ * 
+ * NOTE: This function (and its helper isAgentEnvFromEnv) does NOT detect 
+ * GitHub Copilot processes or extensions. For comprehensive agent detection 
+ * that includes Copilot, use getDetectionInfo().isAgent.
+ * 
+ * Callers that require Copilot detection should be updated to use 
+ * getDetectionInfo().isAgent instead of this function.
+ */
 export function isAgentEnvironment(): boolean {
   return isAgentEnvFromEnv(process.env);
 }

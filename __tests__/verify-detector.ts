@@ -123,4 +123,22 @@ describe('Agent Detector', () => {
     expect(info.isCopilotActive).toBe(true);
     expect(info.isAgent).toBe(true);
   });
+
+  test('detects isCopilotActive in JetBrains terminal (case-insensitive)', () => {
+    process.env.TERM_PROGRAM = 'JetBrains';
+    (fs.existsSync as jest.Mock).mockReturnValue(true);
+    (fs.readdirSync as jest.Mock).mockReturnValue(['github.copilot-1.2.3']);
+    
+    const info = getDetectionInfo();
+    expect(info.isCopilotActive).toBe(true);
+  });
+
+  test('detects isCopilotActive in Code terminal', () => {
+    process.env.TERM_PROGRAM = 'Code';
+    (fs.existsSync as jest.Mock).mockReturnValue(true);
+    (fs.readdirSync as jest.Mock).mockReturnValue(['github.copilot-1.2.3']);
+    
+    const info = getDetectionInfo();
+    expect(info.isCopilotActive).toBe(true);
+  });
 });
