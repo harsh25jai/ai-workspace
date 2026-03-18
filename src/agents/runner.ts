@@ -5,6 +5,8 @@ import { ProviderFactory } from '../providers/providerFactory';
 import { validateSkill } from '../validators/skillValidator';
 import { validateArchitecture } from '../validators/architectureValidator';
 import { validateRules } from '../validators/rulesValidator';
+import { generateRules } from '../generators/ruleGenerator';
+import { generateWorkflows } from '../generators/workflowGenerator';
 
 export async function runAgents(rootDir: string): Promise<void> {
   const aiDir = path.join(rootDir, '.ai');
@@ -52,5 +54,10 @@ export async function runAgents(rootDir: string): Promise<void> {
     }
   }
 
-  console.log('Agents completed generating core markdown artifacts.');
+  // 3. Generate Rules and Workflows
+  console.log('Generating rules and workflows...');
+  await generateRules(rootDir, contextData);
+  await generateWorkflows(rootDir, contextData);
+
+  console.log('Agents completed generating core markdown artifacts, rules, and workflows.');
 }

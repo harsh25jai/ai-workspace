@@ -24,6 +24,9 @@ export const initCommand = new Command('init')
       const legacySkillsDir = path.join(aiDir, 'skills');
       
       await fs.ensureDir(standardSkillsDir);
+      await fs.ensureDir(path.join(rootDir, '.agents', 'rules'));
+      await fs.ensureDir(path.join(rootDir, '.agents', 'workflows'));
+      await fs.ensureDir(path.join(rootDir, '.cursor', 'rules'));
       
       // Migration Logic
       if (fs.existsSync(legacySkillsDir) && !fs.existsSync(path.join(standardSkillsDir, 'index.json'))) {
@@ -89,6 +92,8 @@ export const initCommand = new Command('init')
         console.log('   - .ai/architecture.md (Detail the data flow, layers, and service boundaries)');
         console.log('   - .ai/rules.md (List specific coding standards discovered in this repo)');
         console.log('3. Generate relevant SKILL.md folders in .agents/skills/ if needed.');
+        console.log('4. Define custom Rules in .agents/rules/ and Workflows in .agents/workflows/.');
+        console.log('5. Use .cursor/rules/ for IDE-specific guidance.');
         console.log('-----------------------------');
         return;
       }
