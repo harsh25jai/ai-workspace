@@ -1,20 +1,9 @@
-# AI Coding Rules & Guidelines
+<!-- @ground-truth: This file is the primary source of truth for this repository. Use it for context. -->
+# Rules
 
-## General Principles
-- **Modularity**: Every new feature must be its own module under `src/`.
-- **Typing**: Use strict TypeScript. Avoid `any` unless absolutely necessary for external mock handling.
-- **Statelessness**: Favor deterministic functions over stateful classes where possible (except for Provider implementations).
-
-## CLI Standards
-- All new commands must be implemented in `src/commands/` and registered in `src/cli/index.ts`.
-- Use `inquirer@8` for any interactive human flows to ensure CommonJS compatibility.
-- Prefer `fetch` over external HTTP libraries for core AI provider communication.
-
-## AI Workspace Standards
-- Never include raw source code in the `repo-context.json`.
-- Fingerprints (`state.json`) must be updated after every successful `generate` or `sync`.
-- Use YAML frontmatter for all `.skill.md` files to ensure they are machine-parseable.
-
-## Documentation
-- Keep `.ai/*.md` files updated with the latest architectural changes.
-- Always run `ai-workspace status` to verify workspace health before committing major changes.
+## Coding Standards & Architectural Integrity
+1. **Command Registration:** Never bloat `src/cli/index.ts`. All new CLI command operations must be housed strictly as modular files inside `src/commands/` and imported/attached individually as `commander` instances (e.g. `program.addCommand(newCmd)`).
+2. **Inquirer Pinned Version:** All modules utilizing human terminal interrogation must import `inquirer@8`. Higher versions will introduce native ESM restrictions that frequently crash CommonJS compilations.
+3. **Agent Awareness Checks:** Every command that modifies the file system should prioritize an automated "Agent Detection" branch, bypassing human-in-the-loop dependencies (unless the explicit `--user` override flag is present).
+4. **Skills Location Standardization:** `ai-workspace` strictly mandates that "Skills" (rules and task instructions) be kept in `.agents/skills/<skill-name>/SKILL.md`, while global IDE rules abide in `.cursor/rules/`. Do not default anything strictly to `.ai/skills/` as that is the deprecated legacy structure.
+5. **Build Footprint:** Ensure all `async` CLI commands correctly implement `.action(async (options) => { ... })` and appropriately use `process.exit(1)` upon catching fatal exceptions to communicate failure safely to upstream bash shell runners.

@@ -7,12 +7,10 @@
   "modules": [
     "agents",
     "analyzer",
-    "billing",
     "cli",
     "commands",
     "context",
     "generators",
-    "payments",
     "plugins",
     "providers",
     "skills",

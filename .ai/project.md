@@ -1,18 +1,15 @@
-# Project Summary: ai-workspace
+<!-- @ground-truth: This file is the primary source of truth for this repository. Use it for context. -->
+# Project Summary
 
-## Mission
-`ai-workspace` is a CLI-first developer tool designed to convert any raw software repository into a structured, AI-ready environment. It bridges the gap between static codebases and LLM-powered coding assistants by generating a machine-readable context layer that doesn't expose raw source code but provides deep architectural and domain knowledge.
+## Business Mission
+`ai-workspace` is a robust local Node.js CLI tool built to solve the "context window limitation" problem frequently encountered when giving Large Language Model (LLM) agents access to large source code repositories. 
+
+Its primary objective is to standardize an AI-ready context directory (`.ai/`) within any given repository. By analyzing the folder structure, languages, and core module dependencies locally, `ai-workspace` aggregates the footprint into hyper-optimized, machine-readable JSON and Markdown documents. This ensures AI assistants instantly grasp the architecture, dependencies, and internal rules of the host project without needlessly ingesting megabytes of unoptimized code.
 
 ## Tech Stack
-- **Language**: TypeScript
-- **Runtime**: Node.js (v18+)
-- **Core Libraries**: `commander` (CLI), `fs-extra` (Filesystem), `inquirer` (Human Interaction), `simple-git` (Version Control).
-- **Architecture**: Modular, plugin-based, and provider-agnostic.
-
-## Key Features
-- **Deterministic Static Analysis**: Maps repository structure, languages, and frameworks.
-- **Plugin System**: Framework-specific detection (React, Express, Node).
-- **AI Provider Layer**: Abstract interface for OpenAI, Anthropic, and Local models.
-- **Skill Discovery**: Automatically identifies domain-specific "skills" (rulesets).
-- **Workspace Sync**: Incremental updates based on repository changes.
-- **Agent Awareness**: specialized handoff mode for seamless AI integration.
+- **Runtime Environment:** Node.js (v18+)
+- **Language:** TypeScript
+- **CLI Management:** `commander` (for routing and processing flags), `inquirer@8` (specifically pinned to prevent CommonJS/ESM conflicts during interactive sessions)
+- **File System:** `fs-extra` for simplified directory structures and async operations.
+- **Build/Bundle System:** `tsc` combined with `@vercel/ncc` to output a unified standalone JS executable in `dist/cli/index.js` and `/releases/`.
+- **Testing:** `jest` combined with `ts-jest`.
