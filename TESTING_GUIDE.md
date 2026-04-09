@@ -31,13 +31,14 @@ node ai-workspace.js init
 ```
 *   **Prompt**: You will be asked to select a provider (OpenAI, Anthropic, or Local).
 *   **API Keys**: You can enter your keys during this step or add them to the generated `.ai/config.json` later.
+*   **Initialization**: Creates `.ai/repo-map.json`.
 
 ### Phase 2: Analyze
 Scan your code and generate the core context files.
 ```bash
 node ai-workspace.js analyze
 ```
-*   This creates `.ai/repo-map.json` and `.ai/context/repo-context.json`.
+*   This creates `.ai/context/repo-context.json`.
 
 ### Phase 3: Generate
 Build the human-readable (and AI-consumable) markdown documentation.

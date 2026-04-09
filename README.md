@@ -34,3 +34,18 @@ The core engine. It parses the current directory recursively while actively igno
 
 ### 3. `ai-workspace explain <file>`
 Translates individual source files (like `ai-workspace explain src/cli/index.ts`) into a concise, readable graph mapping its active role, dependencies, and imports.
+
+### 4. `ai-workspace generate`
+Composes readable documentation.
+
+### 5. `ai-workspace status`
+Verifies docs are in-sync.
+
+### 6. `ai-workspace sync`
+Incrementally updates workspace context.
+
+### 7. `ai-workspace regenerate`
+Forces fresh documentation build.
+
+### 8. `ai-workspace config`
+Updates LLM provider settings.

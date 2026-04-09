@@ -24,8 +24,8 @@ The source code under the `src/` directory is logically modularized:
 
 ## Core Workflows
 Users interact with the CLI through several key commands:
-1.  **`ai-workspace init`**: Initializes the `.ai/` environment and sets up provider configurations (API keys) and placeholder context files.
-2.  **`ai-workspace analyze`**: Scans the codebase to extract dependency graphs, file architecture, and produces `.ai/repo-map.json` and `.ai/context/repo-context.json`.
+1.  **`ai-workspace init`**: Initializes the `.ai/` environment, creates `.ai/repo-map.json`, and sets up provider configurations (API keys) and placeholder context files.
+2.  **`ai-workspace analyze`**: Scans the codebase to extract dependency graphs, file architecture, and produces `.ai/context/repo-context.json`.
 3.  **`ai-workspace generate`**: Utilizes the analysis data to compose readable documents: `project.md`, `architecture.md`, and `rules.md`.
 4.  **`ai-workspace status`**: Verifies if the `.ai/` documentation is in-sync with the current state of the codebase.
 5.  **`ai-workspace sync`**: Incrementally updates the workspace context after file additions or changes.
