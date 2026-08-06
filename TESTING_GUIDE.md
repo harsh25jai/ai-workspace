@@ -1,6 +1,4 @@
-# Tester Guide: ai-workspace
-
-`ai-workspace` scans your repository and generates machine-readable documentation and skills so AI agents understand your project without ingesting all source code.
+# Tester Guide: ai-workspace (BC1)
 
 ## Prerequisites
 
@@ -12,76 +10,58 @@
 
 ```bash
 npm install -g ai-workspace
-ai-workspace --version
+ai-workspace --version   # expect 0.1.0-beta.1
 ```
 
 ### Option B: Bundle
 
-Download `releases/ai-workspace.js` and run:
-
 ```bash
-node ai-workspace.js --version
+node releases/ai-workspace.js --version
 ```
 
 ## Workflow
 
-### Phase 1: Initialize
-
 ```bash
 ai-workspace init
-```
-
-- Creates `.ai/` directory and `config.json`
-- Prompts for AI provider (interactive) or uses defaults (non-interactive/CI)
-- Runs repository analysis by default
-
-### Phase 2: Analyze
-
-```bash
-ai-workspace analyze
-```
-
-Creates `.ai/context/repo-context.json`.
-
-### Phase 3: Generate
-
-**Template mode (no API key):**
-
-```bash
+ai-workspace analyze      # if init did not analyze (non-interactive mode)
 ai-workspace generate
+ai-workspace export
+ai-workspace status
 ```
 
-Produces `project.md`, `architecture.md`, `rules.md` from repository context.
+### Init behavior
 
-**LLM-enhanced mode:**
+- **Interactive terminal:** prompts for provider; runs analyze by default (can decline)
+- **Non-interactive (CI):** uses defaults; run `analyze` explicitly
+- **AI agent detected:** automatic analyze + handoff instructions
+
+### LLM mode (optional)
 
 ```bash
-# Configure API key in .env or .ai/config.json first
+export OPENAI_API_KEY=sk-...
 ai-workspace generate --ai
 ```
 
-### Phase 4: Export
+## Automated test suite
 
 ```bash
-ai-workspace export
+npm test          # build + 67 Jest tests
+npm run smoke     # scripts/smoke-test.sh
 ```
 
-Creates `.cursorrules` from `.ai/rules.md`.
+See `planning/TEST_STRATEGY.md` for coverage priorities and `planning/TEST_BACKLOG.md` for remaining gaps.
 
-## Other Commands
+## What to validate
 
-| Command | Description |
-|---|---|
-| `ai-workspace explain <file>` | Explain a file's role and matched skills |
-| `ai-workspace status` | Check workspace health |
-| `ai-workspace sync` | Incremental update after code changes |
-| `ai-workspace regenerate` | Force full rebuild (`--ai` for LLM mode) |
-| `ai-workspace config` | Update provider settings |
+1. All commands exit 0 on a repo with `src/` directory
+2. `.ai/project.md` contains real content (not stub text)
+3. `.cursorrules` created after export
+4. `explain src/<file>` works for a source file
 
-## Configuration
+## Known beta limitations
 
-See `.env.example` for environment variables, or edit `.ai/config.json` directly.
+See [docs/LIMITATIONS.md](docs/LIMITATIONS.md).
 
 ## Feedback
 
-Report crashes, incorrect framework detection, or documentation issues to the project lead.
+Report issues with: repo type, commands run, `ai-workspace status` output, and error messages.
