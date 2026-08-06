@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "fixtures": [
+    {
+      "id": "node-cli",
+      "name": "Node.js CLI",
+      "stack": "Node CLI, JavaScript",
+      "verdict": "PASS",
+      "explainFile": "src/cli/index.ts",
+      "expectedFrameworks": [],
+      "expectedModules": ["cli"],
+      "expectedPatterns": [],
+      "workflows": ["full", "sync", "regenerate"]
+    },
+    {
+      "id": "express-api",
+      "name": "Express API",
+      "stack": "Express, TypeScript",
+      "verdict": "PASS",
+      "explainFile": "src/controllers/index.ts",
+      "expectedFrameworks": ["express"],
+      "expectedModules": ["controllers", "services"],
+      "expectedPatterns": ["controller-service"],
+      "workflows": ["full", "sync", "regenerate"]
+    },
+    {
+      "id": "react-vite",
+      "name": "React + Vite",
+      "stack": "React, TypeScript",
+      "verdict": "PASS",
+      "explainFile": "src/components/App.tsx",
+      "expectedFrameworks": ["react"],
+      "expectedModules": ["components"],
+      "expectedPatterns": ["component-based-ui"],
+      "workflows": ["full", "sync", "regenerate"]
+    },
+    {
+      "id": "nextjs",
+      "name": "Next.js App Router",
+      "stack": "Next.js",
+      "verdict": "PARTIAL",
+      "explainFile": "app/page.tsx",
+      "expectedFrameworks": ["next"],
+      "expectedModules": [],
+      "expectedPatterns": [],
+      "workflows": ["full"],
+      "notes": "No top-level src/; beta limitation"
+    },
+    {
+      "id": "nestjs",
+      "name": "NestJS Starter",
+      "stack": "NestJS, TypeScript",
+      "verdict": "PASS",
+      "explainFile": "src/app/app.module.ts",
+      "expectedFrameworks": ["nestjs"],
+      "expectedModules": ["app"],
+      "expectedPatterns": [],
+      "workflows": ["full", "sync", "regenerate"]
+    },
+    {
+      "id": "python",
+      "name": "Python Project",
+      "stack": "Python",
+      "verdict": "PARTIAL",
+      "explainFile": "src/main.py",
+      "expectedFrameworks": [],
+      "expectedModules": ["utils"],
+      "expectedPatterns": [],
+      "workflows": ["full"],
+      "notes": "Shallow Python detection"
+    },
+    {
+      "id": "minimal",
+      "name": "Minimal Repository",
+      "stack": "Empty src/",
+      "verdict": "PARTIAL",
+      "explainFile": null,
+      "expectedFrameworks": [],
+      "expectedModules": [],
+      "expectedPatterns": [],
+      "workflows": ["full"],
+      "notes": "Edge case; no crash expected"
+    },
+    {
+      "id": "monorepo",
+      "name": "Monorepo (workspaces)",
+      "stack": "npm workspaces",
+      "verdict": "PARTIAL",
+      "explainFile": "packages/api/src/index.ts",
+      "expectedFrameworks": [],
+      "expectedModules": [],
+      "expectedPatterns": [],
+      "workflows": ["full"],
+      "notes": "Top-level src/ only; packages/ not scanned"
+    },
+    {
+      "id": "unsupported",
+      "name": "Unsupported (Go)",
+      "stack": "Go module",
+      "verdict": "PARTIAL",
+      "explainFile": null,
+      "expectedFrameworks": [],
+      "expectedModules": [],
+      "expectedPatterns": [],
+      "workflows": ["full"],
+      "notes": "No package.json frameworks; should not crash"
+    }
+  ]
+}

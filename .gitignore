@@ -3,6 +3,11 @@
 
 # Test temp directories
 __tests__/.tmp-*
+__tests__/integration/.tmp-*
+
+# E2E temp workspaces and reports (regenerated in CI)
+e2e/.workspaces/
+e2e/reports/
 
 # Generated during fixture validation runs
 __tests__/fixtures/**/.ai

@@ -45,11 +45,13 @@ ai-workspace generate --ai
 ## Automated test suite
 
 ```bash
-npm test          # build + 67 Jest tests
+npm test          # Jest unit + integration (67 tests)
+npm run test:e2e  # Bundle E2E release validation (9 fixtures)
+npm run test:all  # Both suites
 npm run smoke     # scripts/smoke-test.sh
 ```
 
-See `planning/TEST_STRATEGY.md` for coverage priorities and `planning/TEST_BACKLOG.md` for remaining gaps.
+See `planning/TEST_STRATEGY.md`, `planning/E2E_ARCHITECTURE.md`, and `docs/E2E_TESTING.md`.
 
 ## What to validate
 

@@ -38,6 +38,9 @@ Ongoing confidence tracker for ai-workspace beta releases.
 Re-run on each release candidate:
 
 ```bash
+npm run test:e2e              # bundle E2E matrix (offline, CI gate)
+bash scripts/smoke-test.sh    # quick local smoke (dist CLI)
 bash scripts/validate-real-repos.sh   # requires network for OSS clones
-bash scripts/smoke-test.sh          # fixture smoke (offline)
 ```
+
+E2E reports auto-update `e2e/reports/latest/compatibility-matrix.json` on each run.

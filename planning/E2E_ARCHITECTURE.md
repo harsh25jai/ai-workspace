@@ -1,0 +1,145 @@
+# E2E Testing Architecture
+
+**Purpose:** Release Validation Pipeline — validate the bundled CLI exactly as developers use it.
+
+---
+
+## Testing Pyramid
+
+```
+┌─────────────────────────────────────┐
+│     Release Validation (E2E)        │  ← bundle CLI, full workflows, matrix
+├─────────────────────────────────────┤
+│     CLI Workflow Tests (Jest)       │  ← dist/cli subprocess, temp workspaces
+├─────────────────────────────────────┤
+│     Integration Tests (Jest)        │  ← multi-command flows, error paths
+├─────────────────────────────────────┤
+│     Unit Tests (Jest)               │  ← analyzer, validators, providers
+└─────────────────────────────────────┘
+```
+
+| Layer | Location | Executes | Responsibility |
+|-------|----------|----------|----------------|
+| **Unit** | `__tests__/unit/` | Source modules | Fast logic validation (scanner, templates, diff) |
+| **Integration** | `__tests__/integration/` | `dist/cli/index.js` | Command contracts, error handling, security |
+| **CLI Workflow** | `__tests__/integration/workflow.*` | `dist/cli/index.js` | Single-repo happy paths during development |
+| **Bundle E2E** | `e2e/` | `releases/ai-workspace.js` | **Release artifact** validation across repo matrix |
+| **Release Validation** | GitHub Actions `bundle-e2e` job | Bundle + E2E | Gate every PR and release branch push |
+
+### Non-overlapping responsibilities
+
+- **Jest tests** validate development builds quickly during iteration.
+- **E2E tests** validate the **shipped bundle** — the artifact users download.
+- **Smoke script** (`scripts/smoke-test.sh`) remains a lightweight local shortcut; E2E supersedes it in CI.
+
+---
+
+## E2E Execution Flow
+
+```
+npm run bundle
+       ↓
+releases/ai-workspace.js
+       ↓
+For each fixture in manifest.json:
+  Copy fixture → temp workspace
+       ↓
+  init → analyze → generate → status → export → explain
+       ↓
+  [optional] sync, regenerate
+       ↓
+  Validate artifacts + detection
+       ↓
+  Write per-fixture + matrix reports
+```
+
+---
+
+## Repository Fixture Matrix
+
+Fixtures live in `e2e/fixtures/` (source-only, no committed `.ai/` artifacts).
+
+| ID | Type | Expected Verdict | Workflows |
+|----|------|------------------|-----------|
+| node-cli | Node.js CLI | PASS | full, sync, regenerate |
+| express-api | Express API | PASS | full, sync, regenerate |
+| react-vite | React + Vite | PASS | full, sync, regenerate |
+| nextjs | Next.js (app/) | PARTIAL | full |
+| nestjs | NestJS | PASS | full, sync, regenerate |
+| python | Python | PARTIAL | full |
+| minimal | Empty src/ | PARTIAL | full |
+| monorepo | npm workspaces | PARTIAL | full |
+| unsupported | Go only | PARTIAL | full |
+
+Manifest: `e2e/fixtures/manifest.json`
+
+### Adding a new fixture
+
+1. Create `e2e/fixtures/<id>/` with minimal source files.
+2. Add entry to `manifest.json` with expected detection and verdict.
+3. Run `npm run test:e2e -- --only=<id>` to validate locally.
+
+---
+
+## Validation Framework
+
+`e2e/lib/validators.ts` provides reusable checks:
+
+| Validator | Checks |
+|-----------|--------|
+| `validateConfig` | No persisted API keys, provider field |
+| `validateRepoContext` | JSON schema (languages, frameworks, modules, patterns) |
+| `validateRepoMap` | JSON structure |
+| `validateMarkdownDoc` | Exists, non-empty, ground-truth marker, no stubs, required sections |
+| `validateExport` | `.cursorrules` header and content |
+| `validateState` | `state.json` hash format |
+| `validateDetection` | Expected frameworks/modules/patterns (warnings for PARTIAL) |
+
+Behaviour is validated, not exact document text.
+
+---
+
+## Reporting
+
+After each run, reports are written to `e2e/reports/latest/`:
+
+| File | Contents |
+|------|----------|
+| `e2e-report.json` | Full structured report |
+| `summary.json` | Pass/fail counts, duration |
+| `compatibility-matrix.json` | Per-repo matrix for release tracking |
+| `SUMMARY.md` | Human-readable GitHub Actions log summary |
+| `<fixture-id>.json` | Per-repository detail |
+
+CI uploads `e2e/reports/latest/` as artifact `e2e-reports`.
+
+---
+
+## GitHub Actions
+
+| Workflow | File | Purpose |
+|----------|------|---------|
+| **Test** | `.github/workflows/test.yml` | Jest unit + integration (Node 18 & 20), bundle freshness |
+| **E2E Test** | `.github/workflows/e2e-test.yml` | Bundle E2E release validation |
+
+Both run on every PR and push to release branches. E2E is a separate workflow job (parallel to Test, not nested inside it).
+
+---
+
+## Local Execution
+
+```bash
+# Full E2E (builds bundle first)
+npm run test:e2e
+
+# Single fixture
+npm run test:e2e -- --only=express-api
+
+# Keep temp workspaces for debugging
+npm run test:e2e -- --only=node-cli --keep-workspaces
+
+# Full suite: unit + E2E
+npm run test:all
+```
+
+See also: [docs/E2E_TESTING.md](../docs/E2E_TESTING.md)
