@@ -1,6 +1,9 @@
 # OS
 .DS_Store
 
+# Test temp directories
+__tests__/.tmp-*
+
 # Logs
 logs
 *.log

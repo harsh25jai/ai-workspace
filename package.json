@@ -1,8 +1,12 @@
 {
   "name": "ai-workspace",
-  "version": "1.0.0",
+  "version": "0.1.0-beta.1",
   "description": "Tool to help generate AI/LLM prompts and instructions to make any repo AI-native ready.",
   "main": "dist/cli/index.js",
+  "files": [
+    "dist",
+    "bin"
+  ],
   "bin": {
     "ai-workspace": "./bin/ai-workspace"
   },
@@ -10,8 +14,8 @@
     "build": "rimraf dist && tsc",
     "dev": "ts-node src/cli/index.ts",
     "start": "node dist/cli/index.js",
-    "test": "jest",
-    "bundle": "npm run build && ncc build dist/cli/index.js -o releases -m"
+    "test": "npm run build && jest",
+    "bundle": "npm run build && ncc build dist/cli/index.js -o releases -m && cp releases/index.js releases/ai-workspace.js"
   },
   "keywords": [],
   "author": "",

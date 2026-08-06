@@ -1,0 +1,9 @@
+---
+description: TypeScript Coding Standards
+globs: **/*.ts, **/*.tsx
+---
+# TypeScript Coding Standards
+- Use strict typing.
+- Prefer interfaces over types for public APIs.
+- Use ES6+ features (arrow functions, spread, etc.).
+- Ensure all functions have return types.

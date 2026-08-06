@@ -3,11 +3,14 @@ import path from 'path';
 import { SkillMetadata } from './detector';
 
 export async function loadSkillsIndex(rootDir: string): Promise<SkillMetadata[]> {
-  const indexPath = path.join(rootDir, '.ai', 'skills', 'index.json');
+  const standardIndex = path.join(rootDir, '.agents', 'skills', 'index.json');
+  const legacyIndex = path.join(rootDir, '.ai', 'skills', 'index.json');
+
+  const indexPath = fs.existsSync(standardIndex) ? standardIndex : legacyIndex;
   if (!fs.existsSync(indexPath)) {
     return [];
   }
-  
+
   try {
     const data = await fs.readJSON(indexPath);
     return data.skills || [];

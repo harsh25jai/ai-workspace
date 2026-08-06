@@ -2,14 +2,23 @@
 # Project Summary
 
 ## Business Mission
-`ai-workspace` is a robust local Node.js CLI tool built to solve the "context window limitation" problem frequently encountered when giving Large Language Model (LLM) agents access to large source code repositories. 
+`ai-workspace` is a local Node.js CLI tool that solves the "context window limitation" problem when giving LLM agents access to large source code repositories.
 
-Its primary objective is to standardize an AI-ready context directory (`.ai/`) within any given repository. By analyzing the folder structure, languages, and core module dependencies locally, `ai-workspace` aggregates the footprint into hyper-optimized, machine-readable JSON and Markdown documents. This ensures AI assistants instantly grasp the architecture, dependencies, and internal rules of the host project without needlessly ingesting megabytes of unoptimized code.
+Its primary objective is to standardize an AI-ready context directory (`.ai/`) within any repository. By analyzing folder structure, languages, and module dependencies locally, it aggregates the footprint into machine-readable JSON and Markdown documents.
 
 ## Tech Stack
-- **Runtime Environment:** Node.js (v18+)
+- **Runtime:** Node.js (v18+)
 - **Language:** TypeScript
-- **CLI Management:** `commander` (for routing and processing flags), `inquirer@8` (specifically pinned to prevent CommonJS/ESM conflicts during interactive sessions)
-- **File System:** `fs-extra` for simplified directory structures and async operations.
-- **Build/Bundle System:** `tsc` combined with `@vercel/ncc` to output a unified standalone JS executable in `dist/cli/index.js` and `/releases/`.
-- **Testing:** `jest` combined with `ts-jest`.
+- **CLI:** `commander`, `inquirer@8`
+- **File System:** `fs-extra`
+- **Build:** `tsc` + `@vercel/ncc` for bundled releases
+- **Testing:** Jest + ts-jest
+
+## Commands
+- `init` — Bootstrap `.ai/` workspace
+- `analyze` — Scan repo, produce `repo-context.json`
+- `generate` — Template-based docs (default)
+- `generate --ai` — LLM-enhanced docs
+- `explain <file>` — File-level context for agents
+- `sync` — Incremental workspace updates
+- `export` — Export rules to `.cursorrules`

@@ -6,12 +6,19 @@ export async function generateRules(rootDir: string, context: ScannerResult): Pr
   const cursorRulesDir = path.join(rootDir, '.cursor', 'rules');
   const agentRulesDir = path.join(rootDir, '.agents', 'rules');
 
-  await fs.ensureDir(cursorRulesDir);
   await fs.ensureDir(agentRulesDir);
 
-  // 1. Generate Cursor Rules (.mdc)
-  if (context.languages.includes('typescript')) {
-    const tsRule = `---
+  let cursorRulesAvailable = false;
+  try {
+    await fs.ensureDir(cursorRulesDir);
+    cursorRulesAvailable = true;
+  } catch {
+    console.warn('Could not create .cursor/rules directory (optional).');
+  }
+
+  if (cursorRulesAvailable) {
+    if (context.languages.includes('typescript')) {
+      const tsRule = `---
 description: TypeScript Coding Standards
 globs: **/*.ts, **/*.tsx
 ---
@@ -21,11 +28,11 @@ globs: **/*.ts, **/*.tsx
 - Use ES6+ features (arrow functions, spread, etc.).
 - Ensure all functions have return types.
 `;
-    await fs.writeFile(path.join(cursorRulesDir, 'typescript-standards.mdc'), tsRule);
-  }
+      await fs.writeFile(path.join(cursorRulesDir, 'typescript-standards.mdc'), tsRule);
+    }
 
-  if (context.frameworks.includes('react')) {
-    const reactRule = `---
+    if (context.frameworks.includes('react')) {
+      const reactRule = `---
 description: React Best Practices
 globs: **/*.tsx, **/*.jsx
 ---
@@ -35,11 +42,11 @@ globs: **/*.tsx, **/*.jsx
 - Use proper prop-types or TS interfaces for components.
 - Keep components small and specialized.
 `;
-    await fs.writeFile(path.join(cursorRulesDir, 'react-best-practices.mdc'), reactRule);
-  }
+      await fs.writeFile(path.join(cursorRulesDir, 'react-best-practices.mdc'), reactRule);
+    }
 
-  if (context.frameworks.includes('express')) {
-    const expressRule = `---
+    if (context.frameworks.includes('express')) {
+      const expressRule = `---
 description: Express.js API Standards
 globs: src/controllers/**/*.ts, src/routes/**/*.ts
 ---
@@ -49,10 +56,10 @@ globs: src/controllers/**/*.ts, src/routes/**/*.ts
 - Validate request bodies using Zod or Joi.
 - Keep routes clean; move logic to services.
 `;
-    await fs.writeFile(path.join(cursorRulesDir, 'express-api-standards.mdc'), expressRule);
+      await fs.writeFile(path.join(cursorRulesDir, 'express-api-standards.mdc'), expressRule);
+    }
   }
 
-  // 2. Generate Antigravity Rules (.md)
   const agentRules = `# Repository Rules
 This repository follows specific patterns and standards detected by ai-workspace.
 
@@ -67,7 +74,6 @@ This repository follows specific patterns and standards detected by ai-workspace
 `;
   await fs.writeFile(path.join(agentRulesDir, 'repo-rules.md'), agentRules);
 
-  // 3. Fallback/Legacy .cursorrules
   const legacyCursorRules = `# Cursor Rules
 ${context.languages.includes('typescript') ? '- Follow TypeScript strict mode.' : '- Use modern JavaScript.'}
 ${context.frameworks.includes('react') ? '- Use React functional components.' : ''}

@@ -1,15 +1,15 @@
-import { AIProvider } from './provider';
+import { AIProvider, ProviderConfig } from './provider';
 import { OpenAIProvider } from './openai';
 import { AnthropicProvider } from './anthropic';
 import { LocalProvider } from './local';
 
 export class ProviderFactory {
-  static create(providerName: string): AIProvider {
+  static create(providerName: string, config?: ProviderConfig): AIProvider {
     switch (providerName.toLowerCase()) {
       case 'openai':
-        return new OpenAIProvider();
+        return new OpenAIProvider(config);
       case 'anthropic':
-        return new AnthropicProvider();
+        return new AnthropicProvider(config);
       case 'local':
         return new LocalProvider();
       default:
