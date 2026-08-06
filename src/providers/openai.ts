@@ -1,17 +1,17 @@
-import { AIProvider } from './provider';
+import { AIProvider, ProviderConfig } from './provider';
 
 export class OpenAIProvider implements AIProvider {
   private apiKey: string;
   private model: string;
 
-  constructor() {
-    this.apiKey = process.env.OPENAI_API_KEY || '';
-    this.model = process.env.OPENAI_MODEL || 'gpt-4';
+  constructor(config?: ProviderConfig) {
+    this.apiKey = process.env.OPENAI_API_KEY || config?.openaiKey || '';
+    this.model = process.env.OPENAI_MODEL || config?.model || 'gpt-4';
   }
 
   async generate(prompt: string): Promise<string> {
     if (!this.apiKey) {
-      throw new Error('OpenAI API key missing. Set OPENAI_API_KEY env var.');
+      throw new Error('OpenAI API key missing. Set OPENAI_API_KEY env var or openaiKey in .ai/config.json.');
     }
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -27,11 +27,11 @@ export class OpenAIProvider implements AIProvider {
     });
 
     if (!response.ok) {
-      const error = await response.json();
+      const error = await response.json() as { error?: { message?: string } };
       throw new Error(`OpenAI API error: ${error.error?.message || response.statusText}`);
     }
 
-    const data: any = await response.json();
-    return data.choices[0]?.message?.content || '';
+    const data = await response.json() as { choices?: Array<{ message?: { content?: string } }> };
+    return data.choices?.[0]?.message?.content || '';
   }
 }

@@ -1,17 +1,17 @@
-import { AIProvider } from './provider';
+import { AIProvider, ProviderConfig } from './provider';
 
 export class AnthropicProvider implements AIProvider {
   private apiKey: string;
   private model: string;
 
-  constructor() {
-    this.apiKey = process.env.ANTHROPIC_API_KEY || '';
-    this.model = process.env.ANTHROPIC_MODEL || 'claude-3-opus-20240229';
+  constructor(config?: ProviderConfig) {
+    this.apiKey = process.env.ANTHROPIC_API_KEY || config?.anthropicKey || '';
+    this.model = process.env.ANTHROPIC_MODEL || config?.model || 'claude-3-opus-20240229';
   }
 
   async generate(prompt: string): Promise<string> {
     if (!this.apiKey) {
-      throw new Error('Anthropic API key missing. Set ANTHROPIC_API_KEY env var.');
+      throw new Error('Anthropic API key missing. Set ANTHROPIC_API_KEY env var or anthropicKey in .ai/config.json.');
     }
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -29,11 +29,11 @@ export class AnthropicProvider implements AIProvider {
     });
 
     if (!response.ok) {
-      const error = await response.json();
+      const error = await response.json() as { error?: { message?: string } };
       throw new Error(`Anthropic API error: ${error.error?.message || response.statusText}`);
     }
 
-    const data: any = await response.json();
-    return data.content[0]?.text || '';
+    const data = await response.json() as { content?: Array<{ text?: string }> };
+    return data.content?.[0]?.text || '';
   }
 }

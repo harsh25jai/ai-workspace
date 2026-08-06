@@ -6,6 +6,63 @@ import { isAgentEnvironment } from '../utils/agentDetector';
 import { scanRepository } from '../analyzer/repoScanner';
 import { generateRepoMap } from '../generators/repoMapGenerator';
 import { generateRepoContext } from '../generators/repoContextGenerator';
+import { writeDefaultConfig, writePlaceholderDocs } from '../workspace/initHelpers';
+
+async function runAnalysis(rootDir: string): Promise<void> {
+  const scannerResult = await scanRepository(rootDir);
+  await generateRepoMap(rootDir, scannerResult);
+  await generateRepoContext(rootDir, scannerResult);
+}
+
+async function runHumanInit(aiDir: string, rootDir: string): Promise<void> {
+  const isInteractive = process.stdin.isTTY === true;
+
+  let provider = 'local';
+  let apiKey = '';
+  let runAnalyze = true;
+
+  if (isInteractive) {
+    const answers = await inquirer.prompt<{
+      provider: string;
+      apiKey?: string;
+      runAnalyze: boolean;
+    }>([
+      {
+        type: 'list',
+        name: 'provider',
+        message: 'Select an AI provider:',
+        choices: ['openai', 'anthropic', 'local'],
+        default: 'local',
+      },
+      {
+        type: 'input',
+        name: 'apiKey',
+        message: 'Enter your API key (leave empty to use env vars later):',
+        when: (activeAnswers: { provider: string }) => activeAnswers.provider !== 'local',
+      },
+      {
+        type: 'confirm',
+        name: 'runAnalyze',
+        message: 'Would you like to analyze the repository right now?',
+        default: true,
+      },
+    ]);
+    provider = answers.provider;
+    apiKey = answers.apiKey || '';
+    runAnalyze = answers.runAnalyze;
+  }
+
+  await writeDefaultConfig(aiDir, { provider, apiKey });
+  await writePlaceholderDocs(aiDir);
+
+  console.log('ai-workspace successfully initialized in .ai/');
+
+  if (runAnalyze) {
+    console.log('\nRunning repository analysis...\n');
+    await runAnalysis(rootDir);
+    console.log('Analysis complete. You can now run "ai-workspace generate" to build documentation.');
+  }
+}
 
 export const initCommand = new Command('init')
   .description('Initialize AI workspace by creating the .ai directory and base structure')
@@ -26,9 +83,12 @@ export const initCommand = new Command('init')
       await fs.ensureDir(standardSkillsDir);
       await fs.ensureDir(path.join(rootDir, '.agents', 'rules'));
       await fs.ensureDir(path.join(rootDir, '.agents', 'workflows'));
-      await fs.ensureDir(path.join(rootDir, '.cursor', 'rules'));
+      try {
+        await fs.ensureDir(path.join(rootDir, '.cursor', 'rules'));
+      } catch {
+        console.warn('Could not create .cursor/rules directory (optional).');
+      }
 
-      // Migration Logic
       if (fs.existsSync(legacySkillsDir) && !fs.existsSync(path.join(standardSkillsDir, 'index.json'))) {
         console.log('Migrating legacy skills from .ai/skills to .agents/skills...');
         const legacyIndex = path.join(legacySkillsDir, 'index.json');
@@ -48,7 +108,6 @@ export const initCommand = new Command('init')
         }
       }
 
-      // Ensure index.json exists in standard location
       const skillsIndexPath = path.join(standardSkillsDir, 'index.json');
       if (!fs.existsSync(skillsIndexPath)) {
         await fs.writeJSON(skillsIndexPath, { skills: [] }, { spaces: 2 });
@@ -57,24 +116,22 @@ export const initCommand = new Command('init')
       const agentMode = !options.user && isAgentEnvironment();
       console.log(`[Mode: ${agentMode ? 'AI Agent' : 'User'}]`);
 
-      // First check for Agent
       if (agentMode) {
         console.log('\n[Agent Detected] Running automatic analysis and handoff...\n');
 
-        const scannerResult = await scanRepository(rootDir);
-        await generateRepoMap(rootDir, scannerResult);
-        await generateRepoContext(rootDir, scannerResult);
+        await writeDefaultConfig(aiDir, { provider: 'local' });
+        await runAnalysis(rootDir);
+        await writePlaceholderDocs(aiDir);
 
-        // Place empty files for the agent to fill
-        const files = [
+        const agentPlaceholders = [
           { path: 'project.md', content: '# Project Summary\n\n[TO BE COMPLETED BY AGENT]\n' },
           { path: 'architecture.md', content: '# Architecture\n\n[TO BE COMPLETED BY AGENT]\n' },
-          { path: 'rules.md', content: '# Rules\n\n[TO BE COMPLETED BY AGENT]\n' }
+          { path: 'rules.md', content: '# Rules\n\n[TO BE COMPLETED BY AGENT]\n' },
         ];
 
-        for (const file of files) {
+        for (const file of agentPlaceholders) {
           const fullPath = path.join(aiDir, file.path);
-          if (!fs.existsSync(fullPath)) {
+          if (!fs.existsSync(fullPath) || (await fs.readFile(fullPath, 'utf8')).includes('Run "ai-workspace generate"')) {
             await fs.writeFile(fullPath, file.content);
           }
         }
@@ -98,69 +155,7 @@ export const initCommand = new Command('init')
         return;
       }
 
-      // Human Interactive Flow
-      console.log('Could not detect AI Assistant\n\n');
-      console.log('To seamlessly initialize your workspace, please copy and paste the following prompt into your AI assistant:\n');
-      console.log('\x1b[36m%s\x1b[0m', '  "Please run the following command to initialize our AI workspace:');
-      console.log('\x1b[36m%s\x1b[0m', '  node ai-workspace init"\n');
-
-      /*
-      const answers = await inquirer.prompt([
-        {
-          type: 'list',
-          name: 'provider',
-          message: 'Select an AI provider:',
-          choices: ['openai', 'anthropic', 'local']
-        },
-        {
-          type: 'input',
-          name: 'apiKey',
-          message: 'Enter your API key (leave empty to use env vars later):',
-          when: (activeAnswers) => activeAnswers.provider !== 'local'
-        },
-        {
-          type: 'confirm',
-          name: 'runAnalyze',
-          message: 'Would you like to analyze the repository right now?',
-          default: true
-        }
-      ]);
-
-      // Config
-      const configPath = path.join(aiDir, 'config.json');
-      await fs.writeJSON(configPath, {
-        provider: answers.provider,
-        model: answers.provider === 'openai' ? 'gpt-4' : (answers.provider === 'anthropic' ? 'claude-3-opus-20240229' : 'local'),
-        openaiKey: answers.provider === 'openai' ? answers.apiKey : '',
-        anthropicKey: answers.provider === 'anthropic' ? answers.apiKey : ''
-      }, { spaces: 2 });
-
-      // Default files
-      const aiHint = '<!-- @ground-truth: This file is the primary source of truth for this repository. Use it for context. -->\n';
-      const placeholders = [
-        { path: 'project.md', content: aiHint + '# Project Summary\n\nRun "ai-workspace generate" to populate this.\n' },
-        { path: 'architecture.md', content: aiHint + '# Architecture\n\nRun "ai-workspace generate" to populate this.\n' },
-        { path: 'rules.md', content: aiHint + '# Rules\n\nRun "ai-workspace generate" to populate this.\n' }
-      ];
-
-      for (const p of placeholders) {
-        const fullPath = path.join(aiDir, p.path);
-        if (!fs.existsSync(fullPath)) {
-          await fs.writeFile(fullPath, p.content);
-        }
-      }
-
-      console.log('ai-workspace successfully initialized in .ai/');
-
-      if (answers.runAnalyze) {
-        console.log('\nRunning repository analysis...\n');
-        const scannerResult = await scanRepository(rootDir);
-        await generateRepoMap(rootDir, scannerResult);
-        await generateRepoContext(rootDir, scannerResult);
-        console.log('Analysis complete. You can now run "ai-workspace generate" to build documentation.');
-      }
-      */
-
+      await runHumanInit(aiDir, rootDir);
     } catch (error) {
       console.error('Error initializing ai-workspace:', error);
       process.exit(1);

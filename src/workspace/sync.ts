@@ -2,10 +2,17 @@ import fs from 'fs-extra';
 import path from 'path';
 import { scanRepository } from '../analyzer/repoScanner';
 import { generateRepoContext } from '../generators/repoContextGenerator';
+import { generateRepoMap } from '../generators/repoMapGenerator';
 import { diffContexts } from '../context/diff';
 import { generateActionsFromDiff } from './changeDetector';
-import { generateSkills } from '../generators/skillGenerator';
+import { generateSkillsPipeline } from '../skills/generator';
 import { generateHash, saveState } from './state';
+
+async function runFullAnalyze(rootDir: string): Promise<void> {
+  const scannerResult = await scanRepository(rootDir);
+  await generateRepoMap(rootDir, scannerResult);
+  await generateRepoContext(rootDir, scannerResult);
+}
 
 export async function syncWorkspace(rootDir: string): Promise<void> {
   const aiDir = path.join(rootDir, '.ai');
@@ -16,9 +23,10 @@ export async function syncWorkspace(rootDir: string): Promise<void> {
   }
 
   if (!fs.existsSync(contextPath)) {
-    console.log('Previous context not found. Reverting to full analyze...');
-    // In a real scenario, we might call analyzeCommand directly or reuse logic
-    return; 
+    console.log('Previous context not found. Running full analyze...');
+    await runFullAnalyze(rootDir);
+    console.log('Analysis complete. Run "ai-workspace generate" to build documentation.');
+    return;
   }
 
   console.log('Running repository scan...');
@@ -39,22 +47,22 @@ export async function syncWorkspace(rootDir: string): Promise<void> {
   for (const action of actions) {
     if (action.type === 'generateSkill') {
       console.log(`- Generating skill: ${action.module}`);
-      // Reuse skill generator logic
-      // Note: This logic currently simulates skill generation. 
-      // In a real integration, we'd pass the specific module to a scoped generator.
+      await generateSkillsPipeline(rootDir);
     } else if (action.type === 'removeSkill') {
       console.log(`- Removing skill: ${action.module}`);
-      const skillFile = path.join(aiDir, 'skills', `${action.module}.skill.md`);
-      if (fs.existsSync(skillFile)) {
-        await fs.remove(skillFile);
+      const legacySkillFile = path.join(aiDir, 'skills', `${action.module}.skill.md`);
+      const agentsSkillDir = path.join(rootDir, '.agents', 'skills', action.module.toLowerCase().replace(/\s+/g, '-'));
+      if (fs.existsSync(legacySkillFile)) {
+        await fs.remove(legacySkillFile);
+      }
+      if (fs.existsSync(agentsSkillDir)) {
+        await fs.remove(agentsSkillDir);
       }
     }
   }
 
-  // Update repo-context.json
   await generateRepoContext(rootDir, newScannerResult);
 
-  // Update state.json
   const updatedContextContent = await fs.readFile(contextPath, 'utf8');
   const newHash = generateHash(updatedContextContent);
   await saveState(rootDir, newHash);
