@@ -18,13 +18,11 @@ async function runHumanInit(aiDir: string, rootDir: string): Promise<void> {
   const isInteractive = process.stdin.isTTY === true;
 
   let provider = 'local';
-  let apiKey = '';
   let runAnalyze = true;
 
   if (isInteractive) {
     const answers = await inquirer.prompt<{
       provider: string;
-      apiKey?: string;
       runAnalyze: boolean;
     }>([
       {
@@ -35,12 +33,6 @@ async function runHumanInit(aiDir: string, rootDir: string): Promise<void> {
         default: 'local',
       },
       {
-        type: 'input',
-        name: 'apiKey',
-        message: 'Enter your API key (leave empty to use env vars later):',
-        when: (activeAnswers: { provider: string }) => activeAnswers.provider !== 'local',
-      },
-      {
         type: 'confirm',
         name: 'runAnalyze',
         message: 'Would you like to analyze the repository right now?',
@@ -48,14 +40,16 @@ async function runHumanInit(aiDir: string, rootDir: string): Promise<void> {
       },
     ]);
     provider = answers.provider;
-    apiKey = answers.apiKey || '';
     runAnalyze = answers.runAnalyze;
   }
 
-  await writeDefaultConfig(aiDir, { provider, apiKey });
+  await writeDefaultConfig(aiDir, { provider });
   await writePlaceholderDocs(aiDir);
 
   console.log('ai-workspace successfully initialized in .ai/');
+  if (provider !== 'local') {
+    console.log('Set OPENAI_API_KEY or ANTHROPIC_API_KEY in your environment for generate --ai.');
+  }
 
   if (runAnalyze) {
     console.log('\nRunning repository analysis...\n');

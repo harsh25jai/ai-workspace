@@ -3,22 +3,19 @@ import path from 'path';
 
 export interface InitConfigOptions {
   provider?: string;
-  apiKey?: string;
   runAnalyze?: boolean;
 }
 
 export async function writeDefaultConfig(
   aiDir: string,
-  options: { provider: string; apiKey?: string }
+  options: { provider: string }
 ): Promise<void> {
   const configPath = path.join(aiDir, 'config.json');
-  const { provider, apiKey = '' } = options;
+  const { provider } = options;
 
   await fs.writeJSON(configPath, {
     provider,
-    model: provider === 'openai' ? 'gpt-4' : provider === 'anthropic' ? 'claude-3-opus-20240229' : 'local',
-    openaiKey: provider === 'openai' ? apiKey : '',
-    anthropicKey: provider === 'anthropic' ? apiKey : '',
+    model: provider === 'openai' ? 'gpt-4' : provider === 'anthropic' ? 'claude-3-5-sonnet-20241022' : 'local',
   }, { spaces: 2 });
 }
 

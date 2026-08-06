@@ -17,8 +17,6 @@ export async function loadProviderConfig(rootDir: string): Promise<ProviderConfi
   const defaults: ProviderConfig = {
     provider: 'local',
     model: 'local',
-    openaiKey: '',
-    anthropicKey: '',
   };
   if (fs.existsSync(configPath)) {
     return { ...defaults, ...(await fs.readJSON(configPath)) };

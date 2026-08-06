@@ -9,7 +9,7 @@ import { ScannerResult } from '../analyzer/repoScanner';
 export const generateCommand = new Command('generate')
   .description('Generate documentation from repository context (template mode by default)')
   .option('--ai', 'Use LLM providers for enhanced documentation generation')
-  .action(async (options: { ai?: boolean }) => {
+  .action(async (options: { ai?: boolean }): Promise<void> => {
     const cwd = process.cwd();
     const contextPath = path.join(cwd, '.ai', 'context', 'repo-context.json');
 
@@ -28,12 +28,17 @@ export const generateCommand = new Command('generate')
       return;
     }
 
-    if (options.ai) {
-      await runAgents(cwd);
-    } else {
-      const contextData: ScannerResult = await fs.readJSON(contextPath);
-      await generateFromTemplates(cwd, contextData);
+    try {
+      if (options.ai) {
+        await runAgents(cwd);
+      } else {
+        const contextData: ScannerResult = await fs.readJSON(contextPath);
+        await generateFromTemplates(cwd, contextData);
+      }
+      await saveState(cwd, currentHash);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.error(`Error during generation: ${message}`);
+      process.exit(1);
     }
-
-    await saveState(cwd, currentHash);
   });
