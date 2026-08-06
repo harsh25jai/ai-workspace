@@ -1,6 +1,4 @@
 {
   "provider": "local",
-  "model": "local",
-  "openaiKey": "",
-  "anthropicKey": ""
+  "model": "local"
 }
