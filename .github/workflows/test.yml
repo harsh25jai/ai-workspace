@@ -2,9 +2,9 @@ name: Test
 
 on:
   push:
-    branches: [main, v0.0.2-beta, v0.1.0-beta]
+    branches: [main, v0.0.2-beta, v0.0.3-beta, v0.1.0-beta]
   pull_request:
-    branches: [main, v0.0.2-beta, v0.1.0-beta]
+    branches: [main, v0.0.2-beta, v0.0.3-beta, v0.1.0-beta]
 
 jobs:
   test:
@@ -14,6 +14,8 @@ jobs:
         node-version: [18, 20]
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
@@ -21,3 +23,32 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run build
+      - name: Verify bundle is fresh
+        run: |
+          npm run bundle
+          git diff --exit-code releases/ || (echo "Bundle is stale. Run npm run bundle and commit releases/" && exit 1)
+
+  # TEMP: build standalone bundle on every push to v0.0.3-beta and attach to the workflow run.
+  # Remove this job once releases/ai-workspace.js is committed and the freshness check above is restored.
+  bundle:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Build ai-workspace.js
+        run: npm run bundle
+      - name: Upload bundle artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-workspace-bundle
+          path: |
+            releases/ai-workspace.js
+            releases/index.js
+          retention-days: 5

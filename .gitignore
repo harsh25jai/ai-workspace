@@ -4,6 +4,12 @@
 # Test temp directories
 __tests__/.tmp-*
 
+# Generated during fixture validation runs
+__tests__/fixtures/**/.ai
+__tests__/fixtures/**/.agents
+__tests__/fixtures/**/.cursorrules
+__tests__/fixtures/**/.cursor
+
 # Logs
 logs
 *.log
