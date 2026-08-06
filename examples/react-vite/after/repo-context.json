@@ -1,0 +1,7 @@
+{
+  "languages": ["typescript"],
+  "frameworks": ["react"],
+  "entrypoints": [],
+  "modules": ["components"],
+  "patterns": ["component-based-ui", "react-components"]
+}

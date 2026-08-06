@@ -30,3 +30,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Agent mode remains available as enhancement, not requirement
 - LLM prompt context no longer logged to stdout in `--ai` mode
+
+## [0.1.0-beta.1-bc1] - 2026-08-06 (BC1)
+
+### Added
+- Real-world validation plan and compatibility matrix
+- `examples/` showcase (node-cli, express-api, react-vite)
+- `docs/` — BEFORE_AND_AFTER, WORKFLOW, CONFIGURATION, GENERATED_FILES, TROUBLESHOOTING, LIMITATIONS
+- `scripts/validate-real-repos.sh` for OSS validation
+- CI bundle freshness check
+- `PUBLISHING.md` release guide
+
+### Fixed
+- `explain` path traversal guard (repository boundary check)
+- API keys no longer persisted in `config.json`
+- `generate --ai` exits non-zero on partial failure
+- Workflow docs use `regenerate` where hash guard bypass needed
+- Honest README scope for beta limitations
+
+### Security
+- Credentials via environment variables only
+- Config file stores provider/model settings only

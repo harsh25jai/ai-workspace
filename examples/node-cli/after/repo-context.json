@@ -1,0 +1,7 @@
+{
+  "languages": ["javascript", "typescript"],
+  "frameworks": [],
+  "entrypoints": ["src/index.ts"],
+  "modules": [],
+  "patterns": ["node-backend"]
+}
