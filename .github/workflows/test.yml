@@ -31,7 +31,7 @@ jobs:
   # TEMP: build standalone bundle on every push to v0.0.3-beta and attach to the workflow run.
   # Remove this job once releases/ai-workspace.js is committed and the freshness check above is restored.
   bundle:
-    if: github.event_name == 'push'
+    # if: github.event_name == 'push' && github.ref == 'refs/heads/v0.0.3-beta'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
