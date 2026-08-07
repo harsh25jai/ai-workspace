@@ -10,7 +10,13 @@
       "expectedFrameworks": [],
       "expectedModules": ["cli"],
       "expectedPatterns": [],
-      "workflows": ["full", "sync", "regenerate"]
+      "workflows": ["full", "sync", "regenerate"],
+      "expectedArtifacts": [".cursor/rules/typescript-standards.mdc"],
+      "expectedDocMentions": {
+        ".ai/architecture.md": ["cli"]
+      },
+      "expectedWorkflows": [".agents/workflows/regenerate-all.md", ".agents/workflows/update-readme.md"],
+      "minDocLength": { ".ai/project.md": 200 }
     },
     {
       "id": "express-api",
@@ -21,7 +27,17 @@
       "expectedFrameworks": ["express"],
       "expectedModules": ["controllers", "services"],
       "expectedPatterns": ["controller-service"],
-      "workflows": ["full", "sync", "regenerate"]
+      "workflows": ["full", "sync", "regenerate"],
+      "expectedArtifacts": [
+        ".cursor/rules/express-api-standards.mdc",
+        ".cursor/rules/typescript-standards.mdc"
+      ],
+      "expectedDocMentions": {
+        ".ai/project.md": ["express"],
+        ".ai/architecture.md": ["controller-service", "controllers"]
+      },
+      "expectedWorkflows": [".agents/workflows/regenerate-all.md"],
+      "minDocLength": { ".ai/architecture.md": 300 }
     },
     {
       "id": "react-vite",
@@ -32,7 +48,19 @@
       "expectedFrameworks": ["react"],
       "expectedModules": ["components"],
       "expectedPatterns": ["component-based-ui"],
-      "workflows": ["full", "sync", "regenerate"]
+      "workflows": ["full", "sync", "regenerate"],
+      "expectedArtifacts": [
+        ".cursor/rules/react-best-practices.mdc",
+        ".cursor/rules/typescript-standards.mdc"
+      ],
+      "expectedDocMentions": {
+        ".ai/project.md": ["react"],
+        ".ai/architecture.md": ["component-based-ui"]
+      },
+      "expectedWorkflows": [
+        ".agents/workflows/create-react-component.md",
+        ".agents/workflows/regenerate-all.md"
+      ]
     },
     {
       "id": "nextjs",
@@ -44,7 +72,11 @@
       "expectedModules": [],
       "expectedPatterns": [],
       "workflows": ["full"],
-      "notes": "No top-level src/; beta limitation"
+      "notes": "No top-level src/; beta limitation",
+      "expectedDocMentions": {
+        ".ai/project.md": ["next"]
+      },
+      "expectedWorkflows": [".agents/workflows/regenerate-all.md"]
     },
     {
       "id": "nestjs",
@@ -55,7 +87,13 @@
       "expectedFrameworks": ["nestjs"],
       "expectedModules": ["app"],
       "expectedPatterns": [],
-      "workflows": ["full", "sync", "regenerate"]
+      "workflows": ["full", "sync", "regenerate"],
+      "expectedArtifacts": [".cursor/rules/typescript-standards.mdc"],
+      "expectedDocMentions": {
+        ".ai/project.md": ["nestjs"],
+        ".ai/architecture.md": ["app"]
+      },
+      "expectedWorkflows": [".agents/workflows/regenerate-all.md"]
     },
     {
       "id": "python",
@@ -67,7 +105,10 @@
       "expectedModules": ["utils"],
       "expectedPatterns": [],
       "workflows": ["full"],
-      "notes": "Shallow Python detection"
+      "notes": "Shallow Python detection",
+      "expectedDocMentions": {
+        ".ai/architecture.md": ["utils"]
+      }
     },
     {
       "id": "minimal",
@@ -79,7 +120,8 @@
       "expectedModules": [],
       "expectedPatterns": [],
       "workflows": ["full"],
-      "notes": "Edge case; no crash expected"
+      "notes": "Edge case; no crash expected",
+      "expectedWorkflows": [".agents/workflows/regenerate-all.md"]
     },
     {
       "id": "monorepo",
@@ -91,7 +133,8 @@
       "expectedModules": [],
       "expectedPatterns": [],
       "workflows": ["full"],
-      "notes": "Top-level src/ only; packages/ not scanned"
+      "notes": "Top-level src/ only; packages/ not scanned",
+      "expectedWorkflows": [".agents/workflows/regenerate-all.md"]
     },
     {
       "id": "unsupported",
@@ -103,7 +146,8 @@
       "expectedModules": [],
       "expectedPatterns": [],
       "workflows": ["full"],
-      "notes": "No package.json frameworks; should not crash"
+      "notes": "No package.json frameworks; should not crash",
+      "expectedWorkflows": [".agents/workflows/regenerate-all.md"]
     }
   ]
 }

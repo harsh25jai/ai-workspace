@@ -7,6 +7,8 @@ import {
   validateAllArtifacts,
   validateDetection,
 } from './validators';
+import { validateProductQuality } from './validators/index';
+import { emptyQualityReport } from './scoring';
 import { countSourceFiles, createWorkspaceFromFixture } from './workspace';
 import {
   CommandResult,
@@ -115,7 +117,8 @@ export async function runFixtureE2E(
   repoRoot: string,
   bundlePath: string,
   fixture: FixtureManifestEntry,
-  workspacesRoot: string
+  workspacesRoot: string,
+  options: { updateBaselines?: boolean } = {}
 ): Promise<FixtureRunResult> {
   const fixtureDir = path.join(repoRoot, 'e2e', 'fixtures', fixture.id);
   const workspaceDir = createWorkspaceFromFixture(fixtureDir, workspacesRoot, fixture.id);
@@ -148,8 +151,30 @@ export async function runFixtureE2E(
     errors.push(...collected.errors);
     warnings.push(...collected.warnings);
 
+    const explainStdout = commands.find((c) => c.command.includes('explain'))?.stdout;
+    const productQuality = validateProductQuality({
+      workspaceDir,
+      repoRoot,
+      fixture,
+      context,
+      commands,
+      artifacts,
+      explainStdout,
+      updateBaselines: options.updateBaselines,
+    });
+
+    for (const qw of productQuality.qualityWarnings) {
+      warnings.push(`[quality:${qw.code}] ${qw.message}`);
+    }
+
     const actualVerdict = deriveVerdict(fixture, errors, detectionIssues);
     const pass = actualVerdict !== 'FAIL';
+
+    if (productQuality.quality.overallScore < 50 && fixture.verdict === 'PASS' && pass) {
+      warnings.push(
+        `[quality:LOW_SCORE] Overall quality score ${productQuality.quality.overallScore}/100 below advisory threshold`
+      );
+    }
 
     return {
       id: fixture.id,
@@ -167,6 +192,8 @@ export async function runFixtureE2E(
       warnings,
       errors,
       filesScanned: countSourceFiles(workspaceDir),
+      quality: productQuality.quality,
+      explainValidation: productQuality.explainValidation,
     };
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
@@ -187,6 +214,7 @@ export async function runFixtureE2E(
       warnings,
       errors,
       filesScanned: countSourceFiles(workspaceDir),
+      quality: emptyQualityReport(),
     };
   }
 }

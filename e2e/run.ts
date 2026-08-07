@@ -15,6 +15,7 @@ async function main(): Promise<void> {
   const onlyArg = process.argv.find(a => a.startsWith('--only='));
   const onlyIds = onlyArg ? onlyArg.replace('--only=', '').split(',').filter(Boolean) : undefined;
   const keepWorkspaces = process.argv.includes('--keep-workspaces');
+  const updateBaselines = process.argv.includes('--update-baselines');
 
   const bundlePath = resolveAndValidateBundle(repoRoot);
   const manifest = loadManifest(repoRoot);
@@ -31,7 +32,9 @@ async function main(): Promise<void> {
 
   for (const fixture of fixtures) {
     process.stdout.write(`→ ${fixture.name} (${fixture.id})... `);
-    const result = await runFixtureE2E(repoRoot, bundlePath, fixture, workspacesRoot);
+    const result = await runFixtureE2E(repoRoot, bundlePath, fixture, workspacesRoot, {
+      updateBaselines,
+    });
     results.push(result);
     const icon = result.pass ? (result.actualVerdict === 'PARTIAL' ? '⚠' : '✔') : '✘';
     console.log(`${icon} ${result.actualVerdict} (${(result.durationMs / 1000).toFixed(1)}s)`);

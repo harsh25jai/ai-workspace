@@ -50,8 +50,37 @@ For each fixture in manifest.json:
        ↓
   Validate artifacts + detection
        ↓
-  Write per-fixture + matrix reports
+  Product quality validation (L2–L5)
+       ↓
+  Write per-fixture + matrix + quality reports
 ```
+
+---
+
+## Layered Validation Model
+
+E2E validates both **functional reliability** and **product quality** (agent-readiness).
+
+| Layer | Module | Responsibility | CI impact |
+|-------|--------|----------------|-----------|
+| **L0 Reliability** | `e2e/lib/runner.ts` | Command exit codes, sync/regenerate side-effects | FAIL on error |
+| **L1 Structure** | `e2e/lib/validators.ts` | Schema, sections, stubs, export headers | FAIL on error |
+| **L2 Analysis** | `e2e/lib/validators/analysis.ts` | Detection, entrypoints, repo-map ↔ context alignment | Warning only |
+| **L3 Consistency** | `e2e/lib/validators/consistency.ts` | Context reflected in generated docs | Warning only |
+| **L4 Agent Readiness** | `e2e/lib/validators/readiness.ts`, `explain.ts` | Cursor rules, workflows, explain output | Warning only |
+| **L5 Quality Score** | `e2e/lib/scoring.ts`, `validators/index.ts` | Weighted 0–100 composite score | Report only |
+
+Quality warnings **do not fail CI**. Only L0/L1 errors cause `exit 1`.
+
+### Quality dimension weights
+
+| Dimension | Weight |
+|-----------|--------|
+| reliability | 25% |
+| structure | 20% |
+| analysis | 20% |
+| consistency | 20% |
+| agentReadiness | 15% |
 
 ---
 
@@ -76,14 +105,19 @@ Manifest: `e2e/fixtures/manifest.json`
 ### Adding a new fixture
 
 1. Create `e2e/fixtures/<id>/` with minimal source files.
-2. Add entry to `manifest.json` with expected detection and verdict.
+2. Add entry to `manifest.json` with expected detection, verdict, and optional quality fields:
+   - `expectedArtifacts` — paths that must exist (e.g. `.cursor/rules/express-api-standards.mdc`)
+   - `expectedDocMentions` — substrings required in specific docs
+   - `expectedWorkflows` — workflow files that must exist
+   - `minDocLength` — minimum character length per doc path
 3. Run `npm run test:e2e -- --only=<id>` to validate locally.
+4. Run `npm run test:e2e -- --only=<id> --update-baselines` after intentional generator changes.
 
 ---
 
 ## Validation Framework
 
-`e2e/lib/validators.ts` provides reusable checks:
+### L1 — Structural (`e2e/lib/validators.ts`)
 
 | Validator | Checks |
 |-----------|--------|
@@ -95,7 +129,18 @@ Manifest: `e2e/fixtures/manifest.json`
 | `validateState` | `state.json` hash format |
 | `validateDetection` | Expected frameworks/modules/patterns (warnings for PARTIAL) |
 
-Behaviour is validated, not exact document text.
+### L2–L5 — Product quality (`e2e/lib/validators/`)
+
+| Module | Checks |
+|--------|--------|
+| `analysis.ts` | TypeScript detection, entrypoints, repo-map ↔ repo-context alignment |
+| `consistency.ts` | Frameworks/modules/patterns in docs; manifest `expectedDocMentions` |
+| `readiness.ts` | Cursor rules with globs, workflows, agent rules, `expectedArtifacts` |
+| `explain.ts` | Explain stdout structure (path, imports, skills sections) |
+| `baseline.ts` | Content fingerprint drift vs `e2e/fixtures/baselines/<id>.json` |
+| `index.ts` | Orchestrates all layers + scoring |
+
+Behaviour is validated deterministically — no LLM judge, no network.
 
 ---
 
@@ -107,9 +152,10 @@ After each run, reports are written to `e2e/reports/latest/`:
 |------|----------|
 | `e2e-report.json` | Full structured report |
 | `summary.json` | Pass/fail counts, duration |
-| `compatibility-matrix.json` | Per-repo matrix for release tracking |
-| `SUMMARY.md` | Human-readable GitHub Actions log summary |
-| `<fixture-id>.json` | Per-repository detail |
+| `compatibility-matrix.json` | Per-repo matrix with `overallQualityScore` |
+| `quality-report.json` | Suite + per-fixture dimension scores |
+| `SUMMARY.md` | Human-readable summary + quality dashboard |
+| `<fixture-id>.json` | Per-repository detail including `quality` object |
 
 CI uploads `e2e/reports/latest/` as artifact `e2e-reports`.
 
@@ -137,6 +183,9 @@ npm run test:e2e -- --only=express-api
 
 # Keep temp workspaces for debugging
 npm run test:e2e -- --only=node-cli --keep-workspaces
+
+# Update content baselines after intentional generator changes
+npm run test:e2e -- --update-baselines
 
 # Full suite: unit + E2E
 npm run test:all

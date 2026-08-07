@@ -11,6 +11,10 @@ export interface FixtureManifestEntry {
   expectedPatterns: string[];
   workflows: string[];
   notes?: string;
+  expectedArtifacts?: string[];
+  expectedDocMentions?: Record<string, string[]>;
+  expectedWorkflows?: string[];
+  minDocLength?: Record<string, number>;
 }
 
 export interface FixtureManifest {
@@ -39,6 +43,27 @@ export interface ArtifactValidation {
   issues: ValidationIssue[];
 }
 
+export type QualityDimension =
+  | 'reliability'
+  | 'structure'
+  | 'analysis'
+  | 'consistency'
+  | 'agentReadiness';
+
+export interface DimensionScore {
+  dimension: QualityDimension;
+  score: number;
+  maxScore: number;
+  passedChecks: number;
+  totalChecks: number;
+  warnings: ValidationIssue[];
+}
+
+export interface QualityReport {
+  overallScore: number;
+  dimensions: DimensionScore[];
+}
+
 export interface FixtureRunResult {
   id: string;
   name: string;
@@ -55,6 +80,8 @@ export interface FixtureRunResult {
   warnings: string[];
   errors: string[];
   filesScanned: number;
+  quality: QualityReport;
+  explainValidation?: ArtifactValidation;
 }
 
 export interface E2EReport {
@@ -81,4 +108,17 @@ export interface CompatibilityRow {
   warnings: string[];
   status: Verdict;
   durationMs: number;
+  overallQualityScore: number;
+}
+
+export interface SuiteQualityReport {
+  generatedAt: string;
+  averageOverallScore: number;
+  dimensionAverages: Record<QualityDimension, number>;
+  fixtures: Array<{
+    id: string;
+    name: string;
+    overallScore: number;
+    dimensions: Record<QualityDimension, number>;
+  }>;
 }
