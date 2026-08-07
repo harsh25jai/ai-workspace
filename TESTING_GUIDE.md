@@ -56,7 +56,7 @@ See `planning/TEST_STRATEGY.md`, `planning/E2E_ARCHITECTURE.md`, and `docs/E2E_T
 ## What to validate
 
 1. All commands exit 0 on a repo with `src/` directory
-2. `.ai/project.md` contains real content (not stub text)
+2. `.ctxstack/project.md` contains real content (not stub text)
 3. `.cursorrules` created after export
 4. `explain src/<file>` works for a source file
 

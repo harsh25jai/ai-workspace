@@ -1,9 +1,10 @@
 import fs from 'fs-extra';
 import path from 'path';
 import { ScannerResult } from '../analyzer/repoScanner';
+import { CTXSTACK_DIR } from '../constants';
 
 export async function generateRepoContext(rootDir: string, scannerResult: ScannerResult): Promise<void> {
-  const repoContextPath = path.join(rootDir, '.ai', 'context', 'repo-context.json');
+  const repoContextPath = path.join(rootDir, CTXSTACK_DIR, 'context', 'repo-context.json');
   
   const contextData = {
     languages: scannerResult.languages,

@@ -36,15 +36,15 @@ validate_repo() {
     node "$CLI" explain "$explain_file" >/dev/null 2>&1 || { issues+="explain failed; "; failed=1; }
   fi
 
-  if [[ -f .ai/context/repo-context.json ]]; then
+  if [[ -f .ctxstack/context/repo-context.json ]]; then
     local mod_count
-    mod_count=$(node -e "console.log((require('./.ai/context/repo-context.json').modules||[]).length)")
+    mod_count=$(node -e "console.log((require('./.ctxstack/context/repo-context.json').modules||[]).length)")
     detection="Partial"
     [[ "$mod_count" -gt 2 ]] && detection="Good"
     [[ "$mod_count" -eq 0 ]] && detection="Poor"
   fi
 
-  [[ -f .ai/project.md ]] && ! grep -q "Simulated Local Output" .ai/project.md && artifacts=".ai/*.md, .cursorrules"
+  [[ -f .ctxstack/project.md ]] && ! grep -q "Simulated Local Output" .ctxstack/project.md && artifacts=".ctxstack/*.md, .cursorrules"
 
   if [[ $failed -eq 0 ]]; then
     exit_ok="Yes"
@@ -61,7 +61,7 @@ validate_empty() {
   echo '{"name":"empty"}' > package.json
   echo 'export {}' > src/index.ts
 
-  local failed=0 issues="" detection="Partial" exit_ok="Yes" artifacts=".ai/*.md"
+  local failed=0 issues="" detection="Partial" exit_ok="Yes" artifacts=".ctxstack/*.md"
   for cmd in init analyze generate export; do
     node "$CLI" $cmd >/dev/null 2>&1 || { issues+="$cmd failed; "; failed=1; }
   done

@@ -6,5 +6,5 @@ Run this workflow after significant code changes to ensure all documentation and
 
 1. Run "ctxstack analyze" to refresh repository context.
 2. Run "ctxstack regenerate" to force rebuild documentation, rules, and workflows.
-3. Verify .ai/ and .agents/ contents.
+3. Verify .ctxstack/ and .agents/ contents.
 4. Call /update-readme to sync the main README.

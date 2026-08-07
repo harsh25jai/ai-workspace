@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Renamed product and CLI from `ai-workspace` to `ctxstack` (npm package, binary, bundles, docs, and exports)
+- Artifact directory renamed from `.ai/` to `.ctxstack/` (init migrates legacy `.ai/` on first run)
 
 ## [0.1.0-beta.1] - 2026-08-06
 
@@ -17,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Template-based `generate` (default) — no API key required
 - `generate --ai` and `regenerate --ai` for LLM-enhanced documentation
 - `explain <file>` command for file-level context
-- Provider config loading from `.ai/config.json` with env var fallback
+- Provider config loading from `.ctxstack/config.json` with env var fallback
 - GitHub Actions CI workflow
 - Integration tests for init, generate, sync, export
 - Smoke test script for release validation
@@ -25,7 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `/planning/` contract documents for Phase 1 stabilization
 
 ### Fixed
-- Local provider no longer overwrites `.ai/*.md` with stub content
+- Local provider no longer overwrites `.ctxstack/*.md` with stub content
 - `sync` runs full analyze when context is missing
 - `sync` skill generation actions now execute
 - `architectureValidator` newline splitting bug

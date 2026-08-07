@@ -46,7 +46,7 @@
 | M-03 | Next.js / NestJS detection | analyzer | Framework gaps |
 | M-04 | `context/builder.ts` token truncation | unit | Large repo prompt overflow |
 | M-05 | `repo-map.json` structure validation | integration | Init artifact quality |
-| M-06 | Permission denied on `.ai/` write | integration | Edge case crashes |
+| M-06 | Permission denied on `.ctxstack/` write | integration | Edge case crashes |
 | M-07 | Malformed `config.json` | integration | Graceful error message |
 | M-08 | Network timeout simulation for providers | unit | Retry behavior N/A today |
 
@@ -56,7 +56,7 @@
 |---|---|---|---|
 | L-01 | `export --target windsurf` | integration | Secondary target |
 | L-02 | `export --target all` | integration | Multi-target |
-| L-03 | Legacy `.ai/skills` migration on init | integration | Migration path |
+| L-03 | Legacy `.ctxstack/skills` migration on init | integration | Migration path |
 | L-04 | Agent-mode init handoff output | integration | Agent UX |
 | L-05 | Performance: large repo scan time | benchmark | Not blocking beta |
 
@@ -65,6 +65,6 @@
 ## Refactoring debt (test architecture)
 
 - [ ] Migrate legacy root tests (`init.test.ts`, etc.) to shared `helpers/cli.ts`
-- [ ] Remove committed `.ai/` artifacts from `__tests__/fixtures/` (generate at test time)
+- [ ] Remove committed `.ctxstack/` artifacts from `__tests__/fixtures/` (generate at test time)
 - [ ] Add `__tests__/fixtures/minimal/` source-only fixtures
 - [ ] Silence expected stderr in tests via `runCli` capture assertions

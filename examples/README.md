@@ -13,7 +13,7 @@ These examples show **what ctxstack generates** — not full applications. Each 
 ## How to read examples
 
 1. Read `before.md` — what an AI agent sees without ctxstack
-2. Browse `after/` — generated `.ai/` artifacts (sanitized)
+2. Browse `after/` — generated `.ctxstack/` artifacts (sanitized)
 3. Read `observations.md` — what worked and what to expect
 
 ## Reproduce locally

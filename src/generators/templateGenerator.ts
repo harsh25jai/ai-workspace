@@ -55,7 +55,7 @@ ${frameworks}
 ## Data Flow
 1. Application entry via detected entrypoints
 2. Module boundaries under \`src/\`
-3. AI context stored in \`.ai/context/repo-context.json\`
+3. AI context stored in \`.ctxstack/context/repo-context.json\`
 `;
 
   const rulesMd = `${AI_HINT}# Development Rules

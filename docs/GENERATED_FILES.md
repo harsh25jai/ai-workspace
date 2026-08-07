@@ -1,6 +1,6 @@
 # Generated Files Reference
 
-## `.ai/` directory
+## `.ctxstack/` directory
 
 | File | Description |
 |---|---|

@@ -29,13 +29,13 @@
 1. **First run:** `init → analyze → generate → export`
 2. **Refresh:** `sync` or `regenerate` after code changes
 3. **LLM upgrade:** `generate --ai` with env API key
-4. **Health:** `status` before committing `.ai/` changes
+4. **Health:** `status` before committing `.ctxstack/` changes
 
 ### Command flow
 
 ```
 CLI → commands/* → analyzer | generators | workspace | agents/runner
-                  → .ai/ + .agents/ + .cursorrules
+                  → .ctxstack/ + .agents/ + .cursorrules
 ```
 
 ---
@@ -45,7 +45,7 @@ CLI → commands/* → analyzer | generators | workspace | agents/runner
 | File | Validates | Relevant? | Gaps |
 |---|---|---|---|
 | `verify-detector.ts` | Agent env detection (20 cases) | Yes | None for P2 scope |
-| `init.test.ts` | `.ai/` + `config.json` created | Yes | No key-security assertion; uses shell exec |
+| `init.test.ts` | `.ctxstack/` + `config.json` created | Yes | No key-security assertion; uses shell exec |
 | `generate.test.ts` | Template output not stub | Yes | No idempotency, no artifact schema |
 | `sync.test.ts` | Module add + missing context | Yes | No framework change path |
 | `export.test.ts` | `.cursorrules` created | Yes | No content parity with rules.md |
@@ -59,7 +59,7 @@ CLI → commands/* → analyzer | generators | workspace | agents/runner
 - No `status`, `regenerate`, `analyze` isolation tests
 - No analyzer unit tests
 - No regression tests tied to git fixes
-- Fixture `.ai/` artifacts committed under `__tests__/fixtures/` (noise)
+- Fixture `.ctxstack/` artifacts committed under `__tests__/fixtures/` (noise)
 
 ---
 
@@ -73,7 +73,7 @@ CLI → commands/* → analyzer | generators | workspace | agents/runner
 | P0-02 | init creates config without API keys | `config-security.test.ts` |
 | P0-03 | generate --ai fails without key (exit 1) | `error-handling.test.ts` |
 | P0-04 | generate skips when hash unchanged | `regenerate.test.ts` |
-| P0-05 | analyze requires .ai/ | `error-handling.test.ts` |
+| P0-05 | analyze requires .ctxstack/ | `error-handling.test.ts` |
 | P0-06 | export requires rules.md | `error-handling.test.ts` |
 | P0-07 | explain path traversal blocked | `runner-security.test.ts` |
 | P0-08 | No stub text in template output | `generate.test.ts` |

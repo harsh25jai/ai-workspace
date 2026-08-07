@@ -21,7 +21,7 @@ main (protected)
 **Exclusive files:** `.github/workflows/*`, `__tests__/*` (except providers.test.ts owned by D)
 
 ### Agent C — Documentation & Product Engineer
-**Exclusive files:** `README.md`, `TESTING_GUIDE.md`, `.env.example`, `.ai/*.md` (content restore)
+**Exclusive files:** `README.md`, `TESTING_GUIDE.md`, `.env.example`, `.ctxstack/*.md` (content restore)
 
 ### Agent D — AI Pipeline Engineer
 **Files:** `src/agents/runner.ts`, `src/context/builder.ts`, `__tests__/providers.test.ts`  

@@ -94,7 +94,7 @@ export function validateAnalysisCorrectness(
     }
   }
 
-  const mapPath = path.join(workspaceDir, '.ai', 'repo-map.json');
+  const mapPath = path.join(workspaceDir, '.ctxstack', 'repo-map.json');
   if (fs.existsSync(mapPath)) {
     try {
       const mapData = fs.readJSONSync(mapPath) as {

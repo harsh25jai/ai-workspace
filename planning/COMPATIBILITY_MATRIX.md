@@ -23,14 +23,14 @@ Ongoing confidence tracker for ctxstack beta releases.
 
 | ID | Repository | Stack | Size | Has src/ | Commands | Artifacts | Detection | Exit 0 | Issues | Verdict | Notes |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| R1 | commander.js | Node CLI, TS | small | Yes | init→export | .ai/*.md, .cursorrules | Good | Yes | none | **PASS** | Validated via node-cli fixture |
-| R2 | express | Express, Node | medium | Yes | init→export | .ai/*.md, .cursorrules | Good | Yes | none | **PASS** | Validated via express-api fixture; detects controllers/services |
-| R3 | vite-plugin-react | React, Vite | small | Yes | init→export | .ai/*.md, .cursorrules | Good | Yes | none | **PASS** | Validated via react-vite fixture |
+| R1 | commander.js | Node CLI, TS | small | Yes | init→export | .ctxstack/*.md, .cursorrules | Good | Yes | none | **PASS** | Validated via node-cli fixture |
+| R2 | express | Express, Node | medium | Yes | init→export | .ctxstack/*.md, .cursorrules | Good | Yes | none | **PASS** | Validated via express-api fixture; detects controllers/services |
+| R3 | vite-plugin-react | React, Vite | small | Yes | init→export | .ctxstack/*.md, .cursorrules | Good | Yes | none | **PASS** | Validated via react-vite fixture |
 | R4 | next.js hello-world | Next.js | small | No (app/) | init→export | partial | Partial | Yes | no top-level src/ | **PARTIAL** | App router; beta limitation |
-| R5 | nestjs-starter | NestJS | small | Yes | init→export | .ai/*.md | Good | Yes | pending OSS clone | **PASS*** | *Fixture-equivalent |
+| R5 | nestjs-starter | NestJS | small | Yes | init→export | .ctxstack/*.md | Good | Yes | pending OSS clone | **PASS*** | *Fixture-equivalent |
 | R6 | fastapi | Python | medium | No | init→export | partial | Partial | Yes | shallow Python detection | **PARTIAL** | Extension-based only |
 | R7 | turborepo basic | Monorepo | medium | packages/ | init→export | partial | Partial | Yes | monorepo not fully scanned | **PARTIAL** | Top-level src/ only |
-| R8 | empty-repo (local) | Minimal | tiny | Yes | init→export | .ai/*.md | Partial | Yes | minimal modules | **PARTIAL** | Edge case; no crash |
+| R8 | empty-repo (local) | Minimal | tiny | Yes | init→export | .ctxstack/*.md | Partial | Yes | minimal modules | **PARTIAL** | Edge case; no crash |
 
 ## Verdict Definitions
 

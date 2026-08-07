@@ -31,10 +31,10 @@ describe('init command', () => {
     fs.removeSync(tmpDir);
   });
 
-  it('creates .ai directory and config.json', () => {
+  it('creates .ctxstack directory and config.json', () => {
     runCli('init', tmpDir);
-    expect(fs.existsSync(path.join(tmpDir, '.ai'))).toBe(true);
-    expect(fs.existsSync(path.join(tmpDir, '.ai', 'config.json'))).toBe(true);
-    expect(fs.existsSync(path.join(tmpDir, '.ai', 'context', 'repo-context.json'))).toBe(true);
+    expect(fs.existsSync(path.join(tmpDir, '.ctxstack'))).toBe(true);
+    expect(fs.existsSync(path.join(tmpDir, '.ctxstack', 'config.json'))).toBe(true);
+    expect(fs.existsSync(path.join(tmpDir, '.ctxstack', 'context', 'repo-context.json'))).toBe(true);
   });
 });

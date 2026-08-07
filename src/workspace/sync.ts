@@ -7,6 +7,7 @@ import { diffContexts } from '../context/diff';
 import { generateActionsFromDiff } from './changeDetector';
 import { generateSkillsPipeline } from '../skills/generator';
 import { generateHash, saveState } from './state';
+import { CTXSTACK_DIR } from '../constants';
 
 async function runFullAnalyze(rootDir: string): Promise<void> {
   const scannerResult = await scanRepository(rootDir);
@@ -15,7 +16,7 @@ async function runFullAnalyze(rootDir: string): Promise<void> {
 }
 
 export async function syncWorkspace(rootDir: string): Promise<void> {
-  const aiDir = path.join(rootDir, '.ai');
+  const aiDir = path.join(rootDir, CTXSTACK_DIR);
   const contextPath = path.join(aiDir, 'context', 'repo-context.json');
 
   if (!fs.existsSync(aiDir)) {

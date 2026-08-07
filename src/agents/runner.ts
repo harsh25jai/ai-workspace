@@ -8,6 +8,7 @@ import { validateRules } from '../validators/rulesValidator';
 import { generateRules } from '../generators/ruleGenerator';
 import { generateWorkflows } from '../generators/workflowGenerator';
 import { ScannerResult } from '../analyzer/repoScanner';
+import { CTXSTACK_DIR } from '../constants';
 
 export class AgentRunError extends Error {
   constructor(
@@ -20,7 +21,7 @@ export class AgentRunError extends Error {
 }
 
 export async function runAgents(rootDir: string): Promise<void> {
-  const aiDir = path.join(rootDir, '.ai');
+  const aiDir = path.join(rootDir, CTXSTACK_DIR);
   const contextPath = path.join(aiDir, 'context', 'repo-context.json');
 
   if (!fs.existsSync(contextPath)) {

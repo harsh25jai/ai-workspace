@@ -12,7 +12,7 @@ export function createWorkspaceFromFixture(
   fs.copySync(fixtureDir, workspaceDir, {
     filter: (src) => {
       const base = path.basename(src);
-      if (base === '.ai' || base === '.agents' || base === '.cursorrules' || base === '.cursor') {
+      if (base === '.ctxstack' || base === '.agents' || base === '.cursorrules' || base === '.cursor') {
         return false;
       }
       return true;
@@ -23,7 +23,7 @@ export function createWorkspaceFromFixture(
 
 export function countSourceFiles(workspaceDir: string): number {
   let count = 0;
-  const ignore = new Set(['node_modules', '.git', '.ai', '.agents', 'dist', 'build']);
+  const ignore = new Set(['node_modules', '.git', '.ctxstack', '.agents', 'dist', 'build']);
 
   function walk(dir: string): void {
     if (!fs.existsSync(dir)) return;

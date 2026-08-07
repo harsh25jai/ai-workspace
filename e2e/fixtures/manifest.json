@@ -13,10 +13,10 @@
       "workflows": ["full", "sync", "regenerate"],
       "expectedArtifacts": [".cursor/rules/typescript-standards.mdc"],
       "expectedDocMentions": {
-        ".ai/architecture.md": ["cli"]
+        ".ctxstack/architecture.md": ["cli"]
       },
       "expectedWorkflows": [".agents/workflows/regenerate-all.md", ".agents/workflows/update-readme.md"],
-      "minDocLength": { ".ai/project.md": 200 }
+      "minDocLength": { ".ctxstack/project.md": 200 }
     },
     {
       "id": "express-api",
@@ -33,11 +33,11 @@
         ".cursor/rules/typescript-standards.mdc"
       ],
       "expectedDocMentions": {
-        ".ai/project.md": ["express"],
-        ".ai/architecture.md": ["controller-service", "controllers"]
+        ".ctxstack/project.md": ["express"],
+        ".ctxstack/architecture.md": ["controller-service", "controllers"]
       },
       "expectedWorkflows": [".agents/workflows/regenerate-all.md"],
-      "minDocLength": { ".ai/architecture.md": 300 }
+      "minDocLength": { ".ctxstack/architecture.md": 300 }
     },
     {
       "id": "react-vite",
@@ -54,8 +54,8 @@
         ".cursor/rules/typescript-standards.mdc"
       ],
       "expectedDocMentions": {
-        ".ai/project.md": ["react"],
-        ".ai/architecture.md": ["component-based-ui"]
+        ".ctxstack/project.md": ["react"],
+        ".ctxstack/architecture.md": ["component-based-ui"]
       },
       "expectedWorkflows": [
         ".agents/workflows/create-react-component.md",
@@ -74,7 +74,7 @@
       "workflows": ["full"],
       "notes": "No top-level src/; beta limitation",
       "expectedDocMentions": {
-        ".ai/project.md": ["next"]
+        ".ctxstack/project.md": ["next"]
       },
       "expectedWorkflows": [".agents/workflows/regenerate-all.md"]
     },
@@ -90,8 +90,8 @@
       "workflows": ["full", "sync", "regenerate"],
       "expectedArtifacts": [".cursor/rules/typescript-standards.mdc"],
       "expectedDocMentions": {
-        ".ai/project.md": ["nestjs"],
-        ".ai/architecture.md": ["app"]
+        ".ctxstack/project.md": ["nestjs"],
+        ".ctxstack/architecture.md": ["app"]
       },
       "expectedWorkflows": [".agents/workflows/regenerate-all.md"]
     },
@@ -107,7 +107,7 @@
       "workflows": ["full"],
       "notes": "Shallow Python detection",
       "expectedDocMentions": {
-        ".ai/architecture.md": ["utils"]
+        ".ctxstack/architecture.md": ["utils"]
       }
     },
     {

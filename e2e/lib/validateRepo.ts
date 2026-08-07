@@ -89,9 +89,9 @@ export function validateRepoArtifacts(options: ValidateRepoOptions): FixtureRunR
     ], commands);
   }
 
-  if (!fs.existsSync(path.join(absRepo, '.ai'))) {
+  if (!fs.existsSync(path.join(absRepo, '.ctxstack'))) {
     return failResult(path.basename(absRepo), 'external', expectations?.verdict ?? 'PARTIAL', start, [
-      'No .ai/ directory found. Run ctxstack init && analyze && generate first, or use "run" command.',
+      'No .ctxstack/ directory found. Run ctxstack init && analyze && generate first, or use "run" command.',
     ], commands);
   }
 

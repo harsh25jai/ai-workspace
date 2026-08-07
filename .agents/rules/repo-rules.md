@@ -6,6 +6,6 @@ This repository follows specific patterns and standards detected by ctxstack.
 - Modules: agents, analyzer, cli, commands, context, generators, plugins, providers, skills, utils, validators, workspace
 
 ## General Guidelines
-- All code changes should be reflected in .ai/ documentation.
+- All code changes should be reflected in .ctxstack/ documentation.
 - Use "ctxstack regenerate" after significant code changes (bypasses hash guard).
 - Follow the patterns defined in .cursor/rules/ for IDE-specific guidance.

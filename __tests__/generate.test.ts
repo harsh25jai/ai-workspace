@@ -38,7 +38,7 @@ describe('generate command', () => {
 
   it('produces real template content, not stub text', () => {
     runCli('generate', tmpDir);
-    const projectMd = fs.readFileSync(path.join(tmpDir, '.ai', 'project.md'), 'utf8');
+    const projectMd = fs.readFileSync(path.join(tmpDir, '.ctxstack', 'project.md'), 'utf8');
     expect(projectMd).not.toContain('Simulated Local Output');
     expect(projectMd).toContain('Tech Stack');
     expect(projectMd).toContain('Overview');

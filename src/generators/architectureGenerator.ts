@@ -1,9 +1,10 @@
 import fs from 'fs-extra';
 import path from 'path';
 import { ScannerResult } from '../analyzer/repoScanner';
+import { CTXSTACK_DIR } from '../constants';
 
 export async function generateArchitecture(rootDir: string, scannerResult: ScannerResult): Promise<void> {
-  const archPath = path.join(rootDir, '.ai', 'architecture.md');
+  const archPath = path.join(rootDir, CTXSTACK_DIR, 'architecture.md');
   const content = `# Architecture
 
 ## System Overview

@@ -2,7 +2,7 @@ import { Command } from 'commander';
 import { syncWorkspace } from '../workspace/sync';
 
 export const syncCommand = new Command('sync')
-  .description('Synchronize the .ai workspace with repository changes')
+  .description('Synchronize the .ctxstack workspace with repository changes')
   .action(async () => {
     try {
       const cwd = process.cwd();

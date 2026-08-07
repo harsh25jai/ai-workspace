@@ -5,7 +5,7 @@ export class LocalProvider implements AIProvider {
     throw new Error(
       'Local provider requires an AI backend (e.g. Ollama). ' +
       'Use "ctxstack generate" without --ai for template-based docs, ' +
-      'or configure OpenAI/Anthropic in .ai/config.json for --ai mode.'
+      'or configure OpenAI/Anthropic in .ctxstack/config.json for --ai mode.'
     );
   }
 }

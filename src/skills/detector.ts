@@ -1,5 +1,6 @@
 import fs from 'fs-extra';
 import path from 'path';
+import { CTXSTACK_DIR } from '../constants';
 
 export interface SkillMetadata {
   name: string;
@@ -8,7 +9,7 @@ export interface SkillMetadata {
 }
 
 export async function detectSkills(rootDir: string): Promise<SkillMetadata[]> {
-  const contextPath = path.join(rootDir, '.ai', 'context', 'repo-context.json');
+  const contextPath = path.join(rootDir, CTXSTACK_DIR, 'context', 'repo-context.json');
   if (!fs.existsSync(contextPath)) {
     throw new Error('repo-context.json not found. Run analyze first.');
   }

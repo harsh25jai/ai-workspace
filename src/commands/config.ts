@@ -2,16 +2,17 @@ import { Command } from 'commander';
 import fs from 'fs-extra';
 import path from 'path';
 import inquirer from 'inquirer';
+import { CTXSTACK_DIR } from '../constants';
 
 export const configCommand = new Command('config')
   .description('Configure AI provider settings (API keys via environment variables)')
   .action(async (): Promise<void> => {
     try {
       const cwd = process.cwd();
-      const configPath = path.join(cwd, '.ai', 'config.json');
+      const configPath = path.join(cwd, CTXSTACK_DIR, 'config.json');
 
       if (!fs.existsSync(configPath)) {
-        console.error('Error: .ai/config.json not found. Run "ctxstack init" first.');
+        console.error('Error: .ctxstack/config.json not found. Run "ctxstack init" first.');
         process.exit(1);
       }
 

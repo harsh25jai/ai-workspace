@@ -1,9 +1,10 @@
 import fs from 'fs-extra';
 import path from 'path';
 import { ScannerResult } from '../analyzer/repoScanner';
+import { CTXSTACK_DIR } from '../constants';
 
 export async function generateProject(rootDir: string, scannerResult: ScannerResult): Promise<void> {
-  const projectPath = path.join(rootDir, '.ai', 'project.md');
+  const projectPath = path.join(rootDir, CTXSTACK_DIR, 'project.md');
   
   const content = `# Project Summary
 

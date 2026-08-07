@@ -25,8 +25,8 @@ describe('config security', () => {
       ANTHROPIC_API_KEY: 'sk-ant-test-should-not-persist',
     });
 
-    const config = fs.readJSONSync(path.join(tmpDir, '.ai', 'config.json'));
-    const raw = fs.readFileSync(path.join(tmpDir, '.ai', 'config.json'), 'utf8');
+    const config = fs.readJSONSync(path.join(tmpDir, '.ctxstack', 'config.json'));
+    const raw = fs.readFileSync(path.join(tmpDir, '.ctxstack', 'config.json'), 'utf8');
 
     expect(config.openaiKey).toBeUndefined();
     expect(config.anthropicKey).toBeUndefined();
@@ -36,7 +36,7 @@ describe('config security', () => {
 
   it('config.json contains provider field', () => {
     runCliOrThrow(['init'], tmpDir);
-    const config = fs.readJSONSync(path.join(tmpDir, '.ai', 'config.json'));
+    const config = fs.readJSONSync(path.join(tmpDir, '.ctxstack', 'config.json'));
     expect(config).toHaveProperty('provider');
   });
 });

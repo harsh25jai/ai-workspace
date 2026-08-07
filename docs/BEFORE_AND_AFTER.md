@@ -18,10 +18,10 @@ Running `init → analyze → generate → export` produces:
 
 | Artifact | Purpose |
 |---|---|
-| `.ai/project.md` | Business/tech summary for agents |
-| `.ai/architecture.md` | Module layout and data flow |
-| `.ai/rules.md` | Development conventions |
-| `.ai/context/repo-context.json` | Machine-readable repo footprint |
+| `.ctxstack/project.md` | Business/tech summary for agents |
+| `.ctxstack/architecture.md` | Module layout and data flow |
+| `.ctxstack/rules.md` | Development conventions |
+| `.ctxstack/context/repo-context.json` | Machine-readable repo footprint |
 | `.cursorrules` | IDE-integrated rules (Cursor/Windsurf) |
 | `.agents/rules/` | Agent-specific rule files |
 | `.agents/workflows/` | Repeatable agent workflows |

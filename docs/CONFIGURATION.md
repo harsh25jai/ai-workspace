@@ -2,7 +2,7 @@
 
 ## API keys (environment variables only)
 
-API keys are **never stored** in `.ai/config.json`. Use environment variables:
+API keys are **never stored** in `.ctxstack/config.json`. Use environment variables:
 
 ```bash
 export OPENAI_API_KEY=sk-...
@@ -20,7 +20,7 @@ Copy [`.env.example`](../.env.example) to `.env` for local development.
 
 ## Provider config file
 
-`.ai/config.json` stores non-sensitive settings only:
+`.ctxstack/config.json` stores non-sensitive settings only:
 
 ```json
 {
@@ -45,6 +45,6 @@ ctxstack config
 
 ## Security
 
-- Add `.ai/config.json` to `.gitignore` if you customize it
+- Add `.ctxstack/config.json` to `.gitignore` if you customize it
 - Never commit `.env` files
 - Keys are read from environment at runtime only

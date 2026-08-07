@@ -17,7 +17,7 @@ describe('error handling', () => {
     cleanupTempProject(tmpDir);
   });
 
-  it('analyze exits 1 when .ai/ is missing', () => {
+  it('analyze exits 1 when .ctxstack/ is missing', () => {
     const result = runCli(['analyze'], tmpDir);
     expect(result.exitCode).toBe(1);
     expect(result.stderr).toContain('ctxstack init');
@@ -25,7 +25,7 @@ describe('error handling', () => {
 
   it('generate exits 1 when repo-context.json is missing', () => {
     runCli(['init'], tmpDir);
-    fs.removeSync(path.join(tmpDir, '.ai', 'context', 'repo-context.json'));
+    fs.removeSync(path.join(tmpDir, '.ctxstack', 'context', 'repo-context.json'));
     const result = runCli(['generate'], tmpDir);
     expect(result.exitCode).toBe(1);
     expect(result.stderr).toContain('repo-context.json not found');
@@ -48,7 +48,7 @@ describe('error handling', () => {
     runCli(['analyze'], tmpDir);
     runCli(['generate'], tmpDir);
 
-    fs.removeSync(path.join(tmpDir, '.ai', 'rules.md'));
+    fs.removeSync(path.join(tmpDir, '.ctxstack', 'rules.md'));
     const result = runCli(['export'], tmpDir);
     expect(result.exitCode).toBe(1);
     expect(result.stderr).toContain('rules.md not found');

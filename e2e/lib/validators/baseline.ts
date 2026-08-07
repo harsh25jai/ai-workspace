@@ -47,9 +47,9 @@ export function loadBaseline(baselinesRoot: string, fixtureId: string): Baseline
 
 export function writeBaseline(baselinesRoot: string, fixtureId: string, workspaceDir: string): BaselineData {
   const data: BaselineData = {
-    repoContextHash: fingerprintArtifact(workspaceDir, '.ai/context/repo-context.json', 'json') || undefined,
-    projectHeadingsHash: fingerprintArtifact(workspaceDir, '.ai/project.md', 'headings') || undefined,
-    architectureHeadingsHash: fingerprintArtifact(workspaceDir, '.ai/architecture.md', 'headings') || undefined,
+    repoContextHash: fingerprintArtifact(workspaceDir, '.ctxstack/context/repo-context.json', 'json') || undefined,
+    projectHeadingsHash: fingerprintArtifact(workspaceDir, '.ctxstack/project.md', 'headings') || undefined,
+    architectureHeadingsHash: fingerprintArtifact(workspaceDir, '.ctxstack/architecture.md', 'headings') || undefined,
   };
   fs.ensureDirSync(baselinesRoot);
   fs.writeJSONSync(path.join(baselinesRoot, `${fixtureId}.json`), data, { spaces: 2 });
@@ -81,9 +81,9 @@ export function validateBaseline(
   let total = 0;
 
   const checks: Array<{ key: keyof BaselineData; path: string; kind: 'json' | 'headings' }> = [
-    { key: 'repoContextHash', path: '.ai/context/repo-context.json', kind: 'json' },
-    { key: 'projectHeadingsHash', path: '.ai/project.md', kind: 'headings' },
-    { key: 'architectureHeadingsHash', path: '.ai/architecture.md', kind: 'headings' },
+    { key: 'repoContextHash', path: '.ctxstack/context/repo-context.json', kind: 'json' },
+    { key: 'projectHeadingsHash', path: '.ctxstack/project.md', kind: 'headings' },
+    { key: 'architectureHeadingsHash', path: '.ctxstack/architecture.md', kind: 'headings' },
   ];
 
   for (const check of checks) {

@@ -95,7 +95,7 @@ async function runRegenerateWorkflow(
   workspaceDir: string,
   commands: CommandResult[]
 ): Promise<void> {
-  const projectPath = path.join(workspaceDir, '.ai', 'project.md');
+  const projectPath = path.join(workspaceDir, '.ctxstack', 'project.md');
   fs.writeFileSync(projectPath, '# corrupted by e2e test\n');
 
   const regenResult = runBundleCli(bundlePath, ['regenerate'], workspaceDir);

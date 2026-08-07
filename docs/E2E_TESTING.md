@@ -62,7 +62,7 @@ No TypeScript, devDependencies, or ctxstack source code required at runtime.
 
 For each repository fixture, the bundled CLI (`releases/ctxstack.js`) runs:
 
-1. `init` — creates `.ai/`, `.agents/`, config
+1. `init` — creates `.ctxstack/`, `.agents/`, config
 2. `analyze` — generates `repo-context.json`, `repo-map.json`
 3. `generate` — template-based documentation
 4. `status` — health check output

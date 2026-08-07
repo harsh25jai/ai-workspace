@@ -28,7 +28,7 @@ export async function scanRepository(rootDir: string): Promise<ScannerResult> {
   };
 
   // 0. Load .aiignore
-  const ignorePatterns = new Set(['node_modules', '.git', 'dist', 'build', 'coverage', '.ai']);
+  const ignorePatterns = new Set(['node_modules', '.git', 'dist', 'build', 'coverage', '.ctxstack', '.ai']);
   const aiIgnorePath = path.join(rootDir, '.aiignore');
   if (fs.existsSync(aiIgnorePath)) {
     const ignoreContent = await fs.readFile(aiIgnorePath, 'utf8');

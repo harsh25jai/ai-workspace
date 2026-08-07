@@ -68,7 +68,7 @@ This repository follows specific patterns and standards detected by ctxstack.
 - Modules: ${context.modules.join(', ')}
 
 ## General Guidelines
-- All code changes should be reflected in .ai/ documentation.
+- All code changes should be reflected in .ctxstack/ documentation.
 - Use "ctxstack generate" after significant code changes.
 - Follow the patterns defined in .cursor/rules/ for IDE-specific guidance.
 `;

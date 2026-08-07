@@ -3,12 +3,13 @@ import fs from 'fs-extra';
 import path from 'path';
 import { getState, generateHash } from '../workspace/state';
 import { isAgentEnvironment } from '../utils/agentDetector';
+import { CTXSTACK_DIR } from '../constants';
 
 export const statusCommand = new Command('status')
   .description('Display the health and status of the current AI workspace')
   .action(async () => {
     const cwd = process.cwd();
-    const aiDir = path.join(cwd, '.ai');
+    const aiDir = path.join(cwd, CTXSTACK_DIR);
     
     console.log('--- Workspace Status ---');
     console.log(`Agent Detected: ${isAgentEnvironment() ? 'Yes' : 'No'}`);
@@ -42,7 +43,7 @@ export const statusCommand = new Command('status')
     if (fs.existsSync(standardSkillsPath)) {
       console.log('Skills generated ✔ (Standard: .agents/skills)');
     } else if (fs.existsSync(legacySkillsPath)) {
-      console.log('Skills generated ⚠ (Legacy: .ai/skills - consider migrating to .agents/skills)');
+      console.log('Skills generated ⚠ (Legacy: .ctxstack/skills - consider migrating to .agents/skills)');
     } else {
       console.log('Skills generated ✘');
     }

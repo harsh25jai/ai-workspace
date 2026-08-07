@@ -23,9 +23,9 @@ export function validateCrossArtifactConsistency(
   let passed = 0;
   let total = 0;
 
-  const projectMd = readDoc(workspaceDir, '.ai/project.md');
-  const architectureMd = readDoc(workspaceDir, '.ai/architecture.md');
-  const rulesMd = readDoc(workspaceDir, '.ai/rules.md');
+  const projectMd = readDoc(workspaceDir, '.ctxstack/project.md');
+  const architectureMd = readDoc(workspaceDir, '.ctxstack/architecture.md');
+  const rulesMd = readDoc(workspaceDir, '.ctxstack/rules.md');
 
   if (!context) {
     return { passed: 0, total: 1, warnings: [issue('warning', 'CONSIST_NO_CTX', 'No context for consistency checks')] };

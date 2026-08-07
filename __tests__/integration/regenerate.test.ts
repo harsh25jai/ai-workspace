@@ -21,7 +21,7 @@ describe('regenerate command', () => {
   });
 
   it('forces rebuild even when hash is unchanged', () => {
-    const projectPath = path.join(tmpDir, '.ai', 'project.md');
+    const projectPath = path.join(tmpDir, '.ctxstack', 'project.md');
     const original = fs.readFileSync(projectPath, 'utf8');
 
     fs.writeFileSync(projectPath, '# Corrupted content\n');
@@ -35,7 +35,7 @@ describe('regenerate command', () => {
   });
 
   it('exits with error when context is missing', () => {
-    fs.removeSync(path.join(tmpDir, '.ai', 'context', 'repo-context.json'));
+    fs.removeSync(path.join(tmpDir, '.ctxstack', 'context', 'repo-context.json'));
     const result = runCli(['regenerate'], tmpDir);
     expect(result.exitCode).toBe(1);
     expect(result.stderr).toContain('repo-context.json not found');

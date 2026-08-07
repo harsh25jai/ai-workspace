@@ -12,7 +12,7 @@ describe('runAgents failure handling', () => {
 
   it('throws AgentRunError when provider fails', async () => {
     const tmpDir = fs.mkdtempSync(path.join(__dirname, '.tmp-runner-'));
-    const aiDir = path.join(tmpDir, '.ai');
+    const aiDir = path.join(tmpDir, '.ctxstack');
     await fs.ensureDir(path.join(aiDir, 'context'));
     await fs.writeJSON(path.join(aiDir, 'config.json'), { provider: 'openai', model: 'gpt-4' });
     await fs.writeJSON(path.join(aiDir, 'context', 'repo-context.json'), {

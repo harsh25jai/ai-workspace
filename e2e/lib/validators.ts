@@ -18,7 +18,7 @@ function issue(severity: 'error' | 'warning', code: string, message: string): Va
 }
 
 export function parseRepoContext(workspaceDir: string): RepoContext | null {
-  const contextPath = path.join(workspaceDir, '.ai', 'context', 'repo-context.json');
+  const contextPath = path.join(workspaceDir, '.ctxstack', 'context', 'repo-context.json');
   if (!fs.existsSync(contextPath)) return null;
   try {
     return fs.readJSONSync(contextPath) as RepoContext;
@@ -28,7 +28,7 @@ export function parseRepoContext(workspaceDir: string): RepoContext | null {
 }
 
 export function validateRepoContext(workspaceDir: string): ArtifactValidation {
-  const relPath = '.ai/context/repo-context.json';
+  const relPath = '.ctxstack/context/repo-context.json';
   const fullPath = path.join(workspaceDir, relPath);
   const issues: ValidationIssue[] = [];
 
@@ -54,7 +54,7 @@ export function validateRepoContext(workspaceDir: string): ArtifactValidation {
 }
 
 export function validateRepoMap(workspaceDir: string): ArtifactValidation {
-  const relPath = '.ai/repo-map.json';
+  const relPath = '.ctxstack/repo-map.json';
   const fullPath = path.join(workspaceDir, relPath);
   const issues: ValidationIssue[] = [];
 
@@ -107,7 +107,7 @@ export function validateMarkdownDoc(
 }
 
 export function validateConfig(workspaceDir: string): ArtifactValidation {
-  const relPath = '.ai/config.json';
+  const relPath = '.ctxstack/config.json';
   const fullPath = path.join(workspaceDir, relPath);
   const issues: ValidationIssue[] = [];
 
@@ -174,9 +174,9 @@ export function validateAllArtifacts(workspaceDir: string): ArtifactValidation[]
     validateConfig(workspaceDir),
     validateRepoContext(workspaceDir),
     validateRepoMap(workspaceDir),
-    validateMarkdownDoc(workspaceDir, '.ai/project.md', ['# Project Summary', '## Tech Stack']),
-    validateMarkdownDoc(workspaceDir, '.ai/architecture.md', ['# Architecture']),
-    validateMarkdownDoc(workspaceDir, '.ai/rules.md', ['# Development Rules']),
+    validateMarkdownDoc(workspaceDir, '.ctxstack/project.md', ['# Project Summary', '## Tech Stack']),
+    validateMarkdownDoc(workspaceDir, '.ctxstack/architecture.md', ['# Architecture']),
+    validateMarkdownDoc(workspaceDir, '.ctxstack/rules.md', ['# Development Rules']),
     validateExport(workspaceDir),
     validateAgentsStructure(workspaceDir),
     validateState(workspaceDir),
@@ -184,7 +184,7 @@ export function validateAllArtifacts(workspaceDir: string): ArtifactValidation[]
 }
 
 export function validateState(workspaceDir: string): ArtifactValidation {
-  const relPath = '.ai/context/state.json';
+  const relPath = '.ctxstack/context/state.json';
   const fullPath = path.join(workspaceDir, relPath);
   const issues: ValidationIssue[] = [];
 

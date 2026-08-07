@@ -7,7 +7,7 @@
 ## Core Flow
 
 - [x] PASS `ctxstack init` works without agent environment
-- [x] PASS `.ai/config.json` created (no API keys stored)
+- [x] PASS `.ctxstack/config.json` created (no API keys stored)
 - [x] PASS `ctxstack analyze` produces `repo-context.json`
 - [x] PASS `ctxstack generate` produces template content
 - [x] PASS `ctxstack generate --ai` fails clearly without API key

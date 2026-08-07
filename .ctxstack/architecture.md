@@ -6,10 +6,10 @@
 2. **CLI Router (`src/cli/index.ts`):** Arguments parsed via `commander`, routed to `src/commands/`
 3. **Execution Domain:**
    - `analyze` → `src/analyzer/` traverses repo tree
-   - `init` → bootstraps `.ai/`, `.agents/`, `.cursor/` directories
+   - `init` → bootstraps `.ctxstack/`, `.agents/`, `.cursor/` directories
    - `generate` → template mode (default) or `--ai` LLM mode
 4. **Context Generation:** `src/generators/` produces markdown and JSON artifacts
-5. **Persistence:** State in `.ai/config.json`, `.ai/context/repo-context.json`, `.ai/context/state.json`
+5. **Persistence:** State in `.ctxstack/config.json`, `.ctxstack/context/repo-context.json`, `.ctxstack/context/state.json`
 
 ## Core Service Boundaries
 - **`src/cli/`** — Argument ingestion and command registration

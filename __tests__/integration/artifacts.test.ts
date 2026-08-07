@@ -22,7 +22,7 @@ describe('generated artifacts', () => {
   });
 
   it('repo-context.json has required schema fields', () => {
-    const context = fs.readJSONSync(path.join(tmpDir, '.ai', 'context', 'repo-context.json'));
+    const context = fs.readJSONSync(path.join(tmpDir, '.ctxstack', 'context', 'repo-context.json'));
 
     expect(context).toHaveProperty('languages');
     expect(context).toHaveProperty('frameworks');
@@ -42,7 +42,7 @@ describe('generated artifacts', () => {
     };
 
     for (const doc of docs) {
-      const content = fs.readFileSync(path.join(tmpDir, '.ai', doc), 'utf8');
+      const content = fs.readFileSync(path.join(tmpDir, '.ctxstack', doc), 'utf8');
       expect(content).toContain('<!-- @ground-truth:');
       for (const section of requiredSections[doc]) {
         expect(content).toContain(section);
@@ -51,7 +51,7 @@ describe('generated artifacts', () => {
   });
 
   it('state.json is written after generate', () => {
-    const statePath = path.join(tmpDir, '.ai', 'context', 'state.json');
+    const statePath = path.join(tmpDir, '.ctxstack', 'context', 'state.json');
     expect(fs.existsSync(statePath)).toBe(true);
     const state = fs.readJSONSync(statePath);
     expect(state).toHaveProperty('repoHash');
@@ -60,7 +60,7 @@ describe('generated artifacts', () => {
   });
 
   it('export mirrors rules.md content into .cursorrules', () => {
-    const rulesMd = fs.readFileSync(path.join(tmpDir, '.ai', 'rules.md'), 'utf8');
+    const rulesMd = fs.readFileSync(path.join(tmpDir, '.ctxstack', 'rules.md'), 'utf8');
     runCliOrThrow(['export'], tmpDir);
     const cursorRules = fs.readFileSync(path.join(tmpDir, '.cursorrules'), 'utf8');
 

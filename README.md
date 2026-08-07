@@ -1,6 +1,6 @@
 # ctxstack
 
-`ctxstack` is a local Node.js CLI that prepares repositories for AI coding assistants by generating structured context in `.ai/`.
+`ctxstack` is a local Node.js CLI that prepares repositories for AI coding assistants by generating structured context in `.ctxstack/`.
 
 **Beta note:** Currently optimized for Node.js/TypeScript projects with a top-level `src/` directory. See [docs/LIMITATIONS.md](docs/LIMITATIONS.md) for full beta scope.
 
@@ -43,7 +43,7 @@ Requires Node.js 18+.
 
 | Command | Description |
 |---|---|
-| `init` | Bootstrap `.ai/` workspace |
+| `init` | Bootstrap `.ctxstack/` workspace |
 | `analyze` | Scan repo → `repo-context.json` |
 | `generate` | Template docs (default) |
 | `generate --ai` | LLM-enhanced docs (requires API key) |

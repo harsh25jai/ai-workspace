@@ -5,13 +5,14 @@ import fs from 'fs-extra';
 import path from 'path';
 import { getState, generateHash, saveState } from '../workspace/state';
 import { ScannerResult } from '../analyzer/repoScanner';
+import { CTXSTACK_DIR } from '../constants';
 
 export const generateCommand = new Command('generate')
   .description('Generate documentation from repository context (template mode by default)')
   .option('--ai', 'Use LLM providers for enhanced documentation generation')
   .action(async (options: { ai?: boolean }): Promise<void> => {
     const cwd = process.cwd();
-    const contextPath = path.join(cwd, '.ai', 'context', 'repo-context.json');
+    const contextPath = path.join(cwd, CTXSTACK_DIR, 'context', 'repo-context.json');
 
     if (!fs.existsSync(contextPath)) {
       console.error('Error: repo-context.json not found. Run analyze first.');

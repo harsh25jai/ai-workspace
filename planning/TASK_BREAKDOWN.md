@@ -9,7 +9,7 @@
 | T-005 | Restore human init + config.json | A | T-002 | `src/commands/init.ts` |
 | T-006 | Template generator | A | T-005 | `src/generators/templateGenerator.ts`, `src/commands/generate.ts` |
 | T-007 | CI workflow | B | T-002 | `.github/workflows/test.yml` |
-| T-009 | Restore `.ai/` docs | C | T-002 | `.ai/project.md`, `.ai/architecture.md`, `.ai/rules.md` |
+| T-009 | Restore `.ctxstack/` docs | C | T-002 | `.ctxstack/project.md`, `.ctxstack/architecture.md`, `.ctxstack/rules.md` |
 | T-010 | Align version | C | T-002 | `package.json`, `src/cli/index.ts`, `CHANGELOG.md` |
 
 ## Sprint 2 — Make it usable (Days 3–5)

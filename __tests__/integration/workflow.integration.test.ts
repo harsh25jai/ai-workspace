@@ -25,14 +25,14 @@ describe('full workflow integration', () => {
     runCliOrThrow(['export'], tmpDir);
     const status = runCliOrThrow(['status'], tmpDir);
 
-    expect(fs.existsSync(path.join(tmpDir, '.ai', 'config.json'))).toBe(true);
-    expect(fs.existsSync(path.join(tmpDir, '.ai', 'context', 'repo-context.json'))).toBe(true);
-    expect(fs.existsSync(path.join(tmpDir, '.ai', 'project.md'))).toBe(true);
-    expect(fs.existsSync(path.join(tmpDir, '.ai', 'architecture.md'))).toBe(true);
-    expect(fs.existsSync(path.join(tmpDir, '.ai', 'rules.md'))).toBe(true);
+    expect(fs.existsSync(path.join(tmpDir, '.ctxstack', 'config.json'))).toBe(true);
+    expect(fs.existsSync(path.join(tmpDir, '.ctxstack', 'context', 'repo-context.json'))).toBe(true);
+    expect(fs.existsSync(path.join(tmpDir, '.ctxstack', 'project.md'))).toBe(true);
+    expect(fs.existsSync(path.join(tmpDir, '.ctxstack', 'architecture.md'))).toBe(true);
+    expect(fs.existsSync(path.join(tmpDir, '.ctxstack', 'rules.md'))).toBe(true);
     expect(fs.existsSync(path.join(tmpDir, '.cursorrules'))).toBe(true);
 
-    const context = fs.readJSONSync(path.join(tmpDir, '.ai', 'context', 'repo-context.json'));
+    const context = fs.readJSONSync(path.join(tmpDir, '.ctxstack', 'context', 'repo-context.json'));
     expect(context.frameworks).toContain('express');
     expect(context.modules).toContain('controllers');
 
@@ -45,15 +45,15 @@ describe('full workflow integration', () => {
     runCliOrThrow(['analyze'], tmpDir);
     runCliOrThrow(['generate'], tmpDir);
 
-    const projectBefore = fs.readFileSync(path.join(tmpDir, '.ai', 'project.md'), 'utf8');
-    const mtimeBefore = fs.statSync(path.join(tmpDir, '.ai', 'project.md')).mtimeMs;
+    const projectBefore = fs.readFileSync(path.join(tmpDir, '.ctxstack', 'project.md'), 'utf8');
+    const mtimeBefore = fs.statSync(path.join(tmpDir, '.ctxstack', 'project.md')).mtimeMs;
 
     const skipResult = runCli(['generate'], tmpDir);
     expect(skipResult.exitCode).toBe(0);
     expect(skipResult.stdout).toContain('already up to date');
 
-    const projectAfter = fs.readFileSync(path.join(tmpDir, '.ai', 'project.md'), 'utf8');
+    const projectAfter = fs.readFileSync(path.join(tmpDir, '.ctxstack', 'project.md'), 'utf8');
     expect(projectAfter).toBe(projectBefore);
-    expect(fs.statSync(path.join(tmpDir, '.ai', 'project.md')).mtimeMs).toBe(mtimeBefore);
+    expect(fs.statSync(path.join(tmpDir, '.ctxstack', 'project.md')).mtimeMs).toBe(mtimeBefore);
   });
 });

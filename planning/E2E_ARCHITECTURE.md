@@ -86,7 +86,7 @@ Quality warnings **do not fail CI**. Only L0/L1 errors cause `exit 1`.
 
 ## Repository Fixture Matrix
 
-Fixtures live in `e2e/fixtures/` (source-only, no committed `.ai/` artifacts).
+Fixtures live in `e2e/fixtures/` (source-only, no committed `.ctxstack/` artifacts).
 
 | ID | Type | Expected Verdict | Workflows |
 |----|------|------------------|-----------|
@@ -204,7 +204,7 @@ npm run test:all
 
 ```
 releases/
-  ctxstack.js                 # generates .ai/ artifacts
+  ctxstack.js                 # generates .ctxstack/ artifacts
   ctxstack-e2e-tester.js    # validates artifacts + quality reports
   e2e-fixtures/                   # fixture matrix (for fixtures command)
   e2e-reports/                    # default report output when bundled
