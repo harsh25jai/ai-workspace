@@ -16,6 +16,7 @@ import { validateAgentReadiness } from './readiness';
 export interface ProductQualityInput {
   workspaceDir: string;
   repoRoot: string;
+  baselinesRoot: string;
   fixture: FixtureManifestEntry;
   context: RepoContext | null;
   commands: CommandResult[];
@@ -78,7 +79,7 @@ function scoreReliability(commands: CommandResult[]): {
 export function validateProductQuality(input: ProductQualityInput): ProductQualityResult {
   const {
     workspaceDir,
-    repoRoot,
+    baselinesRoot,
     fixture,
     context,
     commands,
@@ -96,7 +97,7 @@ export function validateProductQuality(input: ProductQualityInput): ProductQuali
   const analysis = validateAnalysisCorrectness(workspaceDir, context, fixture);
   const consistency = validateCrossArtifactConsistency(workspaceDir, context, fixture);
   const readiness = validateAgentReadiness(workspaceDir, context, fixture, explainValidation);
-  const baseline = validateBaseline(repoRoot, fixture.id, workspaceDir, updateBaselines);
+  const baseline = validateBaseline(baselinesRoot, fixture.id, workspaceDir, updateBaselines);
 
   const dimensions = [
     scoreFromChecks('reliability', reliability.passed, reliability.total, reliability.warnings),

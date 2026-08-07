@@ -1,6 +1,7 @@
 import fs from 'fs-extra';
 import path from 'path';
-import { assertBundleExists, resolveBundlePath, runBundleCli, runBundleCliOrThrow } from './bundleCli';
+import { assertBundleExists, runBundleCli, runBundleCliOrThrow } from './bundleCli';
+import { E2EContext, resolveAiWorkspaceBundle } from './context';
 import {
   deriveVerdict,
   parseRepoContext,
@@ -114,13 +115,13 @@ async function runRegenerateWorkflow(
 }
 
 export async function runFixtureE2E(
-  repoRoot: string,
+  ctx: E2EContext,
   bundlePath: string,
   fixture: FixtureManifestEntry,
   workspacesRoot: string,
   options: { updateBaselines?: boolean } = {}
 ): Promise<FixtureRunResult> {
-  const fixtureDir = path.join(repoRoot, 'e2e', 'fixtures', fixture.id);
+  const fixtureDir = path.join(ctx.fixturesRoot, fixture.id);
   const workspaceDir = createWorkspaceFromFixture(fixtureDir, workspacesRoot, fixture.id);
   const start = Date.now();
   const commands: CommandResult[] = [];
@@ -154,7 +155,8 @@ export async function runFixtureE2E(
     const explainStdout = commands.find((c) => c.command.includes('explain'))?.stdout;
     const productQuality = validateProductQuality({
       workspaceDir,
-      repoRoot,
+      repoRoot: ctx.testerRoot,
+      baselinesRoot: ctx.baselinesRoot,
       fixture,
       context,
       commands,
@@ -219,8 +221,8 @@ export async function runFixtureE2E(
   }
 }
 
-export function resolveAndValidateBundle(repoRoot: string): string {
-  const bundlePath = resolveBundlePath(repoRoot);
+export function resolveAndValidateBundle(ctx: E2EContext, explicitPath?: string): string {
+  const bundlePath = resolveAiWorkspaceBundle(ctx, explicitPath);
   assertBundleExists(bundlePath);
   return bundlePath;
 }

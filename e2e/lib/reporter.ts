@@ -10,9 +10,10 @@ import {
   SuiteQualityReport,
 } from './types';
 import { DIMENSION_WEIGHTS } from './scoring';
+import { E2EContext } from './context';
 
-export function writeReport(repoRoot: string, report: E2EReport): string {
-  const reportsDir = path.join(repoRoot, 'e2e', 'reports', 'latest');
+export function writeReport(ctx: E2EContext, report: E2EReport): string {
+  const reportsDir = path.join(ctx.reportsRoot, 'latest');
   fs.ensureDirSync(reportsDir);
 
   const summaryPath = path.join(reportsDir, 'summary.json');
@@ -40,7 +41,7 @@ export function writeReport(repoRoot: string, report: E2EReport): string {
   const qualityReport = buildSuiteQualityReport(report);
   fs.writeJSONSync(path.join(reportsDir, 'quality-report.json'), qualityReport, { spaces: 2 });
 
-  writeMarkdownSummary(repoRoot, report, qualityReport);
+  writeMarkdownSummary(ctx, report, qualityReport);
   return reportsDir;
 }
 
@@ -102,7 +103,7 @@ function buildSuiteQualityReport(report: E2EReport): SuiteQualityReport {
 }
 
 function writeMarkdownSummary(
-  repoRoot: string,
+  ctx: E2EContext,
   report: E2EReport,
   qualityReport: SuiteQualityReport
 ): void {
@@ -167,7 +168,7 @@ function writeMarkdownSummary(
     }
   }
 
-  const mdPath = path.join(repoRoot, 'e2e', 'reports', 'latest', 'SUMMARY.md');
+  const mdPath = path.join(ctx.reportsRoot, 'latest', 'SUMMARY.md');
   fs.writeFileSync(mdPath, lines.join('\n'));
 }
 
@@ -215,8 +216,8 @@ export function buildCompatibilityMatrix(results: FixtureRunResult[]): Compatibi
   }));
 }
 
-export function loadManifest(repoRoot: string): FixtureManifest {
-  const manifestPath = path.join(repoRoot, 'e2e', 'fixtures', 'manifest.json');
+export function loadManifest(fixturesRoot: string): FixtureManifest {
+  const manifestPath = path.join(fixturesRoot, 'manifest.json');
   return fs.readJSONSync(manifestPath) as FixtureManifest;
 }
 

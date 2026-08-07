@@ -1,5 +1,6 @@
 import fs from 'fs-extra';
 import path from 'path';
+import { E2EContext } from './context';
 
 export function createWorkspaceFromFixture(
   fixtureDir: string,
@@ -41,14 +42,14 @@ export function countSourceFiles(workspaceDir: string): number {
   return count;
 }
 
-export function ensureWorkspacesRoot(repoRoot: string): string {
-  const root = path.join(repoRoot, 'e2e', '.workspaces');
+export function ensureWorkspacesRoot(ctx: E2EContext): string {
+  const root = path.join(ctx.reportsRoot, '..', '.workspaces');
   fs.ensureDirSync(root);
   return root;
 }
 
-export function cleanupWorkspaces(repoRoot: string): void {
-  const root = path.join(repoRoot, 'e2e', '.workspaces');
+export function cleanupWorkspaces(ctx: E2EContext): void {
+  const root = path.join(ctx.reportsRoot, '..', '.workspaces');
   if (fs.existsSync(root)) {
     fs.removeSync(root);
   }

@@ -10,22 +10,53 @@ Run the release validation suite locally before publishing.
 ## Commands
 
 ```bash
-# Build bundle + run full E2E matrix (9 repositories)
+# Build bundles + run full E2E matrix (9 repositories) via standalone tester
 npm run test:e2e
 
-# Run a single fixture
-npm run test:e2e -- --only=express-api
+# Dev mode (ts-node, no E2E tester bundle required)
+npm run test:e2e:dev
 
-# Multiple fixtures
-npm run test:e2e -- --only=node-cli,express-api
+# Run a single fixture
+npm run bundle:e2e && node releases/ai-workspace-e2e-tester.js fixtures --only=express-api
+
+# Validate an external repository (artifacts must already exist)
+node releases/ai-workspace-e2e-tester.js validate /path/to/repo
+
+# Run ai-workspace on external repo, then validate
+node releases/ai-workspace-e2e-tester.js run /path/to/repo --ai-workspace releases/ai-workspace.js
 
 # Keep temp workspaces for inspection
-npm run test:e2e -- --only=react-vite --keep-workspaces
-# Workspaces: e2e/.workspaces/<fixture-id>/
+node releases/ai-workspace-e2e-tester.js fixtures --keep-workspaces
 
 # Update content baselines after generator/template changes
-npm run test:e2e -- --update-baselines
+node releases/ai-workspace-e2e-tester.js fixtures --update-baselines
 ```
+
+## Standalone E2E tester bundle
+
+The E2E framework ships as a separate executable:
+
+```
+releases/ai-workspace-e2e-tester.js   # validation tool (this repo)
+releases/e2e-fixtures/                # fixture matrix (shipped alongside tester)
+releases/ai-workspace.js              # ai-workspace CLI (generates artifacts)
+```
+
+**Distribution model:** ai-workspace generates artifacts; the E2E tester validates them. They are intentionally separate bundles.
+
+Minimum download for external repo validation (artifacts already generated):
+
+```bash
+node ai-workspace-e2e-tester.js validate /path/to/repo
+```
+
+For full pipeline on an external repo, also download `ai-workspace.js`:
+
+```bash
+node ai-workspace-e2e-tester.js run /path/to/repo --ai-workspace ./ai-workspace.js
+```
+
+No TypeScript, devDependencies, or ai-workspace source code required at runtime.
 
 ## What E2E validates
 

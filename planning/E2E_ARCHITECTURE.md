@@ -175,20 +175,51 @@ Both run on every PR and push to release branches. E2E is a separate workflow jo
 ## Local Execution
 
 ```bash
-# Full E2E (builds bundle first)
+# Full E2E via standalone tester bundle (CI path)
 npm run test:e2e
 
+# Dev iteration via ts-node
+npm run test:e2e:dev
+
+# Build E2E tester bundle only
+npm run bundle:e2e
+
 # Single fixture
-npm run test:e2e -- --only=express-api
+node releases/ai-workspace-e2e-tester.js fixtures --only=express-api
+
+# External repository validation
+node releases/ai-workspace-e2e-tester.js validate /path/to/repo --output ./my-reports
 
 # Keep temp workspaces for debugging
-npm run test:e2e -- --only=node-cli --keep-workspaces
+node releases/ai-workspace-e2e-tester.js fixtures --keep-workspaces
 
-# Update content baselines after intentional generator changes
-npm run test:e2e -- --update-baselines
+# Update baselines after intentional generator changes
+node releases/ai-workspace-e2e-tester.js fixtures --update-baselines
 
 # Full suite: unit + E2E
 npm run test:all
 ```
+
+## Standalone bundle architecture
+
+```
+releases/
+  ai-workspace.js                 # generates .ai/ artifacts
+  ai-workspace-e2e-tester.js    # validates artifacts + quality reports
+  e2e-fixtures/                   # fixture matrix (for fixtures command)
+  e2e-reports/                    # default report output when bundled
+```
+
+Entry point: `e2e/cli.ts` → bundled via `npm run bundle:e2e` (`scripts/bundle-e2e-tester.js`).
+
+Commands:
+
+| Command | Purpose |
+|---------|---------|
+| `fixtures` | Run built-in fixture matrix (CI) |
+| `validate <repo>` | Validate existing artifacts in any repository |
+| `run <repo> --ai-workspace <path>` | Run ai-workspace bundle, then validate |
+
+Legacy dev entry: `e2e/run.ts` (used by `test:e2e:dev`).
 
 See also: [docs/E2E_TESTING.md](../docs/E2E_TESTING.md)

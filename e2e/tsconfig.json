@@ -10,6 +10,6 @@
     "outDir": "./dist",
     "rootDir": "."
   },
-  "include": ["./**/*.ts"],
-  "exclude": ["dist", ".workspaces"]
+  "include": ["./cli.ts", "./run.ts", "./lib/**/*.ts"],
+  "exclude": ["dist", ".workspaces", "reports", "fixtures"]
 }

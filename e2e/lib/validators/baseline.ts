@@ -39,36 +39,35 @@ function fingerprintArtifact(workspaceDir: string, relPath: string, kind: 'json'
   return crypto.createHash('sha256').update(normalized).digest('hex').slice(0, 16);
 }
 
-export function loadBaseline(repoRoot: string, fixtureId: string): BaselineData | null {
-  const baselinePath = path.join(repoRoot, 'e2e', 'fixtures', 'baselines', `${fixtureId}.json`);
+export function loadBaseline(baselinesRoot: string, fixtureId: string): BaselineData | null {
+  const baselinePath = path.join(baselinesRoot, `${fixtureId}.json`);
   if (!fs.existsSync(baselinePath)) return null;
   return fs.readJSONSync(baselinePath) as BaselineData;
 }
 
-export function writeBaseline(repoRoot: string, fixtureId: string, workspaceDir: string): BaselineData {
+export function writeBaseline(baselinesRoot: string, fixtureId: string, workspaceDir: string): BaselineData {
   const data: BaselineData = {
     repoContextHash: fingerprintArtifact(workspaceDir, '.ai/context/repo-context.json', 'json') || undefined,
     projectHeadingsHash: fingerprintArtifact(workspaceDir, '.ai/project.md', 'headings') || undefined,
     architectureHeadingsHash: fingerprintArtifact(workspaceDir, '.ai/architecture.md', 'headings') || undefined,
   };
-  const dir = path.join(repoRoot, 'e2e', 'fixtures', 'baselines');
-  fs.ensureDirSync(dir);
-  fs.writeJSONSync(path.join(dir, `${fixtureId}.json`), data, { spaces: 2 });
+  fs.ensureDirSync(baselinesRoot);
+  fs.writeJSONSync(path.join(baselinesRoot, `${fixtureId}.json`), data, { spaces: 2 });
   return data;
 }
 
 export function validateBaseline(
-  repoRoot: string,
+  baselinesRoot: string,
   fixtureId: string,
   workspaceDir: string,
   updateBaselines: boolean
 ): CheckResult {
   if (updateBaselines) {
-    writeBaseline(repoRoot, fixtureId, workspaceDir);
+    writeBaseline(baselinesRoot, fixtureId, workspaceDir);
     return { passed: 1, total: 1, warnings: [] };
   }
 
-  const baseline = loadBaseline(repoRoot, fixtureId);
+  const baseline = loadBaseline(baselinesRoot, fixtureId);
   if (!baseline) {
     return {
       passed: 1,

@@ -8,6 +8,9 @@ __tests__/integration/.tmp-*
 # E2E temp workspaces and reports (regenerated in CI)
 e2e/.workspaces/
 e2e/reports/
+releases/.workspaces/
+releases/e2e-reports/
+releases/e2e-fixtures/
 
 # Generated during fixture validation runs
 __tests__/fixtures/**/.ai
