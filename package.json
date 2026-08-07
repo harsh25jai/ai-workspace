@@ -1,5 +1,5 @@
 {
-  "name": "ai-workspace",
+  "name": "ctxstack",
   "version": "0.1.0-beta.1",
   "description": "Tool to help generate AI/LLM prompts and instructions to make any repo AI-native ready.",
   "main": "dist/cli/index.js",
@@ -8,7 +8,7 @@
     "bin"
   ],
   "bin": {
-    "ai-workspace": "./bin/ai-workspace"
+    "ctxstack": "./bin/ctxstack"
   },
   "scripts": {
     "build": "rimraf dist && tsc",
@@ -16,11 +16,11 @@
     "start": "node dist/cli/index.js",
     "test": "npm run build && jest",
     "test:unit": "npm run build && jest --testPathIgnorePatterns=/e2e/",
-    "test:e2e": "npm run bundle && npm run bundle:e2e && node releases/ai-workspace-e2e-tester.js fixtures",
+    "test:e2e": "npm run bundle && npm run bundle:e2e && node releases/ctxstack-e2e-tester.js fixtures",
     "test:e2e:dev": "npm run bundle && ts-node --project e2e/tsconfig.json e2e/run.ts",
     "test:all": "npm run test && npm run test:e2e",
     "smoke": "bash scripts/smoke-test.sh",
-    "bundle": "npm run build && ncc build dist/cli/index.js -o releases -m && cp releases/index.js releases/ai-workspace.js",
+    "bundle": "npm run build && ncc build dist/cli/index.js -o releases -m && cp releases/index.js releases/ctxstack.js",
     "bundle:e2e": "tsc -p e2e/tsconfig.json && node scripts/bundle-e2e-tester.js"
   },
   "keywords": [],

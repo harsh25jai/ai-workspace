@@ -38,7 +38,7 @@ describe('generated artifacts', () => {
     const requiredSections: Record<string, string[]> = {
       'project.md': ['# Project Summary', '## Tech Stack'],
       'architecture.md': ['# Architecture', '## Modules'],
-      'rules.md': ['# Development Rules', '## AI Workspace'],
+      'rules.md': ['# Development Rules', '## Ctxstack'],
     };
 
     for (const doc of docs) {
@@ -64,7 +64,7 @@ describe('generated artifacts', () => {
     runCliOrThrow(['export'], tmpDir);
     const cursorRules = fs.readFileSync(path.join(tmpDir, '.cursorrules'), 'utf8');
 
-    expect(cursorRules).toContain('EXPORTED FROM AI-WORKSPACE');
+    expect(cursorRules).toContain('EXPORTED FROM CTXSTACK');
     expect(cursorRules).toContain('Development Rules');
     expect(cursorRules).toContain(rulesMd.split('\n').find(l => l.includes('Development Rules')) || '');
   });

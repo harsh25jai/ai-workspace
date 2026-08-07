@@ -24,7 +24,7 @@ export const generateCommand = new Command('generate')
 
     if (state && state.repoHash === currentHash && !options.ai) {
       console.log('Workspace is already up to date matching current repo context (hash unchanged). Skipping generation.');
-      console.log('Use "ai-workspace regenerate" to force rebuild.');
+      console.log('Use "ctxstack regenerate" to force rebuild.');
       return;
     }
 

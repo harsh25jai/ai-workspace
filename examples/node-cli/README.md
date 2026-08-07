@@ -7,10 +7,10 @@
 ## Commands run
 
 ```bash
-ai-workspace init
-ai-workspace analyze
-ai-workspace generate
-ai-workspace export
+ctxstack init
+ctxstack analyze
+ctxstack generate
+ctxstack export
 ```
 
 ## Before vs After

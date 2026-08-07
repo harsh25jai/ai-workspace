@@ -32,17 +32,17 @@ jobs:
           name: e2e-reports
           path: |
             releases/e2e-reports/latest/
-          retention-days: 30
+          retention-days: 5
       - name: Upload bundle artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ai-workspace-bundle
+          name: ctxstack-bundle
           path: |
-            releases/ai-workspace.js
-            releases/ai-workspace-e2e-tester.js
+            releases/ctxstack.js
+            releases/ctxstack-e2e-tester.js
             releases/e2e-fixtures/
             releases/index.js
-          retention-days: 14
+          retention-days: 5
       - name: Print E2E summary
         if: always()
         run: |

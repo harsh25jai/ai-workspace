@@ -4,19 +4,19 @@
 
 ```bash
 # 1. Initialize workspace
-ai-workspace init
+ctxstack init
 
 # 2. Scan repository (skipped if init already analyzed in interactive mode)
-ai-workspace analyze
+ctxstack analyze
 
 # 3. Generate documentation (template mode, no API key)
-ai-workspace generate
+ctxstack generate
 
 # 4. Export rules to IDE
-ai-workspace export
+ctxstack export
 
 # 5. Verify health
-ai-workspace status
+ctxstack status
 ```
 
 ## Init behavior by environment
@@ -32,32 +32,32 @@ ai-workspace status
 After adding modules or frameworks:
 
 ```bash
-ai-workspace sync
-ai-workspace regenerate   # force rebuild, bypasses hash guard
+ctxstack sync
+ctxstack regenerate   # force rebuild, bypasses hash guard
 ```
 
 ## LLM-enhanced generation
 
 ```bash
 export OPENAI_API_KEY=sk-...
-ai-workspace generate --ai
+ctxstack generate --ai
 ```
 
 Or for Anthropic:
 
 ```bash
 export ANTHROPIC_API_KEY=sk-ant-...
-ai-workspace generate --ai
+ctxstack generate --ai
 ```
 
 ## Explain a file
 
 ```bash
-ai-workspace explain src/cli/index.ts
+ctxstack explain src/cli/index.ts
 ```
 
 ## Distribution options
 
-- **npm:** `npm install -g ai-workspace`
-- **bundle:** `node releases/ai-workspace.js <command>`
+- **npm:** `npm install -g ctxstack`
+- **bundle:** `node releases/ctxstack.js <command>`
 - **from source:** `npm link` after `npm run build`

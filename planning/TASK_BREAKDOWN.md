@@ -33,5 +33,5 @@
 | T-021 | Smoke test script | E | T-015, T-019 | `scripts/smoke-test.sh`, `__tests__/fixtures/` |
 | T-022 | Real-repo smoke test | E | T-021 | `planning/SMOKE_TEST_RESULTS.md` |
 | T-023 | npm publish prep | E | T-010 | `package.json` |
-| T-024 | Bundle release | E | T-023 | `releases/ai-workspace.js` |
+| T-024 | Bundle release | E | T-023 | `releases/ctxstack.js` |
 | T-025 | CHANGELOG + release | E | T-022, T-024 | `CHANGELOG.md` |

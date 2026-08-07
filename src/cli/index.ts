@@ -16,7 +16,7 @@ import { exportCommand } from '../commands/export';
 const program = new Command();
 
 program
-  .name('ai-workspace')
+  .name('ctxstack')
   .description('CLI to convert a repository into an AI-ready workspace')
   .version('0.1.0-beta.1');
 

@@ -2,7 +2,7 @@
 # Architecture
 
 ## High-Level Data Flow
-1. **Command Invocation:** User or agent runs `ai-workspace` command
+1. **Command Invocation:** User or agent runs `ctxstack` command
 2. **CLI Router (`src/cli/index.ts`):** Arguments parsed via `commander`, routed to `src/commands/`
 3. **Execution Domain:**
    - `analyze` → `src/analyzer/` traverses repo tree

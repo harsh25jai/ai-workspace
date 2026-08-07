@@ -11,7 +11,7 @@ export const analyzeCommand = new Command('analyze')
     const aiDir = path.join(cwd, '.ai');
 
     if (!fs.existsSync(aiDir)) {
-      console.error('Error: .ai directory not found. Please run "ai-workspace init" first.');
+      console.error('Error: .ai directory not found. Please run "ctxstack init" first.');
       process.exit(1);
     }
 

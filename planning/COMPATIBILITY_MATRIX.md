@@ -1,6 +1,6 @@
 # Compatibility Matrix — BC1
 
-Ongoing confidence tracker for ai-workspace beta releases.
+Ongoing confidence tracker for ctxstack beta releases.
 
 **Last run:** 2026-08-07  
 **Version tested:** 0.1.0-beta.1  

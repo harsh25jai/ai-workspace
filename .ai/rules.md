@@ -12,7 +12,7 @@
 - Prefer `fetch` over external HTTP libraries for provider communication
 - Non-interactive defaults when stdin is not a TTY (CI support)
 
-## AI Workspace Standards
+## Ctxstack Standards
 - Never include raw source code in `repo-context.json`
 - Update `state.json` fingerprints after every successful `generate` or `sync`
 - Use YAML frontmatter for all `.skill.md` files

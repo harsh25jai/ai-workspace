@@ -1,4 +1,4 @@
-# Tester Guide: ai-workspace (BC1)
+# Tester Guide: ctxstack (BC1)
 
 ## Prerequisites
 
@@ -9,24 +9,24 @@
 ### Option A: npm
 
 ```bash
-npm install -g ai-workspace
-ai-workspace --version   # expect 0.1.0-beta.1
+npm install -g ctxstack
+ctxstack --version   # expect 0.1.0-beta.1
 ```
 
 ### Option B: Bundle
 
 ```bash
-node releases/ai-workspace.js --version
+node releases/ctxstack.js --version
 ```
 
 ## Workflow
 
 ```bash
-ai-workspace init
-ai-workspace analyze      # if init did not analyze (non-interactive mode)
-ai-workspace generate
-ai-workspace export
-ai-workspace status
+ctxstack init
+ctxstack analyze      # if init did not analyze (non-interactive mode)
+ctxstack generate
+ctxstack export
+ctxstack status
 ```
 
 ### Init behavior
@@ -39,7 +39,7 @@ ai-workspace status
 
 ```bash
 export OPENAI_API_KEY=sk-...
-ai-workspace generate --ai
+ctxstack generate --ai
 ```
 
 ## Automated test suite
@@ -66,4 +66,4 @@ See [docs/LIMITATIONS.md](docs/LIMITATIONS.md).
 
 ## Feedback
 
-Report issues with: repo type, commands run, `ai-workspace status` output, and error messages.
+Report issues with: repo type, commands run, `ctxstack status` output, and error messages.

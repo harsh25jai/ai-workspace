@@ -138,7 +138,7 @@ export function validateExport(workspaceDir: string): ArtifactValidation {
   }
 
   const content = fs.readFileSync(fullPath, 'utf8');
-  if (!content.includes('EXPORTED FROM AI-WORKSPACE')) {
+  if (!content.includes('EXPORTED FROM CTXSTACK')) {
     issues.push(issue('error', 'EXPORT_HEADER', '.cursorrules missing export header'));
   }
   if (!content.includes('Development Rules')) {

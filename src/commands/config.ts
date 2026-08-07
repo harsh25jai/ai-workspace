@@ -11,7 +11,7 @@ export const configCommand = new Command('config')
       const configPath = path.join(cwd, '.ai', 'config.json');
 
       if (!fs.existsSync(configPath)) {
-        console.error('Error: .ai/config.json not found. Run "ai-workspace init" first.');
+        console.error('Error: .ai/config.json not found. Run "ctxstack init" first.');
         process.exit(1);
       }
 

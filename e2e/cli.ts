@@ -2,7 +2,7 @@
 import { Command } from 'commander';
 import fs from 'fs-extra';
 import path from 'path';
-import { resolveE2EContext, resolveAiWorkspaceBundle } from './lib/context';
+import { resolveE2EContext, resolveCtxstackBundle } from './lib/context';
 import { runFixtureSuite } from './lib/fixtureSuite';
 import { resolveAndValidateBundle } from './lib/runner';
 import {
@@ -19,22 +19,22 @@ import { E2EReport, FixtureManifestEntry, FixtureRunResult } from './lib/types';
 const program = new Command();
 
 program
-  .name('ai-workspace-e2e-tester')
-  .description('Validate AI Workspace artifacts and run release-quality E2E checks')
+  .name('ctxstack-e2e-tester')
+  .description('Validate Ctxstack artifacts and run release-quality E2E checks')
   .version('0.1.0-beta.1');
 
 program
   .command('fixtures')
   .description('Run the built-in fixture matrix (CI release validation)')
   .option('--only <ids>', 'Comma-separated fixture ids')
-  .option('--ai-workspace <path>', 'Path to ai-workspace.js bundle')
+  .option('--ctxstack <path>', 'Path to ctxstack.js bundle')
   .option('--fixtures-root <path>', 'Path to fixtures directory')
   .option('--output <dir>', 'Reports output directory')
   .option('--keep-workspaces', 'Keep temp workspaces after run')
   .option('--update-baselines', 'Update content baseline fingerprints')
   .action(async (opts: {
     only?: string;
-    aiWorkspace?: string;
+    ctxstack?: string;
     fixturesRoot?: string;
     output?: string;
     keepWorkspaces?: boolean;
@@ -45,7 +45,7 @@ program
       fixturesRoot: opts.fixturesRoot,
       outputDir: opts.output,
     });
-    const bundlePath = resolveAndValidateBundle(ctx, opts.aiWorkspace);
+    const bundlePath = resolveAndValidateBundle(ctx, opts.ctxstack);
     const onlyIds = opts.only?.split(',').filter(Boolean);
     const { exitCode } = await runFixtureSuite({
       ctx,
@@ -79,17 +79,17 @@ program
 
 program
   .command('run <repo>')
-  .description('Run ai-workspace against a repository, then validate artifacts')
-  .requiredOption('--ai-workspace <path>', 'Path to ai-workspace.js bundle')
+  .description('Run ctxstack against a repository, then validate artifacts')
+  .requiredOption('--ctxstack <path>', 'Path to ctxstack.js bundle')
   .option('--explain <file>', 'Source file for explain command')
   .option('--output <dir>', 'Write validation report to this directory')
   .option('--config <path>', 'JSON file with optional expectation overrides')
   .action(async (
     repo: string,
-    opts: { aiWorkspace: string; explain?: string; output?: string; config?: string }
+    opts: { ctxstack: string; explain?: string; output?: string; config?: string }
   ) => {
     const ctx = resolveE2EContext({ entryFile: __filename, outputDir: opts.output });
-    const bundlePath = path.resolve(opts.aiWorkspace);
+    const bundlePath = path.resolve(opts.ctxstack);
     const expectations: Partial<FixtureManifestEntry> = opts.config
       ? (fs.readJSONSync(path.resolve(opts.config)) as Partial<FixtureManifestEntry>)
       : {};
@@ -99,7 +99,7 @@ program
     const result = await runAndValidateRepo({
       repoPath: repo,
       ctx,
-      aiWorkspaceBundle: bundlePath,
+      ctxstackBundle: bundlePath,
       expectations,
       runExplain: opts.explain ?? null,
     });

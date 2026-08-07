@@ -20,7 +20,7 @@ describe('error handling', () => {
   it('analyze exits 1 when .ai/ is missing', () => {
     const result = runCli(['analyze'], tmpDir);
     expect(result.exitCode).toBe(1);
-    expect(result.stderr).toContain('ai-workspace init');
+    expect(result.stderr).toContain('ctxstack init');
   });
 
   it('generate exits 1 when repo-context.json is missing', () => {

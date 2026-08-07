@@ -9,7 +9,7 @@ const NON_AGENT_ENV: NodeJS.ProcessEnv = {
 };
 
 export function resolveBundlePath(repoRoot: string): string {
-  const bundlePath = path.join(repoRoot, 'releases', 'ai-workspace.js');
+  const bundlePath = path.join(repoRoot, 'releases', 'ctxstack.js');
   return bundlePath;
 }
 

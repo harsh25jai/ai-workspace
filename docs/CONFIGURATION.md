@@ -32,7 +32,7 @@ Copy [`.env.example`](../.env.example) to `.env` for local development.
 Update interactively:
 
 ```bash
-ai-workspace config
+ctxstack config
 ```
 
 ## Provider selection

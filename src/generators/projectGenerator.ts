@@ -7,7 +7,7 @@ export async function generateProject(rootDir: string, scannerResult: ScannerRes
   
   const content = `# Project Summary
 
-This project has been analyzed by \`ai-workspace\`.
+This project has been analyzed by \`ctxstack\`.
 
 ## Detected Languages
 ${scannerResult.languages.map(l => `- ${l}`).join('\n')}

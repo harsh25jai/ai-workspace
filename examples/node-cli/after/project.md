@@ -2,7 +2,7 @@
 # Project Summary
 
 ## Overview
-This repository has been analyzed by ai-workspace.
+This repository has been analyzed by ctxstack.
 
 ## Tech Stack
 - **Languages:** javascript, typescript
@@ -12,4 +12,4 @@ This repository has been analyzed by ai-workspace.
 ## Entry Points
 - `src/index.ts`
 
-Run `ai-workspace generate --ai` for LLM-enhanced documentation.
+Run `ctxstack generate --ai` for LLM-enhanced documentation.

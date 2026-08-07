@@ -23,7 +23,7 @@
 | **Unit** | `__tests__/unit/` | Source modules | Fast logic validation (scanner, templates, diff) |
 | **Integration** | `__tests__/integration/` | `dist/cli/index.js` | Command contracts, error handling, security |
 | **CLI Workflow** | `__tests__/integration/workflow.*` | `dist/cli/index.js` | Single-repo happy paths during development |
-| **Bundle E2E** | `e2e/` | `releases/ai-workspace.js` | **Release artifact** validation across repo matrix |
+| **Bundle E2E** | `e2e/` | `releases/ctxstack.js` | **Release artifact** validation across repo matrix |
 | **Release Validation** | GitHub Actions `bundle-e2e` job | Bundle + E2E | Gate every PR and release branch push |
 
 ### Non-overlapping responsibilities
@@ -39,7 +39,7 @@
 ```
 npm run bundle
        ↓
-releases/ai-workspace.js
+releases/ctxstack.js
        ↓
 For each fixture in manifest.json:
   Copy fixture → temp workspace
@@ -185,16 +185,16 @@ npm run test:e2e:dev
 npm run bundle:e2e
 
 # Single fixture
-node releases/ai-workspace-e2e-tester.js fixtures --only=express-api
+node releases/ctxstack-e2e-tester.js fixtures --only=express-api
 
 # External repository validation
-node releases/ai-workspace-e2e-tester.js validate /path/to/repo --output ./my-reports
+node releases/ctxstack-e2e-tester.js validate /path/to/repo --output ./my-reports
 
 # Keep temp workspaces for debugging
-node releases/ai-workspace-e2e-tester.js fixtures --keep-workspaces
+node releases/ctxstack-e2e-tester.js fixtures --keep-workspaces
 
 # Update baselines after intentional generator changes
-node releases/ai-workspace-e2e-tester.js fixtures --update-baselines
+node releases/ctxstack-e2e-tester.js fixtures --update-baselines
 
 # Full suite: unit + E2E
 npm run test:all
@@ -204,8 +204,8 @@ npm run test:all
 
 ```
 releases/
-  ai-workspace.js                 # generates .ai/ artifacts
-  ai-workspace-e2e-tester.js    # validates artifacts + quality reports
+  ctxstack.js                 # generates .ai/ artifacts
+  ctxstack-e2e-tester.js    # validates artifacts + quality reports
   e2e-fixtures/                   # fixture matrix (for fixtures command)
   e2e-reports/                    # default report output when bundled
 ```
@@ -218,7 +218,7 @@ Commands:
 |---------|---------|
 | `fixtures` | Run built-in fixture matrix (CI) |
 | `validate <repo>` | Validate existing artifacts in any repository |
-| `run <repo> --ai-workspace <path>` | Run ai-workspace bundle, then validate |
+| `run <repo> --ctxstack <path>` | Run ctxstack bundle, then validate |
 
 Legacy dev entry: `e2e/run.ts` (used by `test:e2e:dev`).
 

@@ -4,7 +4,7 @@
 
 AI coding assistants (Cursor, Windsurf, Copilot) work best when they understand your project's architecture, conventions, and module boundaries. Without structure, agents must read many files — wasting context window and producing generic suggestions.
 
-## Before ai-workspace
+## Before ctxstack
 
 An agent typically sees:
 
@@ -12,7 +12,7 @@ An agent typically sees:
 - `package.json` dependencies (maybe)
 - No project-specific rules or patterns
 
-## After ai-workspace
+## After ctxstack
 
 Running `init → analyze → generate → export` produces:
 
@@ -34,7 +34,7 @@ See [examples/express-api/](../examples/express-api/) for a before/after walkthr
 
 | Mode | Command | API key? | Output |
 |---|---|---|---|
-| Template (default) | `ai-workspace generate` | No | Deterministic docs from `repo-context.json` |
-| LLM-enhanced | `ai-workspace generate --ai` | Yes (env var) | AI-written documentation |
+| Template (default) | `ctxstack generate` | No | Deterministic docs from `repo-context.json` |
+| LLM-enhanced | `ctxstack generate --ai` | Yes (env var) | AI-written documentation |
 
 Start with template mode. Use `--ai` when you need richer prose.

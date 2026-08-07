@@ -19,13 +19,13 @@ export async function syncWorkspace(rootDir: string): Promise<void> {
   const contextPath = path.join(aiDir, 'context', 'repo-context.json');
 
   if (!fs.existsSync(aiDir)) {
-    throw new Error('AI workspace not initialized. Run "ai-workspace init" first.');
+    throw new Error('AI workspace not initialized. Run "ctxstack init" first.');
   }
 
   if (!fs.existsSync(contextPath)) {
     console.log('Previous context not found. Running full analyze...');
     await runFullAnalyze(rootDir);
-    console.log('Analysis complete. Run "ai-workspace generate" to build documentation.');
+    console.log('Analysis complete. Run "ctxstack generate" to build documentation.');
     return;
   }
 

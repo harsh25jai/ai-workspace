@@ -1,4 +1,4 @@
-# Test Strategy — ai-workspace BC1
+# Test Strategy — ctxstack BC1
 
 **Version:** 0.1.0-beta.1  
 **Owner:** QA / Engineering  

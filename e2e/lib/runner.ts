@@ -1,7 +1,7 @@
 import fs from 'fs-extra';
 import path from 'path';
 import { assertBundleExists, runBundleCli, runBundleCliOrThrow } from './bundleCli';
-import { E2EContext, resolveAiWorkspaceBundle } from './context';
+import { E2EContext, resolveCtxstackBundle } from './context';
 import {
   deriveVerdict,
   parseRepoContext,
@@ -222,7 +222,7 @@ export async function runFixtureE2E(
 }
 
 export function resolveAndValidateBundle(ctx: E2EContext, explicitPath?: string): string {
-  const bundlePath = resolveAiWorkspaceBundle(ctx, explicitPath);
+  const bundlePath = resolveCtxstackBundle(ctx, explicitPath);
   assertBundleExists(bundlePath);
   return bundlePath;
 }

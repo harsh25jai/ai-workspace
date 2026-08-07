@@ -91,7 +91,7 @@ export function validateRepoArtifacts(options: ValidateRepoOptions): FixtureRunR
 
   if (!fs.existsSync(path.join(absRepo, '.ai'))) {
     return failResult(path.basename(absRepo), 'external', expectations?.verdict ?? 'PARTIAL', start, [
-      'No .ai/ directory found. Run ai-workspace init && analyze && generate first, or use "run" command.',
+      'No .ai/ directory found. Run ctxstack init && analyze && generate first, or use "run" command.',
     ], commands);
   }
 
@@ -146,29 +146,29 @@ export function validateRepoArtifacts(options: ValidateRepoOptions): FixtureRunR
 }
 
 export interface RunAndValidateOptions extends ValidateRepoOptions {
-  aiWorkspaceBundle: string;
+  ctxstackBundle: string;
   runExplain?: string | null;
 }
 
 /**
- * Run ai-workspace bundle against a repo, then validate generated artifacts.
+ * Run ctxstack bundle against a repo, then validate generated artifacts.
  */
 export async function runAndValidateRepo(options: RunAndValidateOptions): Promise<FixtureRunResult> {
-  const { repoPath, aiWorkspaceBundle, runExplain } = options;
+  const { repoPath, ctxstackBundle, runExplain } = options;
   const absRepo = path.resolve(repoPath);
   const commands: CommandResult[] = [];
 
-  commands.push(runBundleCliOrThrow(aiWorkspaceBundle, ['init'], absRepo));
-  commands.push(runBundleCliOrThrow(aiWorkspaceBundle, ['analyze'], absRepo));
-  commands.push(runBundleCliOrThrow(aiWorkspaceBundle, ['generate'], absRepo));
-  commands.push(runBundleCliOrThrow(aiWorkspaceBundle, ['status'], absRepo));
+  commands.push(runBundleCliOrThrow(ctxstackBundle, ['init'], absRepo));
+  commands.push(runBundleCliOrThrow(ctxstackBundle, ['analyze'], absRepo));
+  commands.push(runBundleCliOrThrow(ctxstackBundle, ['generate'], absRepo));
+  commands.push(runBundleCliOrThrow(ctxstackBundle, ['status'], absRepo));
 
   const explainFile = runExplain ?? options.expectations?.explainFile ?? null;
   if (explainFile) {
-    commands.push(runBundleCliOrThrow(aiWorkspaceBundle, ['explain', explainFile], absRepo));
+    commands.push(runBundleCliOrThrow(ctxstackBundle, ['explain', explainFile], absRepo));
   }
 
-  commands.push(runBundleCliOrThrow(aiWorkspaceBundle, ['export'], absRepo));
+  commands.push(runBundleCliOrThrow(ctxstackBundle, ['export'], absRepo));
 
   const result = validateRepoArtifacts({ ...options, commands });
   const cmdErrors = commands.filter((c) => c.exitCode !== 0);

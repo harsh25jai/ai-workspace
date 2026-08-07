@@ -6,14 +6,14 @@
 
 ## Core Flow
 
-- [x] PASS `ai-workspace init` works without agent environment
+- [x] PASS `ctxstack init` works without agent environment
 - [x] PASS `.ai/config.json` created (no API keys stored)
-- [x] PASS `ai-workspace analyze` produces `repo-context.json`
-- [x] PASS `ai-workspace generate` produces template content
-- [x] PASS `ai-workspace generate --ai` fails clearly without API key
-- [x] PASS `ai-workspace export` creates `.cursorrules`
-- [x] PASS `ai-workspace explain <file>` works with path guards
-- [x] PASS `ai-workspace sync` handles missing context
+- [x] PASS `ctxstack analyze` produces `repo-context.json`
+- [x] PASS `ctxstack generate` produces template content
+- [x] PASS `ctxstack generate --ai` fails clearly without API key
+- [x] PASS `ctxstack export` creates `.cursorrules`
+- [x] PASS `ctxstack explain <file>` works with path guards
+- [x] PASS `ctxstack sync` handles missing context
 
 ## Trust & Security (BC1)
 
@@ -38,7 +38,7 @@
 ## Distribution
 
 - [x] PASS `npm pack` produces valid tarball
-- [x] PASS Bundle at `releases/ai-workspace.js`
+- [x] PASS Bundle at `releases/ctxstack.js`
 - [ ] PENDING `npm publish` (run manually — see [PUBLISHING.md](../PUBLISHING.md))
 - [ ] PENDING GitHub Release with bundle attachment
 - [ ] PENDING Git tag `v0.1.0-beta.1` on release commit

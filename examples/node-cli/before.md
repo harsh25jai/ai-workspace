@@ -1,4 +1,4 @@
-# Before ai-workspace
+# Before ctxstack
 
 An AI agent opening this repository sees:
 

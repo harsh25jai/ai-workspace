@@ -46,7 +46,7 @@ async function runHumanInit(aiDir: string, rootDir: string): Promise<void> {
   await writeDefaultConfig(aiDir, { provider });
   await writePlaceholderDocs(aiDir);
 
-  console.log('ai-workspace successfully initialized in .ai/');
+  console.log('ctxstack successfully initialized in .ai/');
   if (provider !== 'local') {
     console.log('Set OPENAI_API_KEY or ANTHROPIC_API_KEY in your environment for generate --ai.');
   }
@@ -54,7 +54,7 @@ async function runHumanInit(aiDir: string, rootDir: string): Promise<void> {
   if (runAnalyze) {
     console.log('\nRunning repository analysis...\n');
     await runAnalysis(rootDir);
-    console.log('Analysis complete. You can now run "ai-workspace generate" to build documentation.');
+    console.log('Analysis complete. You can now run "ctxstack generate" to build documentation.');
   }
 }
 
@@ -125,13 +125,13 @@ export const initCommand = new Command('init')
 
         for (const file of agentPlaceholders) {
           const fullPath = path.join(aiDir, file.path);
-          if (!fs.existsSync(fullPath) || (await fs.readFile(fullPath, 'utf8')).includes('Run "ai-workspace generate"')) {
+          if (!fs.existsSync(fullPath) || (await fs.readFile(fullPath, 'utf8')).includes('Run "ctxstack generate"')) {
             await fs.writeFile(fullPath, file.content);
           }
         }
 
         console.log('--- AI AGENT INSTRUCTIONS ---');
-        console.log('I am the ai-workspace CLI. Since you are an AI assistant, I have skipped human prompts.');
+        console.log('I am the ctxstack CLI. Since you are an AI assistant, I have skipped human prompts.');
         console.log('I have analyzed the repo and generated:');
         console.log('  .ai/repo-map.json');
         console.log('  .ai/context/repo-context.json');
@@ -151,7 +151,7 @@ export const initCommand = new Command('init')
 
       await runHumanInit(aiDir, rootDir);
     } catch (error) {
-      console.error('Error initializing ai-workspace:', error);
+      console.error('Error initializing ctxstack:', error);
       process.exit(1);
     }
   });

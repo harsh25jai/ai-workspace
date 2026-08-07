@@ -29,7 +29,7 @@ jobs:
           git diff --exit-code releases/ || (echo "Bundle is stale. Run npm run bundle and commit releases/" && exit 1)
 
   # TEMP: build standalone bundle on every push to v0.0.3-beta and attach to the workflow run.
-  # Remove this job once releases/ai-workspace.js is committed and the freshness check above is restored.
+  # Remove this job once releases/ctxstack.js is committed and the freshness check above is restored.
   bundle:
     # if: github.event_name == 'push' && github.ref == 'refs/heads/v0.0.3-beta'
     runs-on: ubuntu-latest
@@ -42,13 +42,13 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
-      - name: Build ai-workspace.js
+      - name: Build ctxstack.js
         run: npm run bundle
       - name: Upload bundle artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ai-workspace-bundle
+          name: ctxstack-bundle
           path: |
-            releases/ai-workspace.js
+            releases/ctxstack.js
             releases/index.js
           retention-days: 5

@@ -5,7 +5,7 @@
 Run analyze before generate:
 
 ```bash
-ai-workspace analyze
+ctxstack analyze
 ```
 
 ## `init` did not run analyze
@@ -13,7 +13,7 @@ ai-workspace analyze
 Non-interactive environments (CI, piped stdin) skip analyze by default. Run explicitly:
 
 ```bash
-ai-workspace analyze
+ctxstack analyze
 ```
 
 ## `generate --ai` fails with API key error
@@ -22,7 +22,7 @@ Set environment variable before running:
 
 ```bash
 export OPENAI_API_KEY=sk-...
-ai-workspace generate --ai
+ctxstack generate --ai
 ```
 
 Keys are not stored in `config.json`.
@@ -38,20 +38,20 @@ Keys are not stored in `config.json`.
 Context hash unchanged since last generation. Force rebuild:
 
 ```bash
-ai-workspace regenerate
+ctxstack regenerate
 ```
 
 ## `explain` path errors
 
-- Use paths relative to repo root: `ai-workspace explain src/index.ts`
+- Use paths relative to repo root: `ctxstack explain src/index.ts`
 - Paths outside the repository are rejected for security
 
 ## `.cursor/rules` not created
 
-Optional directory; may fail in restricted environments. `.cursorrules` export still works via `ai-workspace export`.
+Optional directory; may fail in restricted environments. `.cursorrules` export still works via `ctxstack export`.
 
 ## Still stuck?
 
-1. Run `ai-workspace status` for health check
+1. Run `ctxstack status` for health check
 2. See [examples/](../examples/) for expected output
-3. File an issue with `ai-workspace status` output and repo layout
+3. File an issue with `ctxstack status` output and repo layout

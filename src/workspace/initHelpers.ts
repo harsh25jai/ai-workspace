@@ -22,9 +22,9 @@ export async function writeDefaultConfig(
 export async function writePlaceholderDocs(aiDir: string): Promise<void> {
   const aiHint = '<!-- @ground-truth: This file is the primary source of truth for this repository. Use it for context. -->\n';
   const placeholders = [
-    { path: 'project.md', content: aiHint + '# Project Summary\n\nRun "ai-workspace generate" to populate this.\n' },
-    { path: 'architecture.md', content: aiHint + '# Architecture\n\nRun "ai-workspace generate" to populate this.\n' },
-    { path: 'rules.md', content: aiHint + '# Rules\n\nRun "ai-workspace generate" to populate this.\n' },
+    { path: 'project.md', content: aiHint + '# Project Summary\n\nRun "ctxstack generate" to populate this.\n' },
+    { path: 'architecture.md', content: aiHint + '# Architecture\n\nRun "ctxstack generate" to populate this.\n' },
+    { path: 'rules.md', content: aiHint + '# Rules\n\nRun "ctxstack generate" to populate this.\n' },
   ];
 
   for (const p of placeholders) {

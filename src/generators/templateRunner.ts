@@ -20,5 +20,5 @@ export async function generateFromTemplates(rootDir: string, contextData: Scanne
   console.log('  .ai/project.md');
   console.log('  .ai/architecture.md');
   console.log('  .ai/rules.md');
-  console.log('Use "ai-workspace generate --ai" for LLM-enhanced documentation.');
+  console.log('Use "ctxstack generate --ai" for LLM-enhanced documentation.');
 }

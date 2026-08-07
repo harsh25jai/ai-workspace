@@ -1,5 +1,5 @@
 # Repository Rules
-This repository follows specific patterns and standards detected by ai-workspace.
+This repository follows specific patterns and standards detected by ctxstack.
 
 ## Architecture
 - Patterns: node-backend
@@ -7,5 +7,5 @@ This repository follows specific patterns and standards detected by ai-workspace
 
 ## General Guidelines
 - All code changes should be reflected in .ai/ documentation.
-- Use "ai-workspace regenerate" after significant code changes (bypasses hash guard).
+- Use "ctxstack regenerate" after significant code changes (bypasses hash guard).
 - Follow the patterns defined in .cursor/rules/ for IDE-specific guidance.

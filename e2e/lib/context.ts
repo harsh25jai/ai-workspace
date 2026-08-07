@@ -11,7 +11,7 @@ export interface E2EContext {
 }
 
 const BUNDLED_NAMES = new Set([
-  'ai-workspace-e2e-tester.js',
+  'ctxstack-e2e-tester.js',
   'index.js',
 ]);
 
@@ -20,7 +20,7 @@ export function isBundledTester(entryFile: string = __filename): boolean {
 }
 
 /**
- * Resolve E2E paths for dev (ts-node) or bundled (releases/ai-workspace-e2e-tester.js).
+ * Resolve E2E paths for dev (ts-node) or bundled (releases/ctxstack-e2e-tester.js).
  */
 export function resolveE2EContext(options: {
   entryFile?: string;
@@ -56,22 +56,22 @@ export function resolveE2EContext(options: {
   return { testerRoot, fixturesRoot, baselinesRoot, reportsRoot, bundled };
 }
 
-export function resolveAiWorkspaceBundle(
+export function resolveCtxstackBundle(
   ctx: E2EContext,
   explicitPath?: string
 ): string {
   if (explicitPath) {
     return path.resolve(explicitPath);
   }
-  const sibling = path.join(ctx.testerRoot, 'ai-workspace.js');
+  const sibling = path.join(ctx.testerRoot, 'ctxstack.js');
   if (fs.existsSync(sibling)) {
     return sibling;
   }
-  const repoRelease = path.join(ctx.testerRoot, 'releases', 'ai-workspace.js');
+  const repoRelease = path.join(ctx.testerRoot, 'releases', 'ctxstack.js');
   if (fs.existsSync(repoRelease)) {
     return repoRelease;
   }
   throw new Error(
-    'ai-workspace bundle not found. Pass --ai-workspace <path> or place ai-workspace.js next to the tester.'
+    'ctxstack bundle not found. Pass --ctxstack <path> or place ctxstack.js next to the tester.'
   );
 }

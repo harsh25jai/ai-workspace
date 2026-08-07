@@ -17,19 +17,19 @@ npm run test:e2e
 npm run test:e2e:dev
 
 # Run a single fixture
-npm run bundle:e2e && node releases/ai-workspace-e2e-tester.js fixtures --only=express-api
+npm run bundle:e2e && node releases/ctxstack-e2e-tester.js fixtures --only=express-api
 
 # Validate an external repository (artifacts must already exist)
-node releases/ai-workspace-e2e-tester.js validate /path/to/repo
+node releases/ctxstack-e2e-tester.js validate /path/to/repo
 
-# Run ai-workspace on external repo, then validate
-node releases/ai-workspace-e2e-tester.js run /path/to/repo --ai-workspace releases/ai-workspace.js
+# Run ctxstack on external repo, then validate
+node releases/ctxstack-e2e-tester.js run /path/to/repo --ctxstack releases/ctxstack.js
 
 # Keep temp workspaces for inspection
-node releases/ai-workspace-e2e-tester.js fixtures --keep-workspaces
+node releases/ctxstack-e2e-tester.js fixtures --keep-workspaces
 
 # Update content baselines after generator/template changes
-node releases/ai-workspace-e2e-tester.js fixtures --update-baselines
+node releases/ctxstack-e2e-tester.js fixtures --update-baselines
 ```
 
 ## Standalone E2E tester bundle
@@ -37,30 +37,30 @@ node releases/ai-workspace-e2e-tester.js fixtures --update-baselines
 The E2E framework ships as a separate executable:
 
 ```
-releases/ai-workspace-e2e-tester.js   # validation tool (this repo)
+releases/ctxstack-e2e-tester.js   # validation tool (this repo)
 releases/e2e-fixtures/                # fixture matrix (shipped alongside tester)
-releases/ai-workspace.js              # ai-workspace CLI (generates artifacts)
+releases/ctxstack.js              # ctxstack CLI (generates artifacts)
 ```
 
-**Distribution model:** ai-workspace generates artifacts; the E2E tester validates them. They are intentionally separate bundles.
+**Distribution model:** ctxstack generates artifacts; the E2E tester validates them. They are intentionally separate bundles.
 
 Minimum download for external repo validation (artifacts already generated):
 
 ```bash
-node ai-workspace-e2e-tester.js validate /path/to/repo
+node ctxstack-e2e-tester.js validate /path/to/repo
 ```
 
-For full pipeline on an external repo, also download `ai-workspace.js`:
+For full pipeline on an external repo, also download `ctxstack.js`:
 
 ```bash
-node ai-workspace-e2e-tester.js run /path/to/repo --ai-workspace ./ai-workspace.js
+node ctxstack-e2e-tester.js run /path/to/repo --ctxstack ./ctxstack.js
 ```
 
-No TypeScript, devDependencies, or ai-workspace source code required at runtime.
+No TypeScript, devDependencies, or ctxstack source code required at runtime.
 
 ## What E2E validates
 
-For each repository fixture, the bundled CLI (`releases/ai-workspace.js`) runs:
+For each repository fixture, the bundled CLI (`releases/ctxstack.js`) runs:
 
 1. `init` — creates `.ai/`, `.agents/`, config
 2. `analyze` — generates `repo-context.json`, `repo-map.json`
@@ -124,7 +124,7 @@ Download `e2e-reports` artifact from the E2E Test workflow run for full reports.
 | Suite | CLI used | When |
 |-------|----------|------|
 | Jest (`npm test`) | `dist/cli/index.js` | Fast feedback during development |
-| E2E (`npm run test:e2e`) | `releases/ai-workspace.js` | Pre-release / CI gate |
+| E2E (`npm run test:e2e`) | `releases/ctxstack.js` | Pre-release / CI gate |
 | Smoke (`npm run smoke`) | `dist/cli/index.js` | Quick local check (3 fixtures) |
 
 **Always trust E2E for release confidence** — it tests the actual shipped artifact.

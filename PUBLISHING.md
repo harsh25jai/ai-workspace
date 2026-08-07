@@ -26,15 +26,15 @@ npm publish --access public
 Verify:
 
 ```bash
-npm install -g ai-workspace@0.1.0-beta.1
-ai-workspace --version
+npm install -g ctxstack@0.1.0-beta.1
+ctxstack --version
 ```
 
 ## GitHub Release
 
 ```bash
 gh release create v0.1.0-beta.1 \
-  releases/ai-workspace.js \
+  releases/ctxstack.js \
   --title "v0.1.0-beta.1 — Beta Candidate 1" \
   --notes-file CHANGELOG.md
 ```

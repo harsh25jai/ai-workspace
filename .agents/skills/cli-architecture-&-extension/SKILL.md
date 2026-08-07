@@ -10,7 +10,7 @@ files:
 # CLI Architecture & Extension Skill
 
 ## Description
-Guidelines for maintaining and extending the `ai-workspace` CLI system.
+Guidelines for maintaining and extending the `ctxstack` CLI system.
 
 ## Rules
 - **Command Registration**: Always define commands in `src/commands/` as separate modules and register them in `src/cli/index.ts`.

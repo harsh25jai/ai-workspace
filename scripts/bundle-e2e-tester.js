@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Build standalone ai-workspace-e2e-tester.js bundle + ship fixtures alongside it.
+ * Build standalone ctxstack-e2e-tester.js bundle + ship fixtures alongside it.
  */
 const { execSync } = require('child_process');
 const fs = require('fs-extra');
@@ -28,8 +28,8 @@ execSync(`npx ncc build "${e2eEntry}" -o "${tmpOut}" -m`, {
   stdio: 'inherit',
 });
 
-fs.copySync(path.join(tmpOut, 'index.js'), path.join(releasesDir, 'ai-workspace-e2e-tester.js'));
+fs.copySync(path.join(tmpOut, 'index.js'), path.join(releasesDir, 'ctxstack-e2e-tester.js'));
 fs.removeSync(tmpOut);
 
-console.log('Built releases/ai-workspace-e2e-tester.js');
+console.log('Built releases/ctxstack-e2e-tester.js');
 console.log('Copied fixtures to releases/e2e-fixtures/');

@@ -1,6 +1,6 @@
-# ai-workspace
+# ctxstack
 
-`ai-workspace` is a local Node.js CLI that prepares repositories for AI coding assistants by generating structured context in `.ai/`.
+`ctxstack` is a local Node.js CLI that prepares repositories for AI coding assistants by generating structured context in `.ai/`.
 
 **Beta note:** Currently optimized for Node.js/TypeScript projects with a top-level `src/` directory. See [docs/LIMITATIONS.md](docs/LIMITATIONS.md) for full beta scope.
 
@@ -21,12 +21,12 @@ See [docs/BEFORE_AND_AFTER.md](docs/BEFORE_AND_AFTER.md) and [examples/](example
 ## Quick Start
 
 ```bash
-npm install -g ai-workspace   # or: node releases/ai-workspace.js
+npm install -g ctxstack   # or: node releases/ctxstack.js
 
-ai-workspace init
-ai-workspace analyze          # if init skipped analyze (non-interactive)
-ai-workspace generate         # template mode, no API key
-ai-workspace export
+ctxstack init
+ctxstack analyze          # if init skipped analyze (non-interactive)
+ctxstack generate         # template mode, no API key
+ctxstack export
 ```
 
 ## Installation
@@ -35,8 +35,8 @@ Requires Node.js 18+.
 
 | Method | Command |
 |---|---|
-| npm | `npm install -g ai-workspace` |
-| Bundle | `node releases/ai-workspace.js --version` |
+| npm | `npm install -g ctxstack` |
+| Bundle | `node releases/ctxstack.js --version` |
 | Source | `npm install && npm run build && npm link` |
 
 ## Commands
@@ -59,7 +59,7 @@ API keys via environment variables only (never stored in config):
 
 ```bash
 export OPENAI_API_KEY=sk-...
-ai-workspace generate --ai
+ctxstack generate --ai
 ```
 
 See [docs/CONFIGURATION.md](docs/CONFIGURATION.md).

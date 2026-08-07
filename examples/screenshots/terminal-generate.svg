@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="720" height="200" viewBox="0 0 720 200">
   <rect width="720" height="200" rx="8" fill="#1e1e1e"/>
-  <text x="20" y="35" fill="#4ec9b0" font-family="monospace" font-size="14">$ ai-workspace generate</text>
+  <text x="20" y="35" fill="#4ec9b0" font-family="monospace" font-size="14">$ ctxstack generate</text>
   <text x="20" y="65" fill="#d4d4d4" font-family="monospace" font-size="13">Generated documentation from repository context (template mode).</text>
   <text x="20" y="90" fill="#d4d4d4" font-family="monospace" font-size="13">  .ai/project.md</text>
   <text x="20" y="115" fill="#d4d4d4" font-family="monospace" font-size="13">  .ai/architecture.md</text>
   <text x="20" y="140" fill="#d4d4d4" font-family="monospace" font-size="13">  .ai/rules.md</text>
-  <text x="20" y="170" fill="#808080" font-family="monospace" font-size="11">ai-workspace generate  BC1 screenshot</text>
+  <text x="20" y="170" fill="#808080" font-family="monospace" font-size="11">ctxstack generate  BC1 screenshot</text>
 </svg>

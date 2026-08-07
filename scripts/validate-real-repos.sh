@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Validates ai-workspace against real OSS repositories (R1-R8)
+# Validates ctxstack against real OSS repositories (R1-R8)
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -85,7 +85,7 @@ DATE=$(date -u +%Y-%m-%d)
 cat > "$RESULTS" << HEADER
 # Compatibility Matrix — BC1
 
-Ongoing confidence tracker for ai-workspace beta releases.
+Ongoing confidence tracker for ctxstack beta releases.
 
 **Last run:** $DATE
 **Version tested:** 0.1.0-beta.1
