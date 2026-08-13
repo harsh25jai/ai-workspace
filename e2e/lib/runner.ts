@@ -9,6 +9,7 @@ import {
   validateDetection,
 } from './validators';
 import { validateProductQuality } from './validators/index';
+import { validateRepoContextQuality } from './validators/repoContext';
 import { emptyQualityReport } from './scoring';
 import { countSourceFiles, createWorkspaceFromFixture } from './workspace';
 import {
@@ -148,9 +149,12 @@ export async function runFixtureE2E(
     const artifacts = validateAllArtifacts(workspaceDir);
     const context = parseRepoContext(workspaceDir);
     const detectionIssues = validateDetection(context, fixture);
+    const repoContextQuality = validateRepoContextQuality(context, fixture);
     const collected = collectErrors(commands, artifacts, detectionIssues);
     errors.push(...collected.errors);
     warnings.push(...collected.warnings);
+    errors.push(...repoContextQuality.errors.map((e) => `[repo-context] ${e.message}`));
+    warnings.push(...repoContextQuality.warnings.map((w) => `[repo-context] ${w.message}`));
 
     const explainStdout = commands.find((c) => c.command.includes('explain'))?.stdout;
     const productQuality = validateProductQuality({

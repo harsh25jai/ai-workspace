@@ -7,7 +7,7 @@ export const expressPlugin: WorkspacePlugin = {
     const result: PluginResult = { skills: [], frameworks: [], patterns: [] };
     
     // Express could be detected via package.json framework dependencies
-    if (context.frameworks.includes('express')) {
+    if (context.frameworks.includes('express') && !context.frameworks.includes('nestjs')) {
       result.skills.push('rest-api-pattern');
       
       // If we see typical express structures

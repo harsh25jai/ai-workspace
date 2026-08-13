@@ -6,11 +6,12 @@
 
 | Supported | Not yet supported |
 |---|---|
-| Node.js/TypeScript repos with `src/` at root | Monorepos with `packages/` layout |
-| Framework detection via `package.json` | Deep AST/code analysis |
-| Top-level module folders under `src/` | App-router Next.js (`app/` without `src/`) |
+| Node.js/TypeScript repos with `src/` at root | Deep AST/code analysis |
+| Framework detection via `package.json` (primary vs HTTP adapters) | Full Python project introspection |
+| Top-level and nested entrypoints under `src/` (depth 3) | App-router Next.js (`app/` without `src/`) |
+| npm workspace monorepos (`packages/*`) — package list + partial depth | Per-package deep analysis |
 | Template-based doc generation (no API key) | Ollama/local LLM provider |
-| Basic Python file-extension detection | Full Python project introspection |
+| Basic Python file-extension detection | |
 
 ## Generation modes
 
@@ -20,14 +21,20 @@
 ## Analyzer scope
 
 The scanner reads:
-- `package.json` dependencies (framework detection)
-- Top-level entries under `src/` (modules, entrypoints)
+- `package.json` dependencies and workspace definitions
+- Top-level and nested entries under `src/` (modules, entrypoints, depth 3)
+- Workspace `packages/*/package.json` for monorepos
 - `.aiignore` patterns
 
 It does **not** read:
 - Individual source file contents (except `explain <file>`)
-- Nested package structures in monorepos
+- Deep logic inside each workspace package
 - Non-`src/` layouts (e.g. `lib/`, `app/`)
+
+### `analysisDepth` in `repo-context.json`
+
+- **`full`** — root app entrypoint found (e.g. `src/main.ts`)
+- **`partial`** — monorepo or layout without a single bootstrap file; check `packages` and `bootstrap.hints`
 
 ## Compatibility
 

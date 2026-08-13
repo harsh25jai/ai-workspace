@@ -80,20 +80,23 @@
     },
     {
       "id": "nestjs",
-      "name": "NestJS Starter",
-      "stack": "NestJS, TypeScript",
-      "verdict": "PASS",
-      "explainFile": "src/app/app.module.ts",
+      "name": "NestJS Framework Monorepo",
+      "stack": "NestJS, TypeScript, Monorepo",
+      "verdict": "PARTIAL",
+      "explainFile": null,
       "expectedFrameworks": ["nestjs"],
-      "expectedModules": ["app"],
-      "expectedPatterns": [],
-      "workflows": ["full", "sync", "regenerate"],
-      "expectedArtifacts": [".cursor/rules/typescript-standards.mdc"],
+      "expectedNotInFrameworks": ["express", "fastify"],
+      "expectedModules": [],
+      "expectedPatterns": ["nestjs-monorepo", "dependency-injection"],
+      "expectedLayout": "monorepo",
+      "expectedPackages": ["@nestjs/core", "@nestjs/common"],
+      "expectedAnalysisDepth": "partial",
+      "expectedHttpAdapters": ["express", "fastify"],
+      "workflows": ["full"],
+      "notes": "Mini nest-master layout; no single app entrypoint",
       "expectedDocMentions": {
-        ".ctxstack/project.md": ["nestjs"],
-        ".ctxstack/architecture.md": ["app"]
-      },
-      "expectedWorkflows": [".agents/workflows/regenerate-all.md"]
+        ".ctxstack/project.md": ["nestjs"]
+      }
     },
     {
       "id": "python",

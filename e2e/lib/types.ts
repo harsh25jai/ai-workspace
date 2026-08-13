@@ -7,8 +7,13 @@ export interface FixtureManifestEntry {
   verdict: Verdict;
   explainFile: string | null;
   expectedFrameworks: string[];
+  expectedNotInFrameworks?: string[];
   expectedModules: string[];
   expectedPatterns: string[];
+  expectedLayout?: 'monorepo' | 'single-package';
+  expectedPackages?: string[];
+  expectedAnalysisDepth?: 'full' | 'partial';
+  expectedHttpAdapters?: string[];
   workflows: string[];
   notes?: string;
   expectedArtifacts?: string[];

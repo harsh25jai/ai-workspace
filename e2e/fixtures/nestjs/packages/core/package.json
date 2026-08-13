@@ -1,0 +1,9 @@
+{
+  "name": "@nestjs/core",
+  "version": "10.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "@nestjs/common": "10.0.0",
+    "reflect-metadata": "^0.1.13"
+  }
+}
