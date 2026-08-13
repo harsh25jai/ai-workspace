@@ -29,7 +29,9 @@ describe('repo-context.json generation', () => {
       expect.arrayContaining(['@nestjs/core', '@nestjs/common'])
     );
     expect(result.analysisDepth).toBe('partial');
-    expect(result.patterns).toEqual(expect.arrayContaining(['nestjs-monorepo', 'dependency-injection']));
+    expect(result.patterns).toEqual(
+      expect.arrayContaining(['workspace-monorepo', 'adapter-composition', 'pluggable-http-adapter'])
+    );
     expect(result.patterns).not.toContain('rest-api-pattern');
   });
 
@@ -84,6 +86,7 @@ describe('repo-context.json generation', () => {
     expect(result.modules).toContain('app');
     expect(result.analysisDepth).toBe('full');
     expect(result.bootstrap?.startScripts).toContain('start');
+    expect(result.patterns).toContain('dependency-injection');
   });
 
   it('detects Next.js app router entrypoint via app/page.tsx', async () => {

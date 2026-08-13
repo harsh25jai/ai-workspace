@@ -21,7 +21,7 @@
 | `frameworks` | `string[]` | **Primary** frameworks (`nestjs`, `express`, `react`) — not HTTP adapters |
 | `entrypoints` | `string[]` | App bootstrap files (e.g. `src/main.ts`) |
 | `modules` | `string[]` | Top-level `src/` directories and inferred module folders |
-| `patterns` | `string[]` | Architectural patterns (`controller-service`, `nestjs-monorepo`) |
+| `patterns` | `string[]` | Structural patterns (`controller-service`, `workspace-monorepo`, `adapter-composition`) |
 | `layout` | object | `type`: `single-package` \| `monorepo`; `workspaces`, `sourceRoots` |
 | `packages` | array | Workspace members: `{ name, path, role? }` |
 | `httpAdapters` | `string[]` | Secondary HTTP stacks (`express`, `fastify`) when nested under a framework |

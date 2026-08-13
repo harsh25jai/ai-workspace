@@ -8,11 +8,8 @@ export const expressPlugin: WorkspacePlugin = {
     
     // Express could be detected via package.json framework dependencies
     if (context.frameworks.includes('express') && !context.frameworks.includes('nestjs')) {
-      result.skills.push('rest-api-pattern');
-      
-      // If we see typical express structures
       if (context.modules.includes('controllers') && context.modules.includes('routes')) {
-        result.patterns.push('express-mvc');
+        result.patterns.push('layered-routing');
       }
     }
     

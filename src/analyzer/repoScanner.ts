@@ -1,16 +1,14 @@
 import fs from 'fs-extra';
 import path from 'path';
 import { WorkspacePlugin } from '../plugins/plugin';
-import { expressPlugin } from '../plugins/expressPlugin';
 import { reactPlugin } from '../plugins/reactPlugin';
 import { nodePlugin } from '../plugins/nodePlugin';
-import { nestjsPlugin } from '../plugins/nestjsPlugin';
 import { ScannerResult } from './types';
 import { readPackageManifest, collectWorkspaceDeps } from './detectors/packageManifest';
 import { detectFrameworks } from './detectors/frameworks';
 import { detectLayout, detectWorkspacePackages } from './detectors/layout';
 import { detectEntrypoints } from './detectors/entrypoints';
-import { detectModules } from './detectors/modules';
+import { detectModules, detectConventions } from './detectors/modules';
 import { detectStructuralPatterns } from './detectors/patterns';
 
 export type { ScannerResult, WorkspacePackage, RepoLayout, BootstrapInfo } from './types';
@@ -98,6 +96,7 @@ export async function scanRepository(rootDir: string): Promise<ScannerResult> {
 
   const { entrypoints, bootstrap: rawBootstrap } = detectEntrypoints(rootDir, manifest, ignorePatterns);
   const modules = detectModules(rootDir, ignorePatterns);
+  const conventions = detectConventions(rootDir, ignorePatterns);
 
   let languages = manifest?.languages || [];
   languages = detectLanguagesFromTree(rootDir, ignorePatterns, languages);
@@ -112,7 +111,7 @@ export async function scanRepository(rootDir: string): Promise<ScannerResult> {
     frameworks,
     entrypoints,
     modules,
-    patterns: detectStructuralPatterns({ modules, frameworks }),
+    patterns: detectStructuralPatterns({ modules, frameworks, layout, packages, httpAdapters, conventions }),
     layout,
     packages: packages && packages.length > 0 ? packages : undefined,
     httpAdapters: httpAdapters.length > 0 ? httpAdapters : undefined,
@@ -122,7 +121,7 @@ export async function scanRepository(rootDir: string): Promise<ScannerResult> {
 
   result.bootstrap = enrichBootstrap(result.bootstrap || {}, layout, entrypoints);
 
-  const plugins: WorkspacePlugin[] = [nestjsPlugin, expressPlugin, reactPlugin, nodePlugin];
+  const plugins: WorkspacePlugin[] = [reactPlugin, nodePlugin];
   for (const plugin of plugins) {
     const pResult = plugin.detect(result);
     pResult.skills.forEach((s) => !result.patterns.includes(s) && result.patterns.push(s));

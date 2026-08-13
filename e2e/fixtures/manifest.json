@@ -87,7 +87,7 @@
       "expectedFrameworks": ["nestjs"],
       "expectedNotInFrameworks": ["express", "fastify"],
       "expectedModules": [],
-      "expectedPatterns": ["nestjs-monorepo", "dependency-injection"],
+      "expectedPatterns": ["workspace-monorepo", "adapter-composition", "pluggable-http-adapter"],
       "expectedLayout": "monorepo",
       "expectedPackages": ["@nestjs/core", "@nestjs/common"],
       "expectedAnalysisDepth": "partial",
