@@ -1,7 +1,7 @@
 import { Command } from 'commander';
 import fs from 'fs-extra';
 import path from 'path';
-import inquirer from 'inquirer';
+import { promptList } from '../utils/prompt';
 import { CTXSTACK_DIR } from '../constants';
 
 export const configCommand = new Command('config')
@@ -25,15 +25,13 @@ export const configCommand = new Command('config')
       console.log('Note: API keys are read from environment variables only.');
       console.log('Set OPENAI_API_KEY or ANTHROPIC_API_KEY in your shell or .env file.\n');
 
-      const answers = await inquirer.prompt<{ provider: string }>([
-        {
-          type: 'list',
-          name: 'provider',
-          message: 'Select new AI provider:',
-          choices: ['openai', 'anthropic', 'local'],
-          default: currentConfig.provider
-        }
-      ]);
+      const answers = {
+        provider: await promptList(
+          'Select new AI provider:',
+          ['openai', 'anthropic', 'local'] as const,
+          currentConfig.provider
+        ),
+      };
 
       const updatedConfig = {
         provider: answers.provider,

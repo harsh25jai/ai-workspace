@@ -1,7 +1,7 @@
 import { Command } from 'commander';
 import fs from 'fs-extra';
 import path from 'path';
-import inquirer from 'inquirer';
+import { promptConfirm, promptList } from '../utils/prompt';
 import { isAgentEnvironment } from '../utils/agentDetector';
 import { scanRepository } from '../analyzer/repoScanner';
 import { generateRepoMap } from '../generators/repoMapGenerator';
@@ -22,26 +22,12 @@ async function runHumanInit(aiDir: string, rootDir: string): Promise<void> {
   let runAnalyze = true;
 
   if (isInteractive) {
-    const answers = await inquirer.prompt<{
-      provider: string;
-      runAnalyze: boolean;
-    }>([
-      {
-        type: 'list',
-        name: 'provider',
-        message: 'Select an AI provider:',
-        choices: ['openai', 'anthropic', 'local'],
-        default: 'local',
-      },
-      {
-        type: 'confirm',
-        name: 'runAnalyze',
-        message: 'Would you like to analyze the repository right now?',
-        default: true,
-      },
-    ]);
-    provider = answers.provider;
-    runAnalyze = answers.runAnalyze;
+    provider = await promptList(
+      'Select an AI provider:',
+      ['openai', 'anthropic', 'local'] as const,
+      'local'
+    );
+    runAnalyze = await promptConfirm('Would you like to analyze the repository right now?', true);
   }
 
   await writeDefaultConfig(aiDir, { provider });
