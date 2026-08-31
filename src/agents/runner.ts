@@ -8,9 +8,20 @@ import { validateRules } from '../validators/rulesValidator';
 import { generateRules } from '../generators/ruleGenerator';
 import { generateWorkflows } from '../generators/workflowGenerator';
 import { ScannerResult } from '../analyzer/repoScanner';
+import { CTXSTACK_DIR } from '../constants';
+
+export class AgentRunError extends Error {
+  constructor(
+    message: string,
+    public readonly failures: string[]
+  ) {
+    super(message);
+    this.name = 'AgentRunError';
+  }
+}
 
 export async function runAgents(rootDir: string): Promise<void> {
-  const aiDir = path.join(rootDir, '.ai');
+  const aiDir = path.join(rootDir, CTXSTACK_DIR);
   const contextPath = path.join(aiDir, 'context', 'repo-context.json');
 
   if (!fs.existsSync(contextPath)) {
@@ -25,9 +36,9 @@ export async function runAgents(rootDir: string): Promise<void> {
   console.log(`Executing LLM prompts via ${config.provider} (${config.model || 'default'})...`);
 
   const artifacts = [
-    { name: 'project.md', prompt: 'Generate a project overview based on this context.', validator: (c: string) => c },
-    { name: 'architecture.md', prompt: 'Generate architecture documentation based on this context.', validator: (c: string) => validateArchitecture(c, contextData) },
-    { name: 'rules.md', prompt: 'Generate development rules and guidelines based on this context.', validator: (c: string) => validateRules(c, contextData) },
+    { name: 'project.md', prompt: 'Generate a project overview based on this context.', validator: (c: string): string => c },
+    { name: 'architecture.md', prompt: 'Generate architecture documentation based on this context.', validator: (c: string): string => validateArchitecture(c, contextData) },
+    { name: 'rules.md', prompt: 'Generate development rules and guidelines based on this context.', validator: (c: string): string => validateRules(c, contextData) },
   ];
 
   const failures: string[] = [];
@@ -66,9 +77,12 @@ export async function runAgents(rootDir: string): Promise<void> {
     failures.push('workflows');
   }
 
-  if (failures.length === 0) {
-    console.log('Agents completed generating core markdown artifacts, rules, and workflows.');
-  } else {
-    console.log(`Agents completed with partial success. Failed to generate: ${failures.join(', ')}.`);
+  if (failures.length > 0) {
+    throw new AgentRunError(
+      `Generation failed for: ${failures.join(', ')}`,
+      failures
+    );
   }
+
+  console.log('Agents completed generating core markdown artifacts, rules, and workflows.');
 }

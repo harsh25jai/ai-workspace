@@ -5,7 +5,7 @@
 
 ## Product Summary
 
-`ai-workspace` is a local Node.js CLI that converts any repository into an AI-ready workspace by generating structured context in `.ai/`, skills in `.agents/skills/`, and IDE rules in `.cursor/rules/`.
+`ctxstack` is a local Node.js CLI that converts any repository into an AI-ready workspace by generating structured context in `.ctxstack/`, skills in `.agents/skills/`, and IDE rules in `.cursor/rules/`.
 
 ## Architecture
 

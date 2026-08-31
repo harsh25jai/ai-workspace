@@ -5,13 +5,14 @@ import fs from 'fs-extra';
 import path from 'path';
 import { getState, generateHash, saveState } from '../workspace/state';
 import { ScannerResult } from '../analyzer/repoScanner';
+import { CTXSTACK_DIR } from '../constants';
 
 export const generateCommand = new Command('generate')
   .description('Generate documentation from repository context (template mode by default)')
   .option('--ai', 'Use LLM providers for enhanced documentation generation')
-  .action(async (options: { ai?: boolean }) => {
+  .action(async (options: { ai?: boolean }): Promise<void> => {
     const cwd = process.cwd();
-    const contextPath = path.join(cwd, '.ai', 'context', 'repo-context.json');
+    const contextPath = path.join(cwd, CTXSTACK_DIR, 'context', 'repo-context.json');
 
     if (!fs.existsSync(contextPath)) {
       console.error('Error: repo-context.json not found. Run analyze first.');
@@ -24,16 +25,21 @@ export const generateCommand = new Command('generate')
 
     if (state && state.repoHash === currentHash && !options.ai) {
       console.log('Workspace is already up to date matching current repo context (hash unchanged). Skipping generation.');
-      console.log('Use "ai-workspace regenerate" to force rebuild.');
+      console.log('Use "ctxstack regenerate" to force rebuild.');
       return;
     }
 
-    if (options.ai) {
-      await runAgents(cwd);
-    } else {
-      const contextData: ScannerResult = await fs.readJSON(contextPath);
-      await generateFromTemplates(cwd, contextData);
+    try {
+      if (options.ai) {
+        await runAgents(cwd);
+      } else {
+        const contextData: ScannerResult = await fs.readJSON(contextPath);
+        await generateFromTemplates(cwd, contextData);
+      }
+      await saveState(cwd, currentHash);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.error(`Error during generation: ${message}`);
+      process.exit(1);
     }
-
-    await saveState(cwd, currentHash);
   });

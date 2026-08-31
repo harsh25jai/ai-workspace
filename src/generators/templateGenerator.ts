@@ -22,7 +22,7 @@ export function generateFromContext(context: ScannerResult): TemplateOutput {
   const projectMd = `${AI_HINT}# Project Summary
 
 ## Overview
-This repository has been analyzed by ai-workspace.
+This repository has been analyzed by ctxstack.
 
 ## Tech Stack
 - **Languages:** ${languages}
@@ -32,7 +32,7 @@ This repository has been analyzed by ai-workspace.
 ## Entry Points
 ${entrypoints}
 
-Run \`ai-workspace generate --ai\` for LLM-enhanced documentation.
+Run \`ctxstack generate --ai\` for LLM-enhanced documentation.
 `;
 
   const architectureMd = `${AI_HINT}# Architecture
@@ -55,7 +55,7 @@ ${frameworks}
 ## Data Flow
 1. Application entry via detected entrypoints
 2. Module boundaries under \`src/\`
-3. AI context stored in \`.ai/context/repo-context.json\`
+3. AI context stored in \`.ctxstack/context/repo-context.json\`
 `;
 
   const rulesMd = `${AI_HINT}# Development Rules
@@ -67,11 +67,11 @@ ${frameworks}
 ## Language Guidelines
 ${context.languages.includes('typescript') ? '- Use strict TypeScript\n- Prefer explicit return types for public APIs' : '- Follow project language conventions'}
 
-## AI Workspace
-- Run \`ai-workspace analyze\` after significant structural changes
-- Run \`ai-workspace generate\` to refresh documentation from templates
-- Run \`ai-workspace generate --ai\` for LLM-enhanced docs (requires API key)
-- Run \`ai-workspace sync\` for incremental updates
+## Ctxstack
+- Run \`ctxstack analyze\` after significant structural changes
+- Run \`ctxstack generate\` to refresh documentation from templates
+- Run \`ctxstack generate --ai\` for LLM-enhanced docs (requires API key)
+- Run \`ctxstack sync\` for incremental updates
 `;
 
   return { projectMd, architectureMd, rulesMd };

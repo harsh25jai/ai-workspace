@@ -12,7 +12,7 @@ describe('Provider contract', () => {
     delete process.env.ANTHROPIC_API_KEY;
   });
 
-  it('OpenAI uses config key when env var is absent', async () => {
+  it('OpenAI uses legacy config key when env var is absent', async () => {
     const provider = new OpenAIProvider({ provider: 'openai', openaiKey: 'test-key', model: 'gpt-4' });
 
     global.fetch = jest.fn().mockResolvedValue({

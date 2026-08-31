@@ -8,5 +8,5 @@ module.exports = {
   transform: {
     ...tsJestTransformCfg,
   },
-  testPathIgnorePatterns: ["/node_modules/", "/fixtures/"],
+  testPathIgnorePatterns: ["/node_modules/", "/fixtures/", "/helpers/"],
 };

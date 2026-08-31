@@ -1,17 +1,18 @@
 import { Command } from 'commander';
 import fs from 'fs-extra';
 import path from 'path';
-import inquirer from 'inquirer';
+import { promptList } from '../utils/prompt';
+import { CTXSTACK_DIR } from '../constants';
 
 export const configCommand = new Command('config')
-  .description('Configure AI provider and API keys')
-  .action(async () => {
+  .description('Configure AI provider settings (API keys via environment variables)')
+  .action(async (): Promise<void> => {
     try {
       const cwd = process.cwd();
-      const configPath = path.join(cwd, '.ai', 'config.json');
+      const configPath = path.join(cwd, CTXSTACK_DIR, 'config.json');
 
       if (!fs.existsSync(configPath)) {
-        console.error('Error: .ai/config.json not found. Run "ai-workspace init" first.');
+        console.error('Error: .ctxstack/config.json not found. Run "ctxstack init" first.');
         process.exit(1);
       }
 
@@ -21,39 +22,25 @@ export const configCommand = new Command('config')
       console.log(`Provider: ${currentConfig.provider}`);
       console.log(`Model: ${currentConfig.model}`);
       console.log('-----------------------------\n');
+      console.log('Note: API keys are read from environment variables only.');
+      console.log('Set OPENAI_API_KEY or ANTHROPIC_API_KEY in your shell or .env file.\n');
 
-      const answers = await inquirer.prompt([
-        {
-          type: 'list',
-          name: 'provider',
-          message: 'Select new AI provider:',
-          choices: ['openai', 'anthropic', 'local'],
-          default: currentConfig.provider
-        },
-        {
-          type: 'input',
-          name: 'apiKey',
-          message: 'Enter API key (leave empty to keep current or use env):',
-          when: (a) => a.provider !== 'local'
-        }
-      ]);
-
-      const updatedConfig = {
-        ...currentConfig,
-        provider: answers.provider,
-        model: answers.provider === 'openai' ? 'gpt-4' : (answers.provider === 'anthropic' ? 'claude-3-opus-20240229' : 'local')
+      const answers = {
+        provider: await promptList(
+          'Select new AI provider:',
+          ['openai', 'anthropic', 'local'] as const,
+          currentConfig.provider
+        ),
       };
 
-      if (answers.apiKey) {
-        if (answers.provider === 'openai') {
-          updatedConfig.openaiKey = answers.apiKey;
-        } else if (answers.provider === 'anthropic') {
-          updatedConfig.anthropicKey = answers.apiKey;
-        }
-      }
+      const updatedConfig = {
+        provider: answers.provider,
+        model: answers.provider === 'openai' ? 'gpt-4' : (answers.provider === 'anthropic' ? 'claude-3-5-sonnet-20241022' : 'local')
+      };
 
       await fs.writeJSON(configPath, updatedConfig, { spaces: 2 });
-      console.log('\nConfiguration updated successfully! ✔');
+      console.log('\nConfiguration updated successfully!');
+      console.log('Set your API key via environment variable before running generate --ai.');
 
     } catch (error) {
       console.error('Error updating config:', error);

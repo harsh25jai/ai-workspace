@@ -38,7 +38,7 @@ describe('export command', () => {
     runCli('export', tmpDir);
     expect(fs.existsSync(path.join(tmpDir, '.cursorrules'))).toBe(true);
     const content = fs.readFileSync(path.join(tmpDir, '.cursorrules'), 'utf8');
-    expect(content).toContain('EXPORTED FROM AI-WORKSPACE');
+    expect(content).toContain('EXPORTED FROM CTXSTACK');
     expect(content).toContain('Development Rules');
   });
 });

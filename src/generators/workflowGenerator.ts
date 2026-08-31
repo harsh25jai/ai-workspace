@@ -13,10 +13,10 @@ description: Update project README based on AI documentation
 # Workflow: Update README
 This workflow syncs the top-level README.md with the latest AI-generated project overview.
 
-1. Read the summary from .ai/project.md and .ai/architecture.md.
+1. Read the summary from .ctxstack/project.md and .ctxstack/architecture.md.
 2. Update the "Project Overview" and "Architecture" sections of README.md.
 3. Ensure the tech stack mentioned in README reflects: ${context.languages.join(', ')}, ${context.frameworks.join(', ')}.
-4. Add a note about ai-workspace usage in the "Development" section.
+4. Add a note about ctxstack usage in the "Development" section.
 `;
   await fs.writeFile(path.join(workflowsDir, 'update-readme.md'), updateReadmeWorkflow);
 
@@ -27,9 +27,9 @@ description: Full workspace analysis and regeneration
 # Workflow: Regenerate Workspace
 Run this workflow after significant code changes to ensure all documentation and rules are up to date.
 
-1. Run "ai-workspace analyze" to refresh repository context.
-2. Run "ai-workspace generate" to rebuild documentation, rules, and workflows.
-3. Verify .ai/ and .agents/ contents.
+1. Run "ctxstack analyze" to refresh repository context.
+2. Run "ctxstack generate" to rebuild documentation, rules, and workflows.
+3. Verify .ctxstack/ and .agents/ contents.
 4. Call /update-readme to sync the main README.
 `;
   await fs.writeFile(path.join(workflowsDir, 'regenerate-all.md'), regenerateWorkflow);

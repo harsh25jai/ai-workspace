@@ -61,15 +61,15 @@ globs: src/controllers/**/*.ts, src/routes/**/*.ts
   }
 
   const agentRules = `# Repository Rules
-This repository follows specific patterns and standards detected by ai-workspace.
+This repository follows specific patterns and standards detected by ctxstack.
 
 ## Architecture
 - Patterns: ${context.patterns.join(', ') || 'Standard Node.js'}
 - Modules: ${context.modules.join(', ')}
 
 ## General Guidelines
-- All code changes should be reflected in .ai/ documentation.
-- Use "ai-workspace generate" after significant code changes.
+- All code changes should be reflected in .ctxstack/ documentation.
+- Use "ctxstack generate" after significant code changes.
 - Follow the patterns defined in .cursor/rules/ for IDE-specific guidance.
 `;
   await fs.writeFile(path.join(agentRulesDir, 'repo-rules.md'), agentRules);

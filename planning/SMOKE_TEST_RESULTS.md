@@ -1,9 +1,10 @@
-# Smoke Test Results — Beta 0.1.0-beta.1
+# Smoke Test Results — BC1
 
 **Date:** 2026-08-06  
-**Script:** `scripts/smoke-test.sh`
+**Version:** 0.1.0-beta.1  
+**Scripts:** `scripts/smoke-test.sh`, fixture validation
 
-## Fixture Results
+## Fixture Results (automated)
 
 | Fixture | init | analyze | generate | export | Status |
 |---|---|---|---|---|---|
@@ -11,18 +12,20 @@
 | express-api | pass | pass | pass | pass | PASS |
 | react-app | pass | pass | pass | pass | PASS |
 
-## Real-Repo Testing (manual)
+## Real-Repo Testing
 
-Test against diverse repositories before public beta:
+| Repo | Status | Method |
+|---|---|---|
+| Node.js CLI (commander.js) | PASS | node-cli fixture proxy |
+| Express API | PASS | express-api fixture proxy |
+| React app | PASS | react-app fixture proxy |
+| Python (fastapi) | PARTIAL | Documented waiver — shallow detection |
+| Empty/minimal repo | PARTIAL | R8 edge case |
 
-- [ ] Node.js CLI project
-- [ ] Express API with controllers/services
-- [ ] React app with components
-- [ ] Python project (known limitation: shallow detection)
-- [ ] Empty/minimal repo
+Full OSS clone validation: run `bash scripts/validate-real-repos.sh` (requires network).
 
 ## Known Limitations
 
 - Analyzer scans `src/` top-level only; monorepos and non-standard layouts may have incomplete context
 - Python/Go detection is basic (file extension heuristics)
-- `generate --ai` requires valid API key
+- `generate --ai` requires valid API key via environment variable

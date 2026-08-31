@@ -23,9 +23,9 @@ run_fixture() {
      node "$CLI" analyze && \
      node "$CLI" generate && \
      node "$CLI" export && \
-     test -f .ai/project.md && \
+     test -f .ctxstack/project.md && \
      test -f .cursorrules && \
-     ! grep -q "Simulated Local Output" .ai/project.md; then
+     ! grep -q "Simulated Local Output" .ctxstack/project.md; then
     echo "PASS: $name"
     PASS=$((PASS + 1))
   else

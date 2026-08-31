@@ -9,7 +9,7 @@
 | T-005 | Restore human init + config.json | A | T-002 | `src/commands/init.ts` |
 | T-006 | Template generator | A | T-005 | `src/generators/templateGenerator.ts`, `src/commands/generate.ts` |
 | T-007 | CI workflow | B | T-002 | `.github/workflows/test.yml` |
-| T-009 | Restore `.ai/` docs | C | T-002 | `.ai/project.md`, `.ai/architecture.md`, `.ai/rules.md` |
+| T-009 | Restore `.ctxstack/` docs | C | T-002 | `.ctxstack/project.md`, `.ctxstack/architecture.md`, `.ctxstack/rules.md` |
 | T-010 | Align version | C | T-002 | `package.json`, `src/cli/index.ts`, `CHANGELOG.md` |
 
 ## Sprint 2 — Make it usable (Days 3–5)
@@ -33,5 +33,5 @@
 | T-021 | Smoke test script | E | T-015, T-019 | `scripts/smoke-test.sh`, `__tests__/fixtures/` |
 | T-022 | Real-repo smoke test | E | T-021 | `planning/SMOKE_TEST_RESULTS.md` |
 | T-023 | npm publish prep | E | T-010 | `package.json` |
-| T-024 | Bundle release | E | T-023 | `releases/ai-workspace.js` |
+| T-024 | Bundle release | E | T-023 | `releases/ctxstack.js` |
 | T-025 | CHANGELOG + release | E | T-022, T-024 | `CHANGELOG.md` |

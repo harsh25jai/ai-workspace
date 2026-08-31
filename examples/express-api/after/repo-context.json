@@ -1,0 +1,7 @@
+{
+  "languages": ["typescript"],
+  "frameworks": ["express"],
+  "entrypoints": [],
+  "modules": ["controllers", "services"],
+  "patterns": ["controller-service", "rest-api-pattern", "node-backend"]
+}

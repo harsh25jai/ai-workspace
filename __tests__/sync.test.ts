@@ -34,19 +34,19 @@ describe('sync command', () => {
   });
 
   it('updates context when new module is added', () => {
-    const contextBefore = fs.readJSONSync(path.join(tmpDir, '.ai', 'context', 'repo-context.json'));
+    const contextBefore = fs.readJSONSync(path.join(tmpDir, '.ctxstack', 'context', 'repo-context.json'));
     expect(contextBefore.modules).not.toContain('services');
 
     fs.ensureDirSync(path.join(tmpDir, 'src', 'services'));
     runCli('sync', tmpDir);
 
-    const contextAfter = fs.readJSONSync(path.join(tmpDir, '.ai', 'context', 'repo-context.json'));
+    const contextAfter = fs.readJSONSync(path.join(tmpDir, '.ctxstack', 'context', 'repo-context.json'));
     expect(contextAfter.modules).toContain('services');
   });
 
   it('runs full analyze when context is missing', () => {
-    fs.removeSync(path.join(tmpDir, '.ai', 'context', 'repo-context.json'));
+    fs.removeSync(path.join(tmpDir, '.ctxstack', 'context', 'repo-context.json'));
     runCli('sync', tmpDir);
-    expect(fs.existsSync(path.join(tmpDir, '.ai', 'context', 'repo-context.json'))).toBe(true);
+    expect(fs.existsSync(path.join(tmpDir, '.ctxstack', 'context', 'repo-context.json'))).toBe(true);
   });
 });

@@ -1,6 +1,6 @@
 ---
 description: TypeScript Coding Standards
-globs: **/*.ts, **/*.tsx
+globs: "**/*.ts, **/*.tsx"
 ---
 # TypeScript Coding Standards
 - Use strict typing.

@@ -1,6 +1,7 @@
 import fs from 'fs-extra';
 import path from 'path';
 import { ScannerResult } from '../analyzer/repoScanner';
+import { CTXSTACK_DIR } from '../constants';
 
 const SKILL_TEMPLATES: Record<string, string> = {
   javascript: `Skill: JavaScript Backend
@@ -30,7 +31,7 @@ Rules:
 };
 
 export async function generateSkills(rootDir: string, scannerResult: ScannerResult): Promise<void> {
-  const skillsDir = path.join(rootDir, '.ai', 'skills');
+  const skillsDir = path.join(rootDir, CTXSTACK_DIR, 'skills');
   await fs.ensureDir(skillsDir);
 
   for (const lang of scannerResult.languages) {

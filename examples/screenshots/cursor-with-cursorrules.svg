@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="200" viewBox="0 0 720 200">
+  <rect width="720" height="200" rx="8" fill="#1e1e1e"/>
+  <text x="20" y="30" fill="#569cd6" font-family="monospace" font-size="13">.cursorrules</text>
+  <text x="20" y="55" fill="#6a9955" font-family="monospace" font-size="12"># --- EXPORTED FROM CTXSTACK ---</text>
+  <text x="20" y="80" fill="#d4d4d4" font-family="monospace" font-size="12"># Development Rules</text>
+  <text x="20" y="105" fill="#d4d4d4" font-family="monospace" font-size="12">- Use strict TypeScript</text>
+  <text x="20" y="130" fill="#d4d4d4" font-family="monospace" font-size="12">- Run ctxstack regenerate after changes</text>
+  <text x="20" y="170" fill="#808080" font-family="monospace" font-size="11">Cursor with .cursorrules  BC1 screenshot</text>
+</svg>

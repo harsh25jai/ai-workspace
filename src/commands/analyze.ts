@@ -3,15 +3,16 @@ import fs from 'fs-extra';
 import path from 'path';
 import { scanRepository } from '../analyzer/repoScanner';
 import { generateRepoContext } from '../generators/repoContextGenerator';
+import { CTXSTACK_DIR } from '../constants';
 
 export const analyzeCommand = new Command('analyze')
   .description('Scan the repository and build structured context (v2)')
   .action(async () => {
     const cwd = process.cwd();
-    const aiDir = path.join(cwd, '.ai');
+    const aiDir = path.join(cwd, CTXSTACK_DIR);
 
     if (!fs.existsSync(aiDir)) {
-      console.error('Error: .ai directory not found. Please run "ai-workspace init" first.');
+      console.error('Error: .ctxstack directory not found. Please run "ctxstack init" first.');
       process.exit(1);
     }
 
@@ -23,5 +24,5 @@ export const analyzeCommand = new Command('analyze')
     // 2. Generate new repo-context.json
     await generateRepoContext(cwd, scannerResult);
     
-    console.log('Analysis complete! Generated .ai/context/repo-context.json');
+    console.log('Analysis complete! Generated .ctxstack/context/repo-context.json');
   });

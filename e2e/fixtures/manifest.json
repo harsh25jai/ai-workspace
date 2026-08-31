@@ -1,0 +1,156 @@
+{
+  "version": 1,
+  "fixtures": [
+    {
+      "id": "node-cli",
+      "name": "Node.js CLI",
+      "stack": "Node CLI, JavaScript",
+      "verdict": "PASS",
+      "explainFile": "src/cli/index.ts",
+      "expectedFrameworks": [],
+      "expectedModules": ["cli"],
+      "expectedPatterns": [],
+      "workflows": ["full", "sync", "regenerate"],
+      "expectedArtifacts": [".cursor/rules/typescript-standards.mdc"],
+      "expectedDocMentions": {
+        ".ctxstack/architecture.md": ["cli"]
+      },
+      "expectedWorkflows": [".agents/workflows/regenerate-all.md", ".agents/workflows/update-readme.md"],
+      "minDocLength": { ".ctxstack/project.md": 200 }
+    },
+    {
+      "id": "express-api",
+      "name": "Express API",
+      "stack": "Express, TypeScript",
+      "verdict": "PASS",
+      "explainFile": "src/controllers/index.ts",
+      "expectedFrameworks": ["express"],
+      "expectedModules": ["controllers", "services"],
+      "expectedPatterns": ["controller-service"],
+      "workflows": ["full", "sync", "regenerate"],
+      "expectedArtifacts": [
+        ".cursor/rules/express-api-standards.mdc",
+        ".cursor/rules/typescript-standards.mdc"
+      ],
+      "expectedDocMentions": {
+        ".ctxstack/project.md": ["express"],
+        ".ctxstack/architecture.md": ["controller-service", "controllers"]
+      },
+      "expectedWorkflows": [".agents/workflows/regenerate-all.md"],
+      "minDocLength": { ".ctxstack/architecture.md": 300 }
+    },
+    {
+      "id": "react-vite",
+      "name": "React + Vite",
+      "stack": "React, TypeScript",
+      "verdict": "PASS",
+      "explainFile": "src/components/App.tsx",
+      "expectedFrameworks": ["react"],
+      "expectedModules": ["components"],
+      "expectedPatterns": ["component-based-ui"],
+      "workflows": ["full", "sync", "regenerate"],
+      "expectedArtifacts": [
+        ".cursor/rules/react-best-practices.mdc",
+        ".cursor/rules/typescript-standards.mdc"
+      ],
+      "expectedDocMentions": {
+        ".ctxstack/project.md": ["react"],
+        ".ctxstack/architecture.md": ["component-based-ui"]
+      },
+      "expectedWorkflows": [
+        ".agents/workflows/create-react-component.md",
+        ".agents/workflows/regenerate-all.md"
+      ]
+    },
+    {
+      "id": "nextjs",
+      "name": "Next.js App Router",
+      "stack": "Next.js",
+      "verdict": "PARTIAL",
+      "explainFile": "app/page.tsx",
+      "expectedFrameworks": ["next"],
+      "expectedModules": [],
+      "expectedPatterns": [],
+      "workflows": ["full"],
+      "notes": "No top-level src/; beta limitation",
+      "expectedDocMentions": {
+        ".ctxstack/project.md": ["next"]
+      },
+      "expectedWorkflows": [".agents/workflows/regenerate-all.md"]
+    },
+    {
+      "id": "nestjs",
+      "name": "NestJS Framework Monorepo",
+      "stack": "NestJS, TypeScript, Monorepo",
+      "verdict": "PARTIAL",
+      "explainFile": null,
+      "expectedFrameworks": ["nestjs"],
+      "expectedNotInFrameworks": ["express", "fastify"],
+      "expectedModules": [],
+      "expectedPatterns": ["workspace-monorepo", "adapter-composition", "pluggable-http-adapter"],
+      "expectedLayout": "monorepo",
+      "expectedPackages": ["@nestjs/core", "@nestjs/common"],
+      "expectedAnalysisDepth": "partial",
+      "expectedHttpAdapters": ["express", "fastify"],
+      "workflows": ["full"],
+      "notes": "Mini nest-master layout; no single app entrypoint",
+      "expectedDocMentions": {
+        ".ctxstack/project.md": ["nestjs"]
+      }
+    },
+    {
+      "id": "python",
+      "name": "Python Project",
+      "stack": "Python",
+      "verdict": "PARTIAL",
+      "explainFile": "src/main.py",
+      "expectedFrameworks": [],
+      "expectedModules": ["utils"],
+      "expectedPatterns": [],
+      "workflows": ["full"],
+      "notes": "Shallow Python detection",
+      "expectedDocMentions": {
+        ".ctxstack/architecture.md": ["utils"]
+      }
+    },
+    {
+      "id": "minimal",
+      "name": "Minimal Repository",
+      "stack": "Empty src/",
+      "verdict": "PARTIAL",
+      "explainFile": null,
+      "expectedFrameworks": [],
+      "expectedModules": [],
+      "expectedPatterns": [],
+      "workflows": ["full"],
+      "notes": "Edge case; no crash expected",
+      "expectedWorkflows": [".agents/workflows/regenerate-all.md"]
+    },
+    {
+      "id": "monorepo",
+      "name": "Monorepo (workspaces)",
+      "stack": "npm workspaces",
+      "verdict": "PARTIAL",
+      "explainFile": "packages/api/src/index.ts",
+      "expectedFrameworks": [],
+      "expectedModules": [],
+      "expectedPatterns": [],
+      "workflows": ["full"],
+      "notes": "Top-level src/ only; packages/ not scanned",
+      "expectedWorkflows": [".agents/workflows/regenerate-all.md"]
+    },
+    {
+      "id": "unsupported",
+      "name": "Unsupported (Go)",
+      "stack": "Go module",
+      "verdict": "PARTIAL",
+      "explainFile": null,
+      "expectedFrameworks": [],
+      "expectedModules": [],
+      "expectedPatterns": [],
+      "workflows": ["full"],
+      "notes": "No package.json frameworks; should not crash",
+      "expectedWorkflows": [".agents/workflows/regenerate-all.md"]
+    }
+  ]
+}

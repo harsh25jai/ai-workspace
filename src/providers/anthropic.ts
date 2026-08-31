@@ -6,12 +6,12 @@ export class AnthropicProvider implements AIProvider {
 
   constructor(config?: ProviderConfig) {
     this.apiKey = process.env.ANTHROPIC_API_KEY || config?.anthropicKey || '';
-    this.model = process.env.ANTHROPIC_MODEL || config?.model || 'claude-3-opus-20240229';
+    this.model = process.env.ANTHROPIC_MODEL || config?.model || 'claude-3-5-sonnet-20241022';
   }
 
   async generate(prompt: string): Promise<string> {
     if (!this.apiKey) {
-      throw new Error('Anthropic API key missing. Set ANTHROPIC_API_KEY env var or anthropicKey in .ai/config.json.');
+      throw new Error('Anthropic API key missing. Set ANTHROPIC_API_KEY environment variable.');
     }
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {

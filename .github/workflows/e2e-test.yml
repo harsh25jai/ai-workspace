@@ -1,0 +1,51 @@
+name: E2E Test
+
+on:
+  push:
+    branches: [main, v0.0.3-beta]
+  pull_request:
+    branches: [main, v0.0.3-beta]
+
+jobs:
+  bundle-e2e:
+    name: Bundle E2E (Release Validation)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Build bundled CLI
+        run: npm run bundle
+      - name: Build E2E tester bundle
+        run: npm run bundle:e2e
+      - name: Run E2E release validation suite
+        run: npm run test:e2e
+      - name: Upload E2E reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-reports
+          path: |
+            releases/e2e-reports/latest/
+          retention-days: 5
+      - name: Upload bundle artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ctxstack-bundle
+          path: |
+            releases/ctxstack.js
+            releases/ctxstack-e2e-tester.js
+            releases/e2e-fixtures/
+            releases/index.js
+          retention-days: 5
+      - name: Print E2E summary
+        if: always()
+        run: |
+          if [ -f releases/e2e-reports/latest/SUMMARY.md ]; then
+            cat releases/e2e-reports/latest/SUMMARY.md
+          fi

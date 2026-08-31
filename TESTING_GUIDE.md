@@ -1,6 +1,4 @@
-# Tester Guide: ai-workspace
-
-`ai-workspace` scans your repository and generates machine-readable documentation and skills so AI agents understand your project without ingesting all source code.
+# Tester Guide: ctxstack (BC1)
 
 ## Prerequisites
 
@@ -11,77 +9,61 @@
 ### Option A: npm
 
 ```bash
-npm install -g ai-workspace
-ai-workspace --version
+npm install -g ctxstack
+ctxstack --version   # expect 0.1.0-beta.1
 ```
 
 ### Option B: Bundle
 
-Download `releases/ai-workspace.js` and run:
-
 ```bash
-node ai-workspace.js --version
+node releases/ctxstack.js --version
 ```
 
 ## Workflow
 
-### Phase 1: Initialize
-
 ```bash
-ai-workspace init
+ctxstack init
+ctxstack analyze      # if init did not analyze (non-interactive mode)
+ctxstack generate
+ctxstack export
+ctxstack status
 ```
 
-- Creates `.ai/` directory and `config.json`
-- Prompts for AI provider (interactive) or uses defaults (non-interactive/CI)
-- Runs repository analysis by default
+### Init behavior
 
-### Phase 2: Analyze
+- **Interactive terminal:** prompts for provider; runs analyze by default (can decline)
+- **Non-interactive (CI):** uses defaults; run `analyze` explicitly
+- **AI agent detected:** automatic analyze + handoff instructions
 
-```bash
-ai-workspace analyze
-```
-
-Creates `.ai/context/repo-context.json`.
-
-### Phase 3: Generate
-
-**Template mode (no API key):**
+### LLM mode (optional)
 
 ```bash
-ai-workspace generate
+export OPENAI_API_KEY=sk-...
+ctxstack generate --ai
 ```
 
-Produces `project.md`, `architecture.md`, `rules.md` from repository context.
-
-**LLM-enhanced mode:**
+## Automated test suite
 
 ```bash
-# Configure API key in .env or .ai/config.json first
-ai-workspace generate --ai
+npm test          # Jest unit + integration (67 tests)
+npm run test:e2e  # Bundle E2E release validation (9 fixtures)
+npm run test:all  # Both suites
+npm run smoke     # scripts/smoke-test.sh
 ```
 
-### Phase 4: Export
+See `planning/TEST_STRATEGY.md`, `planning/E2E_ARCHITECTURE.md`, and `docs/E2E_TESTING.md`.
 
-```bash
-ai-workspace export
-```
+## What to validate
 
-Creates `.cursorrules` from `.ai/rules.md`.
+1. All commands exit 0 on a repo with `src/` directory
+2. `.ctxstack/project.md` contains real content (not stub text)
+3. `.cursorrules` created after export
+4. `explain src/<file>` works for a source file
 
-## Other Commands
+## Known beta limitations
 
-| Command | Description |
-|---|---|
-| `ai-workspace explain <file>` | Explain a file's role and matched skills |
-| `ai-workspace status` | Check workspace health |
-| `ai-workspace sync` | Incremental update after code changes |
-| `ai-workspace regenerate` | Force full rebuild (`--ai` for LLM mode) |
-| `ai-workspace config` | Update provider settings |
-
-## Configuration
-
-See `.env.example` for environment variables, or edit `.ai/config.json` directly.
+See [docs/LIMITATIONS.md](docs/LIMITATIONS.md).
 
 ## Feedback
 
-Report crashes, incorrect framework detection, or documentation issues to the project lead.
+Report issues with: repo type, commands run, `ctxstack status` output, and error messages.
